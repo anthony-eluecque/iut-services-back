@@ -1,9 +1,10 @@
-import { ObjectId } from 'mongodb';
+import { Schema, model } from "mongoose";
 
-export class Lesson {
-    constructor(
-        public _id: ObjectId,
-        public given_id: string,
-        public name: string,
-    ) {}
-}
+const lessonSchema = new Schema({
+  given_id: String,
+  name: String
+});
+
+const Lesson = model('Lesson',lessonSchema);
+
+export default Lesson;

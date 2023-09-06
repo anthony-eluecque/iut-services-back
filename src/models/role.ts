@@ -1,8 +1,9 @@
-import { ObjectId } from 'mongodb';
+import { Schema, model } from "mongoose";
 
-export class Role {
-    constructor(
-        public _id: ObjectId,
-        public name: string,
-    ) {}
-}
+const roleSchema = new Schema({
+  name : String
+});
+
+const Role = model('Role',roleSchema);
+
+export default Role;

@@ -1,5 +1,5 @@
-export { Item } from './item';
-export { Role } from './role';
-export { Service } from './service';
-export { Teacher } from './teacher';
-export { Lesson } from './lesson';
+export { default as Item } from './item';
+export { default as Role } from './role';
+export { default as Service } from './service';
+export { default as Teacher } from './teacher';
+export { default as Lesson } from './lesson';

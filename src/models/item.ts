@@ -1,10 +1,11 @@
-import { ObjectId } from 'mongodb';
+import { Schema, model } from "mongoose";
 
-export class Item {
-    constructor(
-        public _id: ObjectId,
-        public hours_amount: number,
-        public type: string,
-        public lesson_id: string,
-    ) {}
-}
+const itemSchema = new Schema({
+  hours_amount: Number,
+  type: String,
+  lesson_id : String
+});
+
+const Item = model('Item',itemSchema);
+
+export default Item;
