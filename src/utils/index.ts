@@ -1,1 +1,1 @@
-export { connectToDb , getCollection } from "./connexion"
+export { connectToDb } from './connexion';
