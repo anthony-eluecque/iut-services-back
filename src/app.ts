@@ -1,24 +1,16 @@
 import express from 'express';
-import { connectToDb } from './utils';
-import { config } from 'dotenv';
-config();
+import { connectToDb } from './config/database';
+import dotenv from 'dotenv';
+import useRouter from './routes'
 
-import useRouter from './routes/index';
-
+dotenv.config();
 const app = express();
-const port = process.env.PORT;
+const port = process.env.PORT || 3000;
 
-const startServer = async () => {
-  try {
-    connectToDb();
-    app.listen(port, () => {
-      console.log(`Express is listening at http://localhost:${port}`);
-    });
+connectToDb();
 
-    app.use(useRouter);
+app.listen(port, () => {
+  console.log(`Express is listening at http://localhost:${port}`);
+});
 
-  } catch (error) {
-    console.warn(error);
-  }
-};
-startServer();
+app.use(useRouter);

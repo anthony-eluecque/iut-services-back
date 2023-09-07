@@ -1,6 +1,6 @@
 import express,{ Router } from "express";
-import useServiceRouter from "./services";
-import useTeacherRouter from "./teachers";
+import useServiceRouter from "./services.routes";
+import useTeacherRouter from "./teachers.routes";
 
 const router = Router();
 

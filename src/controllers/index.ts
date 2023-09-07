@@ -1,1 +1,1 @@
-export { createTeacher , getTeachers } from "./teacher";
+export { createTeacher , getTeachers } from "./teacher.controller";
