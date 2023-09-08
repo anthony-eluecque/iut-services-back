@@ -1,6 +1,7 @@
 import express,{ Router , Request, Response} from "express";
-import useServiceRouter from "./services.routes";
-import useTeacherRouter from "./teachers.routes";
+import useServicesRouter from "./services.routes";
+import useTeachersRouter from "./teachers.routes";
+import useLessonsRouter from './lessons.routes'
 
 const router = Router();
 
@@ -9,7 +10,8 @@ router.get('/',(req : Request , res : Response) => {
 })
 
 router.use(express.urlencoded({ extended: false }));
-router.use('/services',useServiceRouter);
-router.use('/teachers',useTeacherRouter);
+router.use('/services',useServicesRouter);
+router.use('/teachers',useTeachersRouter);
+router.use('/lessons',useLessonsRouter);
 
 export default router;

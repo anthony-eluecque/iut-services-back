@@ -1,15 +1,8 @@
 import { Response, Request } from 'express';
 import { Teacher } from '../models';
+import { getAll } from './abstract.controller';
 
-export const getTeachers = async (req : Request ,res : Response) => {
-    
-    try {
-        res.status(200).json(await Teacher.find({})); 
-    } catch (error) {
-        console.log("Error (getTeachers) : ", error);
-        res.status(500).json({error : "Error : getTeachers"});
-    }
-};
+export const getAllTeachers = async (req : Request ,res : Response) => getAll(req,res,Teacher)
 
 export const createTeacher = async (req : Request, res : Response) => {
 

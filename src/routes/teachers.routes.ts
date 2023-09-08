@@ -1,11 +1,11 @@
 import express,{ Router } from "express";
-import { createTeacher, getTeachers } from "../controllers";
+import { createTeacher, getAllTeachers } from "../controllers";
 
 const router = Router();
 
 
 router.use(express.urlencoded({ extended: false }));
-router.get('/', getTeachers); 
+router.get('/', getAllTeachers); 
 router.post('/', createTeacher);
 
 export default router;

@@ -1,16 +1,9 @@
 import { Response, Request } from 'express';
 import { Service } from '../models';
 import mongoose from 'mongoose';
+import { getAll } from './abstract.controller';
 
-export const getAllServices = async (req: Request, res : Response) => {
-    
-    try {
-        res.status(200).json(await Service.find({}));     
-    } catch (error) {
-        console.log("Error (getAllServices) : ", error);
-        res.status(500).json({error : "Error : getAllServices"});
-    }
-}
+export const getAllServices = async (req: Request, res : Response) => getAll(req,res,Service)
 
 export const getServices = async (req : Request ,res : Response) => {
 
@@ -23,7 +16,8 @@ export const getServices = async (req : Request ,res : Response) => {
 
         res.status(200).json(await Service.find({})
             .limit(perPage)
-            .skip((perPage * page))
+            .skip((perPage * page)) 
+            .populate(["teacher","items"])
         )
 
     } catch (error) {
