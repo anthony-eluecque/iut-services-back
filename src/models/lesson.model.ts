@@ -1,8 +1,14 @@
 import { Schema, model } from "mongoose";
 
 const lessonSchema = new Schema({
-  given_id: String,
-  name: String
+  given_id: {
+    type : String,
+    required : true
+  },
+  name: {
+    type : String,
+    required : true
+  }
 });
 
 const Lesson = model('Lesson',lessonSchema);
