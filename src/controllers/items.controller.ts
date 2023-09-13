@@ -3,6 +3,9 @@ import { Item, Lesson } from '../entities';
 import { AppDataSource } from '../config/data-source';
 import Res from '../helpers/res.helper';
 import { getAll } from './abstract.controller';
+import messages from '../docs/messages.json';
+
+const { gotAll, gotOne, created, updated, deleted, notFound  } = messages.items
 
 const itemsRepository = AppDataSource.getRepository(Item);
 const options = { relations: ["lesson"]};
@@ -20,9 +23,9 @@ export const getPageItems = async (req : Request, res : Response) => {
             skip,
             take: pageCount
         });
-        return Res.send(res,200,'',items);
+        return Res.send(res,200,gotAll,items);
     } catch (error) {
-        return Res.send(res,500,'Internal Server Error');
+        return Res.send(res,500,messages.defaults.serverError);
     }    
 }
 
@@ -33,23 +36,23 @@ export const createItem = async (req: Request, res: Response) => {
             where: {
                 id: lessonId,
             }});       
-        
+               
         if (!lesson){
-            // Revoir avec le object.assign en dessous demain
-            return Res.send(res, 404, 'Lesson not found');
+            lesson = new Lesson();
+            console.log(lesson);
+            
         } 
         const newItem = new Item();  
-        // A CHANGER
-        Object.assign(newItem, req.body);
+        // lesson.items.push(newItem);
 
-        lesson.items.push(newItem);
-
-        await lessonsRepository.save(lesson);
+        if (!lesson.id) {
+            await lessonsRepository.save(lesson);
+        }
         await itemsRepository.save(newItem);
-        return Res.send(res,200,'',newItem);
+        return Res.send(res,200,created,newItem);
 
     } catch (error) {
-        return Res.send(res,500,'Internal Server error',error);
+        return Res.send(res,500,messages.defaults.serverError,error);
     }
 }
 
@@ -63,16 +66,16 @@ export const updateItem = async (req: Request, res: Response) => {
             }})
         
         if (!itemToUpdate){
-            return Res.send(res,404,'Item not found');
+            return Res.send(res,404,notFound);
         }
 
         Object.assign(itemToUpdate,req.body);
         await itemsRepository.save(itemToUpdate);
 
-        return Res.send(res,200,'Item updated successfully',itemToUpdate)
+        return Res.send(res,200,updated,itemToUpdate)
 
     } catch (error) {
-        return Res.send(res,500,'Internal Server error',error);  
+        return Res.send(res,500,messages.defaults.serverError,error);  
     }
 }
 
@@ -87,16 +90,16 @@ export const deleteItemById = async (req: Request, res: Response) => {
             }})
         
         if (!itemToDelete){
-            return Res.send(res,404,'Item not found');
+            return Res.send(res,404,notFound);
         }
 
         Object.assign(itemToDelete,req.body);
         await itemsRepository.remove(itemToDelete);
 
-        return Res.send(res,200,'Item removed successfully',itemToDelete)
+        return Res.send(res,200,deleted,itemToDelete)
 
     } catch (error) {
-        return Res.send(res,500,'Internal Server error',error); 
+        return Res.send(res,500,messages.defaults.serverError,error); 
     }    
 }
 
