@@ -1,0 +1,33 @@
+{
+    "items": {
+        "gotAll": "Successfully fetched items",
+        "gotOne": "Successfully fetched item",
+        "created": "Successfully created item",
+        "updated": "Successfully updated item",
+        "deleted": "Successfully deleted item",
+        "notFound": "Item not found"
+    },
+    "tutorial": {
+
+    },
+    "token": {
+        "created": "Successfully created token"
+    },
+    "defaults": {
+        "gotAll": "Successfully fetched",
+        "gotOne": "Successfully fetched",
+        "created": "Successfully created",
+        "updated": "Successfully updated",
+        "deleted": "Successfully deleted",
+        "auth": "Successfully authenticated",
+        "login": "Successfully logged in",
+        "logout": "Successfully logged out",
+
+        "wrongInput": "Invalid values provided",
+        "unAuth": "Unauthorized",
+        "notAllowed": "Action not allowed",
+        "noToken": "Invalid or expired token",
+
+        "serverError": "Internal Server Error"
+    }
+}

@@ -1,10 +1,11 @@
 import express,{ Router } from "express";
-import { Service } from "../models";
+import { getUsers, createUser } from "../controllers";
 
 const router = Router();
 
 
 router.use(express.urlencoded({ extended: false }));
-router.get('/', async (req,res) => {res.status(200).json(await Service.find({}));} ); // to do
+router.get('/', getUsers); 
+router.post('/',createUser)
 
 export default router;

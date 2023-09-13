@@ -1,1 +1,2 @@
-export { createTeacher , getTeachers } from "./teacher.controller";
+export { createItem, getItems, getPageItems, deleteItemById, updateItem } from "./items.controller";
+export { getUsers, createUser } from "./user.controller";
