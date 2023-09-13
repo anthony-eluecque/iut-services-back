@@ -4,6 +4,7 @@ import { User } from "../entities"
 import { Lesson } from "../entities/lesson.entity"
 import { Teacher } from "../entities/teacher.entity"
 import { Item } from "../entities/item.entity"
+import { Role } from "../entities/role.entity"
 
 
 export const AppDataSource = new DataSource({
@@ -16,7 +17,7 @@ export const AppDataSource = new DataSource({
     synchronize: true,
     logging: false,
     // entities: [__dirname + "/src/entities/*{.js,.ts}"],
-    entities:[Lesson,Item,User,Teacher],
+    entities:[Lesson,Item,User,Teacher,Role],
     migrations: [],
     subscribers: [],
 })
