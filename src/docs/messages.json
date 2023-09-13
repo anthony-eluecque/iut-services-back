@@ -7,8 +7,13 @@
         "deleted": "Successfully deleted item",
         "notFound": "Item not found"
     },
-    "tutorial": {
-
+    "teachers": {
+        "gotAll": "Successfully fetched teachers",
+        "gotOne": "Successfully fetched teacher",
+        "created": "Successfully created teacher",
+        "updated": "Successfully updated teacher",
+        "deleted": "Successfully deleted teacher",
+        "notFound": "Teacher not found"
     },
     "token": {
         "created": "Successfully created token"
