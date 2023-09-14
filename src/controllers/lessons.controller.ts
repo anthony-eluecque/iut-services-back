@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { Lesson, User } from '../entities';
+import { Item, Lesson, User } from '../entities';
 import { AppDataSource } from '../config/data-source';
 import Res from '../helpers/res.helper';
 import messages from '../docs/messages.json'
@@ -8,6 +8,7 @@ import { getAll } from './abstract.controller';
 const { created, updated, gotAll, gotOne, deleted, notFound } = messages.lessons
 
 const lessonsRepository = AppDataSource.getRepository(Lesson);
+const itemsRepository = AppDataSource.getRepository(Item);
 const options = {
     relations: ["items"]
 }
@@ -42,7 +43,7 @@ export const createLesson = async (req: Request, res: Response) => {
 
 export const getLessonById = async (req: Request, res: Response) => {
     try {
-        const lessonId = req.params.givenId
+        const lessonId = req.params.id
 
         let lessonToGet = await lessonsRepository.findOne({
             where: {
@@ -62,4 +63,56 @@ export const getLessonById = async (req: Request, res: Response) => {
     } catch (error) {
         return Res.send(res,500,messages.defaults.serverError);
     }
+}
+
+export const updateLesson = async (req: Request, res: Response) => {
+    try {
+        const lessonId = req.body.id;
+
+        let lessonToUpdate = await lessonsRepository.findOne({
+            where: {
+                id: lessonId,
+            },
+            relations : options.relations
+        })
+        
+        if (!lessonToUpdate){
+            return Res.send(res,404,notFound);
+        }
+
+        await lessonsRepository.merge(lessonToUpdate, req.body).save();
+        return Res.send(res,200,updated,lessonToUpdate)
+
+    } catch (error) {
+        return Res.send(res,500,messages.defaults.serverError,error);  
+    }
+}
+
+export const deleteLessonById = async (req: Request, res: Response) => {
+    try {
+
+        const lessonId = req.params.id;
+
+        let lessonToDelete = await lessonsRepository.findOne({
+            where: {
+                id: lessonId,
+            },
+            relations : options.relations
+        })
+
+        
+        if (!lessonToDelete){
+            return Res.send(res,404,notFound);
+        }
+
+        for (const item of lessonToDelete.items) {
+            await itemsRepository.remove(item); 
+        }
+
+        await lessonsRepository.merge(lessonToDelete, req.body).remove();
+        return Res.send(res,200,deleted,lessonToDelete)
+
+    } catch (error) {
+        return Res.send(res,500,messages.defaults.serverError,error); 
+    }    
 }
