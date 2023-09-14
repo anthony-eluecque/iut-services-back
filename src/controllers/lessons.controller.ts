@@ -63,3 +63,50 @@ export const getLessonById = async (req: Request, res: Response) => {
         return Res.send(res,500,messages.defaults.serverError);
     }
 }
+
+export const updateLesson = async (req: Request, res: Response) => {
+    try {
+        const lessonId = req.body.givenId;
+
+        let lessonToUpdate = await lessonsRepository.findOne({
+            where: {
+                id: lessonId,
+            },
+            relations : options.relations
+        })
+        
+        if (!lessonToUpdate){
+            return Res.send(res,404,notFound);
+        }
+
+        await lessonsRepository.merge(lessonToUpdate, req.body).save();
+        return Res.send(res,200,updated,lessonToUpdate)
+
+    } catch (error) {
+        return Res.send(res,500,messages.defaults.serverError,error);  
+    }
+}
+
+export const deleteLessonById = async (req: Request, res: Response) => {
+    try {
+
+        const lessonId = req.params.givenId;
+
+        let lessonToDelete = await lessonsRepository.findOne({
+            where: {
+                id: lessonId,
+            },
+            relations : options.relations
+        })
+        
+        if (!lessonToDelete){
+            return Res.send(res,404,notFound);
+        }
+
+        await lessonsRepository.merge(lessonToDelete, req.body).remove();
+        return Res.send(res,200,deleted,lessonToDelete)
+
+    } catch (error) {
+        return Res.send(res,500,messages.defaults.serverError,error); 
+    }    
+}
