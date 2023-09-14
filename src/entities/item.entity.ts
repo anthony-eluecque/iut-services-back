@@ -11,6 +11,6 @@ export class Item extends Model {
     @Column()
     type: string
 
-    @ManyToOne(() => Lesson, lesson => lesson.items)
+    @ManyToOne(() => Lesson, lesson => lesson.items, { onDelete : 'CASCADE' })
     lesson: Lesson;
 }

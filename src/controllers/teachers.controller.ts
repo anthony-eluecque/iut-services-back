@@ -65,7 +65,7 @@ export const deleteTeacherById = async (req: Request, res: Response) => {
     try {
         const id = req.params.id;
         const teacher = await teachersRepository.findOne({ where: { id } });
-        if (!teacher) { return Res.send(res, 404, notFound); }
+        if (!teacher) return Res.send(res, 404, notFound);
         await teachersRepository.delete(teacher.id);
         return Res.send(res, 200, deleted);
     } catch (error) {

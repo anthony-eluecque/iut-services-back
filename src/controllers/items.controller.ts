@@ -45,7 +45,6 @@ export const createItem = async (req: Request, res: Response) => {
             return Res.send(res,404,messages.lessons.notFound)
         } 
         const newItem = new Item();  
-        // lesson.items.push(newItem);
         await itemsRepository.merge(newItem,req.body).save();
         return Res.send(res,200,created,newItem);
 
@@ -67,9 +66,7 @@ export const updateItem = async (req: Request, res: Response) => {
             return Res.send(res,404,notFound);
         }
 
-        Object.assign(itemToUpdate,req.body);
-        await itemsRepository.save(itemToUpdate);
-
+        await itemsRepository.merge(itemToUpdate,req.body).save();
         return Res.send(res,200,updated,itemToUpdate)
 
     } catch (error) {
@@ -87,14 +84,13 @@ export const deleteItemById = async (req: Request, res: Response) => {
                 id: itemId,
             }})
         
-        if (!itemToDelete){
+        if (!itemToDelete)
             return Res.send(res,404,notFound);
-        }
+        
 
-        Object.assign(itemToDelete,req.body);
-        await itemsRepository.remove(itemToDelete);
+        await itemsRepository.delete(itemToDelete.id);
 
-        return Res.send(res,200,deleted,itemToDelete)
+        return Res.send(res,200,deleted)
 
     } catch (error) {
         return Res.send(res,500,messages.defaults.serverError,error); 
