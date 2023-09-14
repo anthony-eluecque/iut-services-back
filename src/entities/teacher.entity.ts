@@ -1,5 +1,6 @@
-import { Entity, Column } from "typeorm"
+import { Entity, Column, ManyToOne } from "typeorm"
 import Model from "./model.entity"
+import { Role } from "./role.entity"
 
 @Entity('teachers')
 export class Teacher extends Model {
@@ -12,6 +13,6 @@ export class Teacher extends Model {
     @Column()
     firstName: string
 
-    @Column()
-    roleId: string
+    @ManyToOne(() => Role, (role) => role.teachers)
+    role : Role;
 }

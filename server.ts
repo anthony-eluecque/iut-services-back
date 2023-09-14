@@ -3,10 +3,25 @@ import express from 'express';
 import dotenv from 'dotenv';
 dotenv.config();
 
+
+import bodyParser from 'body-parser';
+import cookieParser from 'cookie-parser';
+import cors from 'cors';
 import { connectToDb } from './src/config';
 import useRouter from './src/routes'
 
 const app = express();
+
+
+app.use(bodyParser.json());
+app.use(cookieParser());
+app.use(cors({
+  origin : [
+    "http://localhost:3000"
+  ],
+  credentials : true
+}));
+
 const port = process.env.PORT || 3000;
 connectToDb();
 

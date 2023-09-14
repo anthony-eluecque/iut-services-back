@@ -1,15 +1,17 @@
 import { Request, Response } from 'express';
-import { Teacher } from '../entities';
+import { Role, Roles, Teacher } from '../entities';
 import { AppDataSource } from '../config/data-source';
 import Res from '../helpers/res.helper';
 import { getAll } from './abstract.controller';
 import messages from '../docs/messages.json';
 
 const { gotOne, created, updated, deleted, notFound } = messages.teachers
+const options = { relations : ['role']}
 
 const teachersRepository = AppDataSource.getRepository(Teacher);
+const rolesRepository = AppDataSource.getRepository(Role);
 
-export const getTeachers = (req: Request, res: Response) => getAll(req, res, teachersRepository);
+export const getTeachers = (req: Request, res: Response) => getAll(req, res, teachersRepository, options.relations);
 
 export const getTeacherById = async (req: Request, res: Response) => {
     try {
@@ -24,10 +26,25 @@ export const getTeacherById = async (req: Request, res: Response) => {
 
 export const createTeacher = async (req: Request, res: Response) => {
     try {
+        const roleName = req.body.roleName;
+        const role = await rolesRepository.findOne({
+            where : {
+                name : roleName
+            },
+            relations : options.relations
+        })
+        if (!role) return Res.send(res,404,"Role doesn't exist",roleName);
+
         const newTeacher = new Teacher();
+
+        newTeacher.role = role;
         await teachersRepository.merge(newTeacher, req.body).save();
+        role.teachers.push(newTeacher)
+        await rolesRepository.save(role);
+
         return Res.send(res, 200, created, newTeacher);
     } catch (error) {
+        console.warn(error)
         return Res.send(res, 500, messages.defaults.serverError, error);
     }
 }
@@ -48,7 +65,7 @@ export const deleteTeacherById = async (req: Request, res: Response) => {
     try {
         const id = req.params.id;
         const teacher = await teachersRepository.findOne({ where: { id } });
-        if (!teacher) { return Res.send(res, 404, notFound); }
+        if (!teacher) return Res.send(res, 404, notFound);
         await teachersRepository.delete(teacher.id);
         return Res.send(res, 200, deleted);
     } catch (error) {
