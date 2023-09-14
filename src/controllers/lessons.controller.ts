@@ -15,10 +15,12 @@ export const getLessons = (req , res ) => getAll(req,res,lessonsRepository,optio
 
 export const createLesson = async (req: Request, res: Response) => {
     try {
-        const lessonId = req.body.lessonId;
+        // Vérifier si le leçon existe sur son nom
+        const lessonName = req.body.name;
+
         let lesson = await lessonsRepository.findOne({
             where: {
-                id: lessonId,
+                name: lessonName,
             }});       
                
         if (!lesson){

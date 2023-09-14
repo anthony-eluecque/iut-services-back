@@ -21,7 +21,8 @@ export const getPageItems = async (req : Request, res : Response) => {
 
         const items = await itemsRepository.findAndCount({
             skip,
-            take: pageCount
+            take: pageCount,
+            relations: options.relations
         });
         return Res.send(res,200,gotAll,items);
     } catch (error) {
@@ -31,24 +32,21 @@ export const getPageItems = async (req : Request, res : Response) => {
 
 export const createItem = async (req: Request, res: Response) => {
     try {
-        const lessonId = req.body.lessonId;
+        if (!req.body.lesson)
+            return Res.send(res,400,'Bad Request')
+
+        const lessonId = req.body.lesson;
         let lesson = await lessonsRepository.findOne({
             where: {
                 id: lessonId,
             }});       
-               
+        
         if (!lesson){
-            lesson = new Lesson();
-            console.log(lesson);
-            
+            return Res.send(res,404,messages.lessons.notFound)
         } 
         const newItem = new Item();  
         // lesson.items.push(newItem);
-
-        if (!lesson.id) {
-            await lessonsRepository.save(lesson);
-        }
-        await itemsRepository.save(newItem);
+        await itemsRepository.merge(newItem,req.body).save();
         return Res.send(res,200,created,newItem);
 
     } catch (error) {
