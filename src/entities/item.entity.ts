@@ -15,6 +15,6 @@ export class Item extends Model {
     @ManyToOne(() => Lesson, lesson => lesson.items, { onDelete : 'CASCADE' })
     lesson: Lesson;
 
-    @OneToMany(() => Service, service => service.items, { onDelete : 'CASCADE' })
-    services: Service;
+    @ManyToOne(() => Service, service => service.items, { onDelete : 'CASCADE' })
+    service: Service;
 }

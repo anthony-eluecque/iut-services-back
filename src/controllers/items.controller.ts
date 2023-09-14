@@ -6,7 +6,7 @@ import { getAll } from './abstract.controller';
 import messages from '../docs/messages.json';
 
 const { gotAll, gotOne, created, updated, deleted, notFound  } = messages.items
-const options = { relations: ["lesson", "services"] };
+const options = { relations: ["lesson", "service"] };
 
 const itemsRepository = AppDataSource.getRepository(Item);
 const lessonsRepository = AppDataSource.getRepository(Lesson);
