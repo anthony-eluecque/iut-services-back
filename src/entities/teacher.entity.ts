@@ -1,6 +1,7 @@
-import { Entity, Column, ManyToOne } from "typeorm"
+import { Entity, Column, ManyToOne, OneToOne } from "typeorm"
 import Model from "./model.entity"
 import { Role } from "./role.entity"
+import { Service } from "./service.entity"
 
 @Entity('teachers')
 export class Teacher extends Model {
@@ -15,4 +16,7 @@ export class Teacher extends Model {
 
     @ManyToOne(() => Role, (role) => role.teachers)
     role : Role;
+
+    @OneToOne(() => Service, (service) => service.teacher)
+    service : Service;
 }
