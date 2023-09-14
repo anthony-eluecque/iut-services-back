@@ -7,6 +7,11 @@
         "deleted": "Successfully deleted item",
         "notFound": "Item not found"
     },
+    "roles": {
+        "gotAll": "Successfully fetched roles",
+        "created": "Successfully created role",
+        "notFound": "Role not found"
+    },
     "teachers": {
         "gotAll": "Successfully fetched teachers",
         "gotOne": "Successfully fetched teacher",

@@ -13,6 +13,6 @@ export class Teacher extends Model {
     @Column()
     firstName: string
 
-    @ManyToOne(() => Role, role => role.teacher)
-    role : Role
+    @ManyToOne(() => Role, (role) => role.teachers)
+    role : Role;
 }

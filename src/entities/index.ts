@@ -1,4 +1,4 @@
-export { Role } from './role.entity';
+export { Role, Roles } from './role.entity';
 export { Item } from './item.entity';
 export { Lesson } from './lesson.entity';
 export { Teacher } from './teacher.entity';
