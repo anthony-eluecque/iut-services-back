@@ -1,6 +1,5 @@
 import express,{ Router } from "express";
-import { createLesson , getLessons} from "../controllers";
-// import { getUsers, createUser } from "../controllers";
+import { createLesson , getLessons, getLessonById} from "../controllers";
 
 const router = Router();
 
@@ -8,5 +7,6 @@ const router = Router();
 router.use(express.urlencoded({ extended: false }));
 router.get('/', getLessons); 
 router.post('/',createLesson)
+router.get('/:id',getLessonById)
 
 export default router;
