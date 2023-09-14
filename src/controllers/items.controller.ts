@@ -22,7 +22,7 @@ export const getPageItems = async (req : Request, res : Response) => {
         const items = await itemsRepository.find({
             skip,
             take: pageCount,
-            relations: options.relations
+            relations: [...options.relations, "service.teacher"]
         });
         return Res.send(res,200,gotAll,items);
     } catch (error) {
