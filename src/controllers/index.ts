@@ -1,2 +1,3 @@
 export { createItem, getItems, getPageItems, deleteItemById, updateItem } from "./items.controller";
 export { getUsers, createUser } from "./user.controller";
+export {createLesson, getLessons} from "./lessons.controller"
