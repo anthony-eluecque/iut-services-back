@@ -47,7 +47,10 @@ export const getLessonById = async (req: Request, res: Response) => {
         let lessonToGet = await lessonsRepository.findOne({
             where: {
                 id: lessonId,
-            }})
+            },
+            relations: options.relations
+        })
+       
 
         if (!lessonToGet){
             return Res.send(res,404,notFound);
