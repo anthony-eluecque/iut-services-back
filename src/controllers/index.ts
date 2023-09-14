@@ -3,3 +3,4 @@ export { createItem, getItems, getPageItems, deleteItemById, updateItem } from "
 export { getUsers, createUser } from "./user.controller";
 export { getTeachers, getTeacherById, createTeacher, updateTeacher, deleteTeacherById } from "./teachers.controller";
 export {createLesson, getLessons, getLessonById, updateLesson, deleteLessonById} from "./lessons.controller"
+export { createService, getServices, getServiceById } from "./services.controller";
