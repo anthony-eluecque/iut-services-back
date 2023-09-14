@@ -32,12 +32,15 @@ export const getPageItems = async (req : Request, res : Response) => {
 
 export const createItem = async (req: Request, res: Response) => {
     try {
-        const lessonId = req.body.lessonId;
+        if (!req.body.lesson)
+            return Res.send(res,400,'Bad Request')
+
+        const lessonId = req.body.lesson;
         let lesson = await lessonsRepository.findOne({
             where: {
                 id: lessonId,
             }});       
-               
+        
         if (!lesson){
             return Res.send(res,404,messages.lessons.notFound)
         } 
