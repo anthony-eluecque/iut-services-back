@@ -11,6 +11,7 @@
         "gotAll": "Successfully fetched roles",
         "created": "Successfully created role",
         "notFound": "Role not found"
+    },
     "lessons": {
         "gotAll": "Successfully fetched lessons",
         "gotOne": "Successfully fetched lesson",
