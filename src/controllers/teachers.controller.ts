@@ -30,16 +30,15 @@ export const createTeacher = async (req: Request, res: Response) => {
         const role = await rolesRepository.findOne({
             where : {
                 name : roleName
-            },
-            relations : options.relations
+            }
         })
+
         if (!role) return Res.send(res,404,"Role doesn't exist",roleName);
 
         const newTeacher = new Teacher();
 
         newTeacher.role = role;
         await teachersRepository.merge(newTeacher, req.body).save();
-        role.teachers.push(newTeacher)
         await rolesRepository.save(role);
 
         return Res.send(res, 200, created, newTeacher);

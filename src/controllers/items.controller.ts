@@ -19,7 +19,7 @@ export const getPageItems = async (req : Request, res : Response) => {
         const pageCount = 5;
         const skip = (page - 1) * pageCount;
 
-        const items = await itemsRepository.findAndCount({
+        const items = await itemsRepository.find({
             skip,
             take: pageCount,
             relations: options.relations
