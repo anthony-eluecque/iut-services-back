@@ -6,7 +6,7 @@ import { getAll } from './abstract.controller';
 import messages from '../docs/messages.json';
 import { In } from 'typeorm';
 
-const { gotOne, created, updated, deleted, notFound } = messages.teachers
+const { gotOne, created, updated, deleted, notFound } = messages.services
 const options = { relations: ['items','teacher'] };
 
 const servicesRepository = AppDataSource.getRepository(Service);

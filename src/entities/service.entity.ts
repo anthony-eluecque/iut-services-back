@@ -8,7 +8,7 @@ export class Service extends Model {
     @Column()
     year: number
 
-    @ManyToOne(() => Teacher, (teacher) => teacher.services)
+    @ManyToOne(() => Teacher, (teacher) => teacher.services, { onDelete: 'CASCADE' })
     teacher: Teacher;
 
     @OneToMany(() => Item, (item) => item.service)
