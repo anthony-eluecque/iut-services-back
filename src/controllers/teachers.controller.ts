@@ -1,12 +1,12 @@
 import { Request, Response } from 'express';
-import { Role, Roles, Teacher } from '../entities';
+import { Role, Teacher } from '../entities';
 import { AppDataSource } from '../config/data-source';
 import Res from '../helpers/res.helper';
 import { getAll } from './abstract.controller';
 import messages from '../docs/messages.json';
 
 const { gotOne, created, updated, deleted, notFound } = messages.teachers
-const options = { relations : ['role']}
+const options = { relations : ['role', 'services'] };
 
 const teachersRepository = AppDataSource.getRepository(Teacher);
 const rolesRepository = AppDataSource.getRepository(Role);

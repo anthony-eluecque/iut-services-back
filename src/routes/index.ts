@@ -6,6 +6,7 @@ import useItemsRouter from './items.router';
 import useRolesRouter from './roles.router';
 import useTeachersRouter from './teachers.router';
 import useLessonsRouter from './lessons.router';
+import useServicesRouter from './services.router';
 const router = Router();
 
 
@@ -17,5 +18,6 @@ router.use('/items',useItemsRouter);
 router.use('/teachers',useTeachersRouter);
 router.use('/roles',useRolesRouter);
 router.use('/lessons',useLessonsRouter);
+router.use('/services',useServicesRouter);
 
 export default router;

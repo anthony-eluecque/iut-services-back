@@ -28,6 +28,14 @@
         "deleted": "Successfully deleted teacher",
         "notFound": "Teacher not found"
     },
+    "services": {
+        "gotAll": "Successfully fetched services",
+        "gotOne": "Successfully fetched service",
+        "created": "Successfully created service",
+        "updated": "Successfully updated service",
+        "deleted": "Successfully deleted service",
+        "notFound": "Service not found"
+    },
     "token": {
         "created": "Successfully created token"
     },

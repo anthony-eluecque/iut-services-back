@@ -6,9 +6,9 @@ import { getAll } from './abstract.controller';
 import messages from '../docs/messages.json';
 
 const { gotAll, gotOne, created, updated, deleted, notFound  } = messages.items
+const options = { relations: ["lesson", "service"] };
 
 const itemsRepository = AppDataSource.getRepository(Item);
-const options = { relations: ["lesson"]};
 const lessonsRepository = AppDataSource.getRepository(Lesson);
 
 export const getItems = (req : Request, res : Response) => getAll(req,res,itemsRepository,options.relations);
@@ -22,7 +22,7 @@ export const getPageItems = async (req : Request, res : Response) => {
         const items = await itemsRepository.find({
             skip,
             take: pageCount,
-            relations: options.relations
+            relations: [...options.relations, "service.teacher"]
         });
         return Res.send(res,200,gotAll,items);
     } catch (error) {
