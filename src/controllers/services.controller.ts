@@ -52,3 +52,44 @@ export const createService = async (req: Request, res: Response) => {
         return Res.send(res, 500, messages.defaults.serverError, error);
     }
 }
+
+export const updateService = async (req: Request, res: Response) => {
+    try {
+        const id = req.body.id;
+        const service = await servicesRepository.findOne({ where: { id }, relations: options.relations });
+        if (!service) return Res.send(res, 404, notFound);
+
+        const teacherId = req.body.teacher;
+        const teacher = await teachersRepository.findOne({ where: { id: teacherId } });
+        if (!teacher) return Res.send(res, 404, "Teacher doesn't exist", teacherId);
+
+        const ids = JSON.parse(req.body.itemsIds);
+        const items = await itemsRepository.find({ where: { id: In(ids) } });
+
+        if (!items) return Res.send(res, 404, "Items don't exist", items);
+
+        service.items = items;
+        service.year = req.body.year;
+        service.teacher = teacher;
+
+        await servicesRepository.save(service);
+        await itemsRepository.save(items);
+        await teachersRepository.save(teacher);
+
+        return Res.send(res, 200, updated, service);
+    } catch (error) {
+        return Res.send(res, 500, messages.defaults.serverError, error);
+    }
+}
+
+export const deleteServiceById = async (req: Request, res: Response) => {
+    try {
+        const id = req.params.id;
+        const service = await servicesRepository.findOne({ where: { id }, relations: options.relations });
+        if (!service) return Res.send(res, 404, notFound);
+        await servicesRepository.delete(service.id);
+        return Res.send(res, 200, deleted);
+    } catch (error) {
+        return Res.send(res, 500, messages.defaults.serverError, error);
+    }
+}
