@@ -1,5 +1,5 @@
+import { Entity, Column, OneToMany } from "typeorm";
 import Model from "./model.entity";
-import { Entity, Column, ManyToOne, OneToMany } from "typeorm";
 import { Teacher } from "./teacher.entity";
 
 export enum Roles {

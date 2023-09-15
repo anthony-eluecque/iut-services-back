@@ -14,7 +14,6 @@ export const getUsers = async (req : Request, res : Response) => {
 
 export const createUser = async (req: Request, res: Response) => {
     try {
-        const { firstName, lastName, age } = req.body;       
         const user = new User();
         user.firstName = "firstName";
         user.lastName = "lastName";

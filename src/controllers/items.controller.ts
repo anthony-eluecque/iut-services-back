@@ -5,7 +5,7 @@ import Res from '../helpers/res.helper';
 import { getAll } from './abstract.controller';
 import messages from '../docs/messages.json';
 
-const { gotAll, gotOne, created, updated, deleted, notFound  } = messages.items;
+const { gotAll, created, updated, deleted, notFound  } = messages.items;
 const options = { relations: ["lesson", "service"] };
 
 const itemsRepository = AppDataSource.getRepository(Item);
