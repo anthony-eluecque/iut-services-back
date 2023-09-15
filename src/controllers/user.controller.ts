@@ -10,18 +10,18 @@ export const getUsers = async (req : Request, res : Response) => {
     } catch (error) {
         return Res.send(res,500,'Internal Server error');
     }
-}
+};
 
 export const createUser = async (req: Request, res: Response) => {
     try {
         const { firstName, lastName, age } = req.body;       
-        let user = new User();
+        const user = new User();
         user.firstName = "firstName";
         user.lastName = "lastName";
         user.age = 15;
-        await AppDataSource.manager.save(user)
+        await AppDataSource.manager.save(user);
         return Res.send(res,200,'',user);
     } catch (error) {
         return Res.send(res,500,'Internal Server error');
     }
-}
+};

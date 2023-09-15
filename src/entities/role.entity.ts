@@ -1,5 +1,5 @@
 import Model from "./model.entity";
-import { Entity, Column, ManyToOne, OneToMany } from "typeorm"
+import { Entity, Column, ManyToOne, OneToMany } from "typeorm";
 import { Teacher } from "./teacher.entity";
 
 export enum Roles {
@@ -14,9 +14,9 @@ export class Role extends Model {
         enum : Roles,
         default : Roles.ADMIN
     })
-    name : Roles
+    name : Roles;
 
     @OneToMany(() => Teacher, teacher => teacher.role, { onDelete: 'CASCADE' })
-    teachers : Teacher[]
+    teachers : Teacher[];
 
 }

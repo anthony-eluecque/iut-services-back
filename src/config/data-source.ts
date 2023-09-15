@@ -1,11 +1,11 @@
-import "reflect-metadata"
-import { DataSource } from "typeorm"
-import { User } from "../entities"
-import { Lesson } from "../entities/lesson.entity"
-import { Teacher } from "../entities/teacher.entity"
-import { Item } from "../entities/item.entity"
-import { Role } from "../entities/role.entity"
-import { Service } from "../entities/service.entity"
+import "reflect-metadata";
+import { DataSource } from "typeorm";
+import { User } from "../entities";
+import { Lesson } from "../entities/lesson.entity";
+import { Teacher } from "../entities/teacher.entity";
+import { Item } from "../entities/item.entity";
+import { Role } from "../entities/role.entity";
+import { Service } from "../entities/service.entity";
 
 
 export const AppDataSource = new DataSource({
@@ -20,4 +20,4 @@ export const AppDataSource = new DataSource({
     entities: [Lesson, Item, User, Teacher, Role, Service],
     migrations: [],
     subscribers: [],
-})
+});

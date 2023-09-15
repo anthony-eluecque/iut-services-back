@@ -5,7 +5,7 @@ import Res from '../helpers/res.helper';
 import { getAll } from './abstract.controller';
 import messages from '../docs/messages.json';
 
-const { gotAll, gotOne, created, updated, deleted, notFound  } = messages.items
+const { gotAll, gotOne, created, updated, deleted, notFound  } = messages.items;
 const options = { relations: ["lesson", "service"] };
 
 const itemsRepository = AppDataSource.getRepository(Item);
@@ -28,21 +28,21 @@ export const getPageItems = async (req : Request, res : Response) => {
     } catch (error) {
         return Res.send(res,500,messages.defaults.serverError);
     }    
-}
+};
 
 export const createItem = async (req: Request, res: Response) => {
     try {
         if (!req.body.lesson)
-            return Res.send(res,400,'Bad Request')
+            return Res.send(res,400,'Bad Request');
 
         const lessonId = req.body.lesson;
-        let lesson = await lessonsRepository.findOne({
+        const lesson = await lessonsRepository.findOne({
             where: {
                 id: lessonId,
             }});       
         
         if (!lesson){
-            return Res.send(res,404,messages.lessons.notFound)
+            return Res.send(res,404,messages.lessons.notFound);
         } 
         const newItem = new Item();  
         await itemsRepository.merge(newItem,req.body).save();
@@ -51,38 +51,38 @@ export const createItem = async (req: Request, res: Response) => {
     } catch (error) {
         return Res.send(res,500,messages.defaults.serverError,error);
     }
-}
+};
 
 export const updateItem = async (req: Request, res: Response) => {
     try {
         const itemId = req.body.id;
 
-        let itemToUpdate = await itemsRepository.findOne({
+        const itemToUpdate = await itemsRepository.findOne({
             where: {
                 id: itemId,
-            }})
+            }});
         
         if (!itemToUpdate){
             return Res.send(res,404,notFound);
         }
 
         await itemsRepository.merge(itemToUpdate,req.body).save();
-        return Res.send(res,200,updated,itemToUpdate)
+        return Res.send(res,200,updated,itemToUpdate);
 
     } catch (error) {
         return Res.send(res,500,messages.defaults.serverError,error);  
     }
-}
+};
 
 export const deleteItemById = async (req: Request, res: Response) => {
     try {
 
         const itemId = req.params.id;
 
-        let itemToDelete = await itemsRepository.findOne({
+        const itemToDelete = await itemsRepository.findOne({
             where: {
                 id: itemId,
-            }})
+            }});
         
         if (!itemToDelete)
             return Res.send(res,404,notFound);
@@ -90,11 +90,11 @@ export const deleteItemById = async (req: Request, res: Response) => {
 
         await itemsRepository.delete(itemToDelete.id);
 
-        return Res.send(res,200,deleted)
+        return Res.send(res,200,deleted);
 
     } catch (error) {
         return Res.send(res,500,messages.defaults.serverError,error); 
     }    
-}
+};
 
 

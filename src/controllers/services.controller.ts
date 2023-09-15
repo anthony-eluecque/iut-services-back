@@ -6,7 +6,7 @@ import { getAll } from './abstract.controller';
 import messages from '../docs/messages.json';
 import { In } from 'typeorm';
 
-const { gotOne, created, updated, deleted, notFound } = messages.services
+const { gotOne, created, updated, deleted, notFound } = messages.services;
 const options = { relations: ['items','teacher'] };
 
 const servicesRepository = AppDataSource.getRepository(Service);
@@ -24,7 +24,7 @@ export const getServiceById = async (req: Request, res: Response) => {
     } catch (error) {
         return Res.send(res, 500, messages.defaults.serverError, error);
     }
-}
+};
 
 export const createService = async (req: Request, res: Response) => {
     try {
@@ -48,10 +48,10 @@ export const createService = async (req: Request, res: Response) => {
 
         return Res.send(res, 200, created, newService);
     } catch (error) {
-        console.warn(error)
+        console.warn(error);
         return Res.send(res, 500, messages.defaults.serverError, error);
     }
-}
+};
 
 export const updateService = async (req: Request, res: Response) => {
     try {
@@ -63,7 +63,7 @@ export const updateService = async (req: Request, res: Response) => {
     } catch (error) {
         return Res.send(res, 500, messages.defaults.serverError, error);
     }
-}
+};
 
 export const deleteServiceById = async (req: Request, res: Response) => {
     try {
@@ -75,4 +75,4 @@ export const deleteServiceById = async (req: Request, res: Response) => {
     } catch (error) {
         return Res.send(res, 500, messages.defaults.serverError, error);
     }
-}
+};

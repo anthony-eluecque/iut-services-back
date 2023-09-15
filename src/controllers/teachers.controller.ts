@@ -5,7 +5,7 @@ import Res from '../helpers/res.helper';
 import { getAll } from './abstract.controller';
 import messages from '../docs/messages.json';
 
-const { gotOne, created, updated, deleted, notFound } = messages.teachers
+const { gotOne, created, updated, deleted, notFound } = messages.teachers;
 const options = { relations : ['role', 'services'] };
 
 const teachersRepository = AppDataSource.getRepository(Teacher);
@@ -22,7 +22,7 @@ export const getTeacherById = async (req: Request, res: Response) => {
     } catch (error) {
         return Res.send(res, 500, messages.defaults.serverError, error);
     }
-}
+};
 
 export const createTeacher = async (req: Request, res: Response) => {
     try {
@@ -31,7 +31,7 @@ export const createTeacher = async (req: Request, res: Response) => {
             where : {
                 name : roleName
             }
-        })
+        });
 
         if (!role) return Res.send(res,404,"Role doesn't exist",roleName);
 
@@ -43,10 +43,10 @@ export const createTeacher = async (req: Request, res: Response) => {
 
         return Res.send(res, 200, created, newTeacher);
     } catch (error) {
-        console.warn(error)
+        console.warn(error);
         return Res.send(res, 500, messages.defaults.serverError, error);
     }
-}
+};
 
 export const updateTeacher = async (req: Request, res: Response) => {
     try {
@@ -58,7 +58,7 @@ export const updateTeacher = async (req: Request, res: Response) => {
     } catch (error) {
         return Res.send(res, 500, messages.defaults.serverError, error);
     }
-}
+};
 
 export const deleteTeacherById = async (req: Request, res: Response) => {
     try {
@@ -70,4 +70,4 @@ export const deleteTeacherById = async (req: Request, res: Response) => {
     } catch (error) {
         return Res.send(res, 500, messages.defaults.serverError, error);
     }
-}
+};

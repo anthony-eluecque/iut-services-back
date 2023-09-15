@@ -5,9 +5,9 @@ import Res from '../helpers/res.helper';
 import { getAll } from './abstract.controller';
 import messages from '../docs/messages.json';
 
-const { created, notFound } = messages.roles
+const { created, notFound } = messages.roles;
 
-const options = { relations : ['teachers']}
+const options = { relations : ['teachers']};
 const rolesRepository = AppDataSource.getRepository(Role);
 const teachersRepository = AppDataSource.getRepository(Teacher);
 
@@ -16,13 +16,13 @@ export const getRoles = (req: Request, res: Response) => getAll(req, res, rolesR
 export const createRole = async (req: Request, res: Response) => {
     try {
         const newRole = new Role();
-        newRole.teachers = []
+        newRole.teachers = [];
         await rolesRepository.merge(newRole, req.body).save();
         return Res.send(res, 200, created, newRole);
     } catch (error) {
         return Res.send(res, 500, messages.defaults.serverError, error);
     }
-}
+};
 
 export const deleteRoleById = async (req: Request, res: Response) => {
     try {
@@ -40,4 +40,4 @@ export const deleteRoleById = async (req: Request, res: Response) => {
     } catch (error) {
         return Res.send(res, 500, messages.defaults.serverError, error);
     }
-}
+};

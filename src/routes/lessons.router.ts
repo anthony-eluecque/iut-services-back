@@ -6,9 +6,9 @@ const router = Router();
 
 router.use(express.urlencoded({ extended: false }));
 router.get('/', getLessons); 
-router.post('/',createLesson)
-router.get('/:id',getLessonById)
-router.delete('/:id',deleteLessonById)
-router.post('/',updateLesson)
+router.post('/',createLesson);
+router.get('/:id',getLessonById);
+router.delete('/:id',deleteLessonById);
+router.post('/',updateLesson);
 
 export default router;

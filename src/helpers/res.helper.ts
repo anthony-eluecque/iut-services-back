@@ -1,4 +1,4 @@
-import { Response } from 'express'
+import { Response } from 'express';
 
 export default class Res {
     static send(res: Response, httpCode: number, message: string, data?: any) {

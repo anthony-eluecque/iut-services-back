@@ -6,6 +6,6 @@ const router = Router();
 
 router.use(express.urlencoded({ extended: false }));
 router.get('/', getUsers); 
-router.post('/',createUser)
+router.post('/',createUser);
 
 export default router;

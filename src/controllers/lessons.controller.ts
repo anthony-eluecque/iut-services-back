@@ -2,17 +2,17 @@ import { Request, Response } from 'express';
 import { Item, Lesson, User } from '../entities';
 import { AppDataSource } from '../config/data-source';
 import Res from '../helpers/res.helper';
-import messages from '../docs/messages.json'
+import messages from '../docs/messages.json';
 import { getAll } from './abstract.controller';
 
-const { created, updated, gotAll, gotOne, deleted, notFound } = messages.lessons
+const { created, updated, gotAll, gotOne, deleted, notFound } = messages.lessons;
 
 const lessonsRepository = AppDataSource.getRepository(Lesson);
 const itemsRepository = AppDataSource.getRepository(Item);
 const options = {
     relations: ["items"]
-}
-export const getLessons = (req , res ) => getAll(req,res,lessonsRepository,options.relations)
+};
+export const getLessons = (req , res ) => getAll(req,res,lessonsRepository,options.relations);
 
 export const createLesson = async (req: Request, res: Response) => {
     try {
@@ -32,25 +32,25 @@ export const createLesson = async (req: Request, res: Response) => {
             
         } 
 
-        return Res.send(res,409,"Lesson Already Exist",lesson)
+        return Res.send(res,409,"Lesson Already Exist",lesson);
 
     } catch (error) {
-        console.warn(error)
+        console.warn(error);
         return Res.send(res,500,messages.defaults.serverError);
         
     }
-}
+};
 
 export const getLessonById = async (req: Request, res: Response) => {
     try {
-        const lessonId = req.params.id
+        const lessonId = req.params.id;
 
-        let lessonToGet = await lessonsRepository.findOne({
+        const lessonToGet = await lessonsRepository.findOne({
             where: {
                 id: lessonId,
             },
             relations: options.relations
-        })
+        });
        
 
         if (!lessonToGet){
@@ -63,42 +63,42 @@ export const getLessonById = async (req: Request, res: Response) => {
     } catch (error) {
         return Res.send(res,500,messages.defaults.serverError);
     }
-}
+};
 
 export const updateLesson = async (req: Request, res: Response) => {
     try {
         const lessonId = req.body.id;
 
-        let lessonToUpdate = await lessonsRepository.findOne({
+        const lessonToUpdate = await lessonsRepository.findOne({
             where: {
                 id: lessonId,
             },
             relations : options.relations
-        })
+        });
         
         if (!lessonToUpdate){
             return Res.send(res,404,notFound);
         }
 
         await lessonsRepository.merge(lessonToUpdate, req.body).save();
-        return Res.send(res,200,updated,lessonToUpdate)
+        return Res.send(res,200,updated,lessonToUpdate);
 
     } catch (error) {
         return Res.send(res,500,messages.defaults.serverError,error);  
     }
-}
+};
 
 export const deleteLessonById = async (req: Request, res: Response) => {
     try {
 
         const lessonId = req.params.id;
 
-        let lessonToDelete = await lessonsRepository.findOne({
+        const lessonToDelete = await lessonsRepository.findOne({
             where: {
                 id: lessonId,
             },
             relations : options.relations
-        })
+        });
 
         
         if (!lessonToDelete){
@@ -110,9 +110,9 @@ export const deleteLessonById = async (req: Request, res: Response) => {
         }
 
         await lessonsRepository.merge(lessonToDelete, req.body).remove();
-        return Res.send(res,200,deleted,lessonToDelete)
+        return Res.send(res,200,deleted,lessonToDelete);
 
     } catch (error) {
         return Res.send(res,500,messages.defaults.serverError,error); 
     }    
-}
+};

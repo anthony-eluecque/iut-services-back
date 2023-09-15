@@ -1,18 +1,18 @@
-import { Entity, Column, ManyToOne, OneToOne, OneToMany } from "typeorm"
-import Model from "./model.entity"
-import { Role } from "./role.entity"
-import { Service } from "./service.entity"
+import { Entity, Column, ManyToOne, OneToOne, OneToMany } from "typeorm";
+import Model from "./model.entity";
+import { Role } from "./role.entity";
+import { Service } from "./service.entity";
 
 @Entity('teachers')
 export class Teacher extends Model {
     @Column()
-    givenId: string
+    givenId: string;
 
     @Column()
-    lastName: string
+    lastName: string;
 
     @Column()
-    firstName: string
+    firstName: string;
 
     @ManyToOne(() => Role, (role) => role.teachers)
     role : Role;
