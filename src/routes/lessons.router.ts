@@ -1,5 +1,6 @@
 import express,{ Router } from "express";
 import { createLesson , getLessons, getLessonById, deleteLessonById, updateLesson} from "../controllers";
+import { getLessonByGivenId } from "../controllers/lessons.controller";
 
 const router = Router();
 
@@ -10,5 +11,6 @@ router.post('/',createLesson);
 router.get('/:id',getLessonById);
 router.delete('/:id',deleteLessonById);
 router.post('/',updateLesson);
+router.get('/givenid/:givenId',getLessonByGivenId);
 
 export default router;

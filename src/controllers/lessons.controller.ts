@@ -117,3 +117,17 @@ export const deleteLessonById = async (req: Request, res: Response) => {
         return Res.send(res, 500, messages.defaults.serverError, error);
     }
 };
+
+
+export const getLessonByGivenId = async (req: Request, res: Response) => {
+    try {
+        const givenId = req.params.givenId;
+        const lesson = await lessonsRepository.findOne(
+            { where: { givenId : givenId}}
+        );
+        if (!lesson) return Res.send(res, 404, notFound);
+        return Res.send(res, 200, gotOne, lesson);
+    } catch (error) {
+        return Res.send(res, 500, messages.defaults.serverError, error);
+    }
+};

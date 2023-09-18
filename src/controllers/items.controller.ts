@@ -15,6 +15,7 @@ export const getItems = (req : Request, res : Response) => getAll(req,res,itemsR
 
 export const getPageItems = async (req : Request, res : Response) => {
     try {
+        const year = parseInt(req.query.year as string)
         const page = parseInt(req.params.page) || 1;
         const pageCount = 5;
         const skip = (page - 1) * pageCount;
@@ -22,7 +23,10 @@ export const getPageItems = async (req : Request, res : Response) => {
         const items = await itemsRepository.find({
             skip,
             take: pageCount,
-            relations: [...options.relations, "service.teacher"]
+            relations: [...options.relations, "service.teacher"],
+            where : {
+                service:{ year: year }
+            }
         });
         return Res.send(res,200,gotAll,items);
     } catch (error) {

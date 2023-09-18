@@ -31,8 +31,10 @@ export const createService = async (req: Request, res: Response) => {
         const teacherId = req.body.teacher;
         const teacher = await teachersRepository.findOne({ where: { id: teacherId } });
         if (!teacher) return Res.send(res, 404, "Teacher doesn't exist", teacherId);
-
-        const ids = JSON.parse(req.body.itemsIds);
+        
+        let ids = req.body.itemsIds
+        // Decomment if you use insomnia 
+        // ids = JSON.parse(req.body.itemsIds); 
         const items = await itemsRepository.find({ where: { id: In(ids) } });
 
         if (!items) return Res.send(res, 404, "Items don't exist", items);

@@ -48,6 +48,19 @@ export const createTeacher = async (req: Request, res: Response) => {
     }
 };
 
+export const getTeacherByGivenId = async (req: Request, res: Response) => {
+    try {
+        const givenId = req.params.givenId;
+        const teacher = await teachersRepository.findOne(
+            { where: { givenId : givenId}, relations : options.relations}
+        );
+        if (!teacher) return Res.send(res, 404, notFound);
+        return Res.send(res, 200, gotOne, teacher);
+    } catch (error) {
+        return Res.send(res, 500, messages.defaults.serverError, error);
+    }
+};
+
 export const updateTeacher = async (req: Request, res: Response) => {
     try {
         const id = req.body.id;
