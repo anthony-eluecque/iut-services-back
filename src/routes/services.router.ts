@@ -9,6 +9,6 @@ router.get('/:id', getServiceById);
 router.post('/', createService);
 router.put('/', updateService);
 router.delete('/:id', deleteServiceById);
-router.get('/teacher/:id/year/:year', getServiceForTeacherInYear);
+router.get('/teacher/:teacherId/year/:year', getServiceForTeacherInYear);
 
 export default router;

@@ -81,8 +81,9 @@ export const deleteServiceById = async (req: Request, res: Response) => {
 
 export const getServiceForTeacherInYear = async (req: Request, res: Response) => {
     try {
-        const teacherId = req.params.teacher;
+        const teacherId = req.params.teacherId;
         const year = parseInt(req.params.year);
+        console.log(teacherId, year);
 
         const teacher = await teachersRepository.findOne({ where: { id: teacherId } });
         if (!teacher) return Res.send(res, 404, "Teacher doesn't exist", teacherId);
