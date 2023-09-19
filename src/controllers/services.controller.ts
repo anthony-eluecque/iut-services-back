@@ -7,7 +7,7 @@ import messages from '../docs/messages.json';
 import { In } from 'typeorm';
 
 const { gotOne, created, updated, deleted, notFound } = messages.services;
-const options = { relations: ['items','teacher'] };
+const options = { relations: ['items', 'teacher'] };
 
 const servicesRepository = AppDataSource.getRepository(Service);
 const teachersRepository = AppDataSource.getRepository(Teacher);
@@ -31,7 +31,7 @@ export const createService = async (req: Request, res: Response) => {
         const teacherId = req.body.teacher;
         const teacher = await teachersRepository.findOne({ where: { id: teacherId } });
         if (!teacher) return Res.send(res, 404, "Teacher doesn't exist", teacherId);
-        
+
         let ids = req.body.itemsIds
         // Decomment if you use insomnia 
         // ids = JSON.parse(req.body.itemsIds); 
@@ -78,3 +78,21 @@ export const deleteServiceById = async (req: Request, res: Response) => {
         return Res.send(res, 500, messages.defaults.serverError, error);
     }
 };
+
+export const getServiceForTeacherInYear = async (req: Request, res: Response) => {
+    try {
+        const teacherId = req.params.teacher;
+        const year = parseInt(req.params.year);
+
+        const teacher = await teachersRepository.findOne({ where: { id: teacherId } });
+        if (!teacher) return Res.send(res, 404, "Teacher doesn't exist", teacherId);
+
+        const services = await servicesRepository.findOne({ where: { year: year }, relations: options.relations });
+        if (!services) return Res.send(res, 404, "Service not found for specified teacher and year");
+
+        return Res.send(res, 200, "Found service for the specified teacher and year", services);
+    } catch (error) {
+        console.warn(error);
+        return Res.send(res, 500, messages.defaults.serverError, error);
+    }
+}

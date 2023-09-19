@@ -1,5 +1,5 @@
 import express, { Router } from "express";
-import { getServices, getServiceById, createService, updateService, deleteServiceById } from "../controllers";
+import { getServices, getServiceById, createService, updateService, deleteServiceById, getServiceForTeacherInYear } from "../controllers";
 
 const router = Router();
 
@@ -9,5 +9,6 @@ router.get('/:id', getServiceById);
 router.post('/', createService);
 router.put('/', updateService);
 router.delete('/:id', deleteServiceById);
+router.get('/teacher/:id/year/:year', getServiceForTeacherInYear);
 
 export default router;
