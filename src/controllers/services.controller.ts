@@ -83,15 +83,13 @@ export const getServiceForTeacherInYear = async (req: Request, res: Response) =>
     try {
         const teacherId = req.params.teacherId;
         const year = parseInt(req.params.year);
-        console.log(teacherId, year);
 
         const teacher = await teachersRepository.findOne({ where: { id: teacherId } });
         if (!teacher) return Res.send(res, 404, "Teacher doesn't exist", teacherId);
+        const service = await servicesRepository.findOne({ where: { year: year, teacher: { id: teacherId }}, relations: options.relations });
+        if (!service) return Res.send(res, 404, "Service not found for specified teacher and year");
 
-        const services = await servicesRepository.findOne({ where: { year: year }, relations: options.relations });
-        if (!services) return Res.send(res, 404, "Service not found for specified teacher and year");
-
-        return Res.send(res, 200, "Found service for the specified teacher and year", services);
+        return Res.send(res, 200, "Found service for the specified teacher and year", service);
     } catch (error) {
         console.warn(error);
         return Res.send(res, 500, messages.defaults.serverError, error);
