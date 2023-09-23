@@ -34,6 +34,22 @@ export const getPageItems = async (req : Request, res : Response) => {
     }    
 };
 
+
+export const getItemsFromSelectedYear = async (req : Request, res : Response) => {
+    try {
+        const year = parseInt(req.params.year as string)
+        const items = await itemsRepository.find({
+            relations: [...options.relations, "service.teacher"],
+            where : {
+                service:{ year: year }
+            }
+        });
+        return Res.send(res,200,gotAll,items);
+    } catch (error) {
+        return Res.send(res,500,messages.defaults.serverError);
+    }    
+};
+
 export const createItem = async (req: Request, res: Response) => {
     try {
         if (!req.body.lesson)
