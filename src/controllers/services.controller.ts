@@ -7,7 +7,7 @@ import messages from '../docs/messages.json';
 import { In } from 'typeorm';
 
 const { gotOne, created, updated, deleted, notFound } = messages.services;
-const options = { relations: ['items', 'teacher'] };
+const options = { relations: ['items', 'teacher','items.lesson'] };
 
 const servicesRepository = AppDataSource.getRepository(Service);
 const teachersRepository = AppDataSource.getRepository(Teacher);
