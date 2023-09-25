@@ -1,0 +1,2 @@
+CREATE USER myuser WITH PASSWORD 'mypassword';
+ALTER USER myuser CREATEDB;
