@@ -5,6 +5,12 @@ import Model from "./model.entity";
 export class User extends Model {
 
     @Column()
+    email: string;  
+
+    @Column()
+    password: string;   
+
+    @Column()
     firstName: string;
 
     @Column()
