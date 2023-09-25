@@ -7,14 +7,13 @@ import { Item } from "../entities/item.entity";
 import { Role } from "../entities/role.entity";
 import { Service } from "../entities/service.entity";
 
-
 export const AppDataSource = new DataSource({
     type: "postgres",
     host: "localhost",
     port: parseInt(process.env.DB_PORT),
-    username: process.env.DB_USERNAME,
-    password: process.env.DB_PASSWORD,
-    database: process.env.DB_NAME,
+    username: String(process.env.POSTGRES_USER),
+    password: String(process.env.POSTGRES_PASSWORD),
+    database: String(process.env.POSTGRES_DB),
     synchronize: true,
     logging: false,
     entities: [Lesson, Item, User, Teacher, Role, Service],

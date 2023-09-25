@@ -1,2 +1,1 @@
-CREATE USER myuser WITH PASSWORD 'mypassword';
-ALTER USER myuser CREATEDB;
+CREATE USER iutadmin SUPERUSER LOGIN PASSWORD 'iutcalais';

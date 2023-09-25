@@ -1,10 +1,7 @@
-FROM postgres:13
+FROM alpine as nanobuilder
+RUN apk update && apk add nano
 
-COPY init.sql /docker-entrypoint-initdb.d/
+FROM postgres:15.1-alpine
 
-ENV POSTGRES_DB=mydatabase
-ENV POSTGRES_USER=myuser
-ENV POSTGRES_PASSWORD=mypassword
-
-
-EXPOSE 5432
+COPY --from=nanobuilder /usr/bin/nano /usr/bin/nano
+# COPY *.sql /docker-entrypoint-initdb.d/
