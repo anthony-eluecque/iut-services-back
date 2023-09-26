@@ -10,7 +10,8 @@
     "dev": "nodemon server.ts",
     "start": "ts-node src/index.ts",
     "lint": "eslint ./src/**/*.ts",
-    "typeorm": "typeorm-ts-node-commonjs"
+    "typeorm": "typeorm-ts-node-commonjs",
+    "docker": "nodemon -L -e ts --exec 'tsc -p ./tsconfig.json && node ./dist/server.js'"
   },
   "repository": {
     "type": "git",
