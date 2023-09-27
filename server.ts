@@ -22,7 +22,7 @@ app.use(cors({
   credentials : true
 }));
 
-const port = process.env.PORT || 3000;
+const port = process.env.NODEJS_PORT || 3000;
 connectToDb();
 
 app.listen(port, () => {

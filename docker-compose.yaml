@@ -1,0 +1,35 @@
+version: '3'
+services:
+  nodejs-app:
+    restart: on-failure
+    build: 
+      context: .
+      dockerfile: Dockerfile.node
+    depends_on:
+      - postgres
+    container_name: iut_back_nodejs
+    volumes:
+      - ./:/app
+    working_dir: /app
+    ports:
+      - "${NODEJS_PORT}:3000"
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
+      - DB_PORT=postgres
+
+  postgres:
+    image: postgres:latest
+    container_name: iut_database
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    ports:
+      - "${POSTGRES_PORT}:${POSTGRES_PORT}"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
