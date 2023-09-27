@@ -4,12 +4,15 @@ import { AppDataSource } from '../config/data-source';
 import Res from '../helpers/res.helper';
 import { getAll } from './abstract.controller';
 import messages from '../docs/messages.json';
+import { Lesson_type } from '../entities/lesson_type.entity';
+import { In } from 'typeorm';
 
 const { gotAll, created, updated, deleted, notFound  } = messages.items;
-const options = { relations: ["lesson", "service"] };
+const options = { relations: ["lesson", "service","lessonTypes"] };
 
 const itemsRepository = AppDataSource.getRepository(Item);
 const lessonsRepository = AppDataSource.getRepository(Lesson);
+const lessonTypesRepository = AppDataSource.getRepository(Lesson_type);
 
 export const getItems = (req : Request, res : Response) => getAll(req,res,itemsRepository,options.relations);
 
@@ -64,11 +67,21 @@ export const createItem = async (req: Request, res: Response) => {
         if (!lesson){
             return Res.send(res,404,messages.lessons.notFound);
         } 
+        let lessonTypes = []
+        
+        if (req.body.lessonTypes){
+            const ids = req.body.lessonTypes;
+            lessonTypes = await lessonTypesRepository.find({where:{name:In(ids)}});
+        }
+
+
         const newItem = new Item();  
+        newItem.lessonTypes = lessonTypes
         await itemsRepository.merge(newItem,req.body).save();
         return Res.send(res,200,created,newItem);
 
     } catch (error) {
+        throw error;
         return Res.send(res,500,messages.defaults.serverError,error);
     }
 };
