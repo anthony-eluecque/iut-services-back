@@ -66,7 +66,14 @@ export const createItem = async (req: Request, res: Response) => {
         } 
         const newItem = new Item();  
         await itemsRepository.merge(newItem,req.body).save();
-        return Res.send(res,200,created,newItem);
+        const item = await itemsRepository.findOne({
+            relations: [...options.relations, "service.teacher"],
+            where: {
+                id: newItem.id,
+            }});       
+        
+
+        return Res.send(res,200,created,item);
 
     } catch (error) {
         return Res.send(res,500,messages.defaults.serverError,error);
