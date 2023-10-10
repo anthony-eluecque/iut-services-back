@@ -4,15 +4,14 @@ import { AppDataSource } from '../config/data-source';
 import Res from '../helpers/res.helper';
 import { getAll } from './abstract.controller';
 import messages from '../docs/messages.json';
-import { Lesson_type } from '../entities/lesson_type.entity';
-import { In } from 'typeorm';
+import { CriteriasDto } from '../dtos/criteria-dto.model';
+import { FindOptionsWhere } from 'typeorm/find-options/FindOptionsWhere';
 
 const { gotAll, created, updated, deleted, notFound  } = messages.items;
-const options = { relations: ["lesson", "service","lessonTypes"] };
+const options = { relations: ["lesson", "service"] };
 
 const itemsRepository = AppDataSource.getRepository(Item);
 const lessonsRepository = AppDataSource.getRepository(Lesson);
-const lessonTypesRepository = AppDataSource.getRepository(Lesson_type);
 
 export const getItems = (req : Request, res : Response) => getAll(req,res,itemsRepository,options.relations);
 
@@ -28,7 +27,7 @@ export const getPageItems = async (req : Request, res : Response) => {
             take: pageCount,
             relations: [...options.relations, "service.teacher"],
             where : {
-                service:{ year: year }
+                service:{ year: year },
             }
         });
         return Res.send(res,200,gotAll,items);
@@ -43,6 +42,7 @@ export const getItemsFromSelectedYear = async (req : Request, res : Response) =>
         const year = parseInt(req.params.year as string)
         const items = await itemsRepository.find({
             relations: [...options.relations, "service.teacher"],
+            
             where : {
                 service:{ year: year }
             }
@@ -50,6 +50,37 @@ export const getItemsFromSelectedYear = async (req : Request, res : Response) =>
         return Res.send(res,200,gotAll,items);
     } catch (error) {
         return Res.send(res,500,messages.defaults.serverError);
+    }    
+};
+
+export const getItemFilter = async (req : Request, res : Response) => {
+    try {
+        const year = parseInt(req.body.year as string)
+        const criterias = req.body.criterias as CriteriasDto;
+        let where: FindOptionsWhere<any> = {service: { year: year }};
+        
+        if (criterias.prenom) {
+            where = {service: {...where.service, 
+                teacher: {firstName: criterias.prenom}}}
+        }
+
+        if (criterias.nom) {
+            if (where.service?.teacher) {
+                where.service.teacher = {...where.service.teacher, lastName: criterias.nom}
+            }
+            else {
+                where = {service: {...where.service, 
+                    teacher: {lastName: criterias.nom}}}
+            }
+        }
+
+        const items = await itemsRepository.find({
+            relations: [...options.relations, "service.teacher"],
+            where
+        });
+
+        console.log("items", items);
+    } catch (error) {
     }    
 };
 
@@ -67,21 +98,11 @@ export const createItem = async (req: Request, res: Response) => {
         if (!lesson){
             return Res.send(res,404,messages.lessons.notFound);
         } 
-        let lessonTypes = []
-        
-        if (req.body.lessonTypes){
-            const ids = req.body.lessonTypes;
-            lessonTypes = await lessonTypesRepository.find({where:{name:In(ids)}});
-        }
-
-
         const newItem = new Item();  
-        newItem.lessonTypes = lessonTypes
         await itemsRepository.merge(newItem,req.body).save();
         return Res.send(res,200,created,newItem);
 
     } catch (error) {
-        throw error;
         return Res.send(res,500,messages.defaults.serverError,error);
     }
 };
