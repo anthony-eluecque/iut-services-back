@@ -13,7 +13,33 @@ const servicesRepository = AppDataSource.getRepository(Service);
 const teachersRepository = AppDataSource.getRepository(Teacher);
 const itemsRepository = AppDataSource.getRepository(Item);
 
-export const getServices = (req: Request, res: Response) => getAll(req, res, servicesRepository, options.relations);
+export const getServices = async (req: Request, res: Response) => getAll(req, res, servicesRepository, options.relations)
+    
+
+export const getServicesAscending = async (req: Request, res: Response) => {
+    try {
+        const relations = ['items', 'items.lesson'];
+
+        const entities = await servicesRepository.find({
+            relations,
+            order: {
+                items: {
+                    lesson: {
+                        givenId : "ASC"
+                    }
+                }  
+            }
+        });
+
+        res.json(entities);
+    }
+    catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Une erreur s\'est produite' });
+    }
+
+    
+    }
 
 export const getServiceById = async (req: Request, res: Response) => {
     try {
