@@ -29,13 +29,13 @@ export const getItemFilterPage = async (req : Request, res : Response) => {
                         year: req.query.year,
                             teacher: {
                                 givenId: req.query.id != '' && req.query.id 
-                                ? ILike('%' + req.query.id + '%') 
-                                : null,
+                                    ? ILike('%' + req.query.id + '%') 
+                                    : null,
                                 firstName: req.query.firstName != '' && req.query.firstName 
-                                ? ILike('%' + req.query.firstName + '%') 
-                                : null,
+                                    ? ILike('%' + req.query.firstName + '%') 
+                                    : null,
                                 lastName: req.query.lastName != '' && req.query.lastName 
-                                ? ILike('%' + req.query.lastName + '%') : null
+                                    ? ILike('%' + req.query.lastName + '%') : null
                             }
                     },
                     lesson: {
