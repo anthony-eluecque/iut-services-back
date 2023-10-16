@@ -16,7 +16,4 @@ export class User extends Model {
     @Column()
     lastName: string;
 
-    @Column()
-    age: number;
-
 }

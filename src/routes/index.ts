@@ -16,7 +16,7 @@ router.use(express.urlencoded({ extended: false }));
 // router.use('/services',useServiceRouter);
 // router.use('/teachers',useTeacherRouter);
 router.use('/token', authRouter);
-router.use('/users',auth, useUsersRouter);
+router.use('/users', useUsersRouter);
 router.use('/items',auth,useItemsRouter);
 router.use('/teachers',auth,useTeachersRouter);
 router.use('/roles',auth,useRolesRouter);
