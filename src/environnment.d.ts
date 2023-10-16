@@ -6,5 +6,6 @@ declare namespace NodeJS {
         DB_PORT : string;
         DB_NAME: string;
         NODE_ENV: string;
+        BCRYPT_SALTROUND : string;
     }
 }
