@@ -6,9 +6,9 @@ const router = Router();
 
 router.use(express.urlencoded({ extended: false }));
 router.get('/', getTeachers);
-router.get('/:id', getTeacherById);
 router.post('/', createTeacher);
 router.put('/', updateTeacher);
+router.get('/:id', getTeacherById);
 router.delete('/:id', deleteTeacherById);
 router.get('/givenid/:givenId',getTeacherByGivenId);
 
