@@ -1,5 +1,11 @@
-import express,{ Router } from "express";
-import { getUsers, createUser, authenticate , login, getUser } from "../controllers";
+import { Router } from "express";
+import { 
+    getUsers, 
+    createUser, 
+    authenticate , 
+    login, 
+    getUser, 
+    logout } from "../controllers";
 import { isAuth } from "../middlewares/auth.middleware";
 
 const router = Router();
@@ -11,6 +17,7 @@ router.post('/', createUser);
 
 router.get('/auth', isAuth, authenticate);
 router.post('/login', login);
+router.post('/logout', logout);
 
 router.get('/:id',isAuth,getUser);
 

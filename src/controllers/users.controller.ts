@@ -8,6 +8,7 @@ import { generateConnectionToken, verifyPassword } from '../services/auth.servic
 import messages from '../docs/messages.json'
 import { validate } from "class-validator";
 import { decryptData, encryptData } from '../services/aes.service';
+import CookieHelper from '../helpers/cookie.helper';
 
 const { serverError } = messages.defaults
 const usersRepository = AppDataSource.getRepository(User);
@@ -99,6 +100,14 @@ export const login = async (req : Request , res : Response) => {
     }
 }
 
+export const logout = async (req : Request, res: Response) => {
+    try {
+        CookieHelper.clear(res,'token');
+        return Res.send(res,204,"User has been logout");
+    } catch (error) {
+        return Res.send(res,500,serverError);
+    }
+}
 
 export const authenticate = async (req: Request, res: Response) => {
     try {
