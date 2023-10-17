@@ -7,5 +7,6 @@ declare namespace NodeJS {
         DB_NAME: string;
         NODE_ENV: string;
         BCRYPT_SALTROUND : string;
+        JWT_SECRET : string;
     }
 }
