@@ -9,11 +9,12 @@ import {
     deleteUser,
     updateUser} from "../controllers";
 import { isAuth } from "../middlewares/auth.middleware";
+import { isAdmin } from "../middlewares/admin.middleware";
 
 const router = Router();
 
 
-router.get('/',isAuth, getUsers); 
+router.get('/', isAuth, isAdmin, getUsers); 
 router.post('/', createUser);
 
 
