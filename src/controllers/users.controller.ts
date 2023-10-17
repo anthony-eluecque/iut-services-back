@@ -36,7 +36,6 @@ export const getUser = async (req : Request, res: Response) => {
             return Res.send(res,404,'User Not Found');
         }
 
-
         const decryptedUser = {
             email : user.email,
             password : user.password,
@@ -53,23 +52,24 @@ export const getUser = async (req : Request, res: Response) => {
 export const createUser = async (req: Request, res: Response) => {
     try {
         const { email, password, firstName, lastName } = req.body;
-        const isValidatedUser = await validateUser(req)
-        
-        if (!isValidatedUser) return Res.send(res,400,"User not validated");
-        
         
         const userFinded = await usersRepository.findOne({where : { email : email}})
         if (userFinded){
             return Res.send(res,409,'User already exist',userFinded)
         } 
         const hashPwd = await hashPassword(password)
-        const newUser = new User(
-            email,
-            hashPwd,
-            encryptData(firstName).toString(),
-            encryptData(lastName).toString()
-        );
-        await usersRepository.insert(newUser)
+
+        const newUser = usersRepository.create({
+            email : email,
+            firstName : encryptData(firstName).toString(),
+            lastName : encryptData(lastName).toString(),
+            password : hashPwd
+        });
+
+        const isValidatedUser = await validate(newUser)
+        if (!isValidatedUser) return Res.send(res,400,"User not validated");
+
+        await usersRepository.insert(newUser);
 
         return Res.send(res,200,'User has been created',newUser)
     } catch (error) {
@@ -79,24 +79,33 @@ export const createUser = async (req: Request, res: Response) => {
 
 export const updateUser = async (req: Request, res: Response) => {
     try {
+        const { id } = req.body;
+        const { isAdmin } = res.locals.user;
+        const idUser = res.locals.user.id?.toString()?.toString()
 
+        console.log(idUser, id)
+        if (idUser != id && !isAdmin) 
+            return Res.send(res,403,"Not allowed");
         // Admin part (Only admin can edit roles)
         
         const errors = validationResult(req);
         if (!errors.isEmpty()) return Res.send(res,400,"wrong input");
 
-        const { id } = req.body;
         const oldUser = await usersRepository.findOne({where : { id : id}});
         if (!oldUser) return Res.send(res,404,"Not Found");
 
         // Check if user try to edit another user
 
-        if (res.locals.user.id?.toString()?.toString() != id) 
-            return Res.send(res,403,"Not allowed");
         const { firstName, lastName} = req.body;
 
         // Validator
-        const newUser = new User(oldUser.email,oldUser.password,firstName,lastName);
+        const newUser = usersRepository.create({
+            email : oldUser.email,
+            firstName : encryptData(firstName).toString(),
+            lastName : encryptData(lastName).toString(),
+            password : oldUser.password,
+            isAdmin : oldUser.isAdmin
+        });;
         const isValidatedUser = await validate(newUser);
         if (isValidatedUser.length > 0) return Res.send(res,400,"User not validated");
 
