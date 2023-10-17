@@ -1,13 +1,17 @@
 import express,{ Router } from "express";
-import { getUsers, createUser } from "../controllers";
-import { getUser } from "../controllers/user.controller";
+import { getUsers, createUser, authenticate , login, getUser } from "../controllers";
+import { isAuth } from "../middlewares/auth.middleware";
 
 const router = Router();
 
 
-router.use(express.urlencoded({ extended: false }));
-router.get('/', getUsers); 
-router.post('/',createUser);
-router.get('/:id',getUser);
+router.get('/',isAuth, getUsers); 
+router.post('/', createUser);
+
+
+router.get('/auth', isAuth, authenticate);
+router.post('/login', login);
+
+router.get('/:id',isAuth,getUser);
 
 export default router;
