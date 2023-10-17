@@ -9,6 +9,7 @@ import messages from '../docs/messages.json'
 import { validate } from "class-validator";
 import { decryptData, encryptData } from '../services/aes.service';
 import CookieHelper from '../helpers/cookie.helper';
+import { ObjectId } from 'typeorm';
 
 const { serverError } = messages.defaults
 const usersRepository = AppDataSource.getRepository(User);
@@ -71,9 +72,25 @@ export const createUser = async (req: Request, res: Response) => {
 
         return Res.send(res,200,'User has been created',newUser)
     } catch (error) {
-        return Res.send(res,500,'Internal Server error',error);
+        return Res.send(res,500,serverError);
     }
 };
+
+export const deleteUser = async (req: Request, res: Response) => {
+    try {
+        const { id } = req.params;
+
+        // Accès au user depuis ça pour la partie admin : 
+        // const { _id , isAdmin } = res.locals.user;
+
+        await usersRepository.delete({id})
+        return Res.send(res,204,"deleted")
+
+    } catch (error) {
+        console.log(error)
+        return Res.send(res,500,serverError)
+    }
+}
 
 
 //#region  AUTH 
