@@ -6,7 +6,8 @@ import {
     login, 
     getUser, 
     logout, 
-    deleteUser} from "../controllers";
+    deleteUser,
+    updateUser} from "../controllers";
 import { isAuth } from "../middlewares/auth.middleware";
 
 const router = Router();
@@ -21,6 +22,7 @@ router.post('/login', login);
 router.post('/logout', logout);
 
 router.get('/:id',isAuth,getUser);
+router.put("/",isAuth, updateUser)
 router.delete('/:id',isAuth,deleteUser);
 
 export default router;

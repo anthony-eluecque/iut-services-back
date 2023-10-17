@@ -10,6 +10,7 @@ import { validate } from "class-validator";
 import { decryptData, encryptData } from '../services/aes.service';
 import CookieHelper from '../helpers/cookie.helper';
 import { ObjectId } from 'typeorm';
+import { validationResult } from 'express-validator';
 
 const { serverError } = messages.defaults
 const usersRepository = AppDataSource.getRepository(User);
@@ -68,13 +69,52 @@ export const createUser = async (req: Request, res: Response) => {
             encryptData(firstName).toString(),
             encryptData(lastName).toString()
         );
-        await usersRepository.save(newUser)
+        await usersRepository.insert(newUser)
 
         return Res.send(res,200,'User has been created',newUser)
     } catch (error) {
         return Res.send(res,500,serverError);
     }
 };
+
+export const updateUser = async (req: Request, res: Response) => {
+    try {
+
+        // Admin part (Only admin can edit roles)
+        
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) return Res.send(res,400,"wrong input");
+
+        const { id } = req.body;
+        const oldUser = await usersRepository.findOne({where : { id : id}});
+        if (!oldUser) return Res.send(res,404,"Not Found");
+
+        // Check if user try to edit another user
+
+        if (res.locals.user.id?.toString()?.toString() != id) 
+            return Res.send(res,403,"Not allowed");
+        const { firstName, lastName} = req.body;
+
+        // Validator
+        const newUser = new User(oldUser.email,oldUser.password,firstName,lastName);
+        const isValidatedUser = await validate(newUser);
+        if (isValidatedUser.length > 0) return Res.send(res,400,"User not validated");
+
+        // Update
+        await usersRepository.update({
+            firstName : oldUser.firstName,
+            lastName : oldUser.lastName
+        },{
+            firstName : encryptData(firstName).toString(),
+            lastName: encryptData(lastName).toString()
+        })
+        
+        return Res.send(res,204,"User has been Updated");
+
+    } catch (error) {
+        return Res.send(res,500,serverError,error);
+    }
+}
 
 export const deleteUser = async (req: Request, res: Response) => {
     try {
