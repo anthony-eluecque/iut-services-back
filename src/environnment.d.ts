@@ -7,5 +7,9 @@ declare namespace NodeJS {
         POSTGRES_DB: string;
         NODE_ENV: string;
         HOST: string;
+        CORS_ORIGIN: string;
+        BCRYPT_SALTROUND : string;
+        JWT_SECRET : string;
+        AES_SECRET : string;
     }
 }

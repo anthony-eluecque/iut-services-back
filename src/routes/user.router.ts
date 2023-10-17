@@ -1,11 +1,29 @@
-import express,{ Router } from "express";
-import { getUsers, createUser } from "../controllers";
+import { Router } from "express";
+import { 
+    getUsers, 
+    createUser, 
+    authenticate , 
+    login, 
+    getUser, 
+    logout, 
+    deleteUser,
+    updateUser} from "../controllers";
+import { isAuth } from "../middlewares/auth.middleware";
+import { isAdmin } from "../middlewares/admin.middleware";
 
 const router = Router();
 
 
-router.use(express.urlencoded({ extended: false }));
-router.get('/', getUsers); 
-router.post('/',createUser);
+router.get('/', isAuth, isAdmin, getUsers); 
+router.post('/', createUser);
+
+
+router.get('/auth', isAuth, authenticate);
+router.post('/login', login);
+router.post('/logout', logout);
+
+router.get('/:id',isAuth,getUser);
+router.put("/",isAuth, updateUser)
+router.delete('/:id',isAuth,deleteUser);
 
 export default router;
