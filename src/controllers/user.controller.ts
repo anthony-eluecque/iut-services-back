@@ -3,9 +3,13 @@ import { User } from '../entities';
 import { AppDataSource } from '../config/data-source';
 import Res from '../helpers/res.helper';
 import { hashPassword } from '../services/hash.service';
-const usersRepository = AppDataSource.getRepository(User);
-
 import CryptoJS, { AES } from "crypto-js";
+import { generateConnectionToken, verifyPassword } from '../services/auth.service';
+import messages from '../docs/messages.json'
+
+
+const { serverError } = messages.defaults
+const usersRepository = AppDataSource.getRepository(User);
 
 var key = "PasswordText";
 
@@ -23,6 +27,7 @@ export const getUser = async (req : Request, res: Response) => {
         const user = await usersRepository.findOne({where : {
             id : req.params.id
         }})
+
         if (!user){
             return Res.send(res,404,'User Not Found');
         }
@@ -33,7 +38,6 @@ export const getUser = async (req : Request, res: Response) => {
             firstName : AES.decrypt(user.firstName,key).toString(CryptoJS.enc.Utf8),
             lastName : AES.decrypt(user.lastName,key).toString(CryptoJS.enc.Utf8)
         }
-
 
         return Res.send(res,200,'Got one',decryptedUser);
     } catch (error) {
@@ -67,3 +71,42 @@ export const createUser = async (req: Request, res: Response) => {
         return Res.send(res,500,'Internal Server error',error);
     }
 };
+
+//#region  AUTH 
+
+export const login = async (req : Request , res : Response) => {
+    try {
+        const { email,password } = req.body
+
+        
+        // Gérer si ils sont pas renseigné mais osef pour l'instant
+
+        const user = await usersRepository.findOne({where :{
+            email : email
+        }})
+        if (!user) return Res.send(res,400,"User not found");
+
+        const matchedPassword = await verifyPassword(user,password);
+
+        if (!matchedPassword) return Res.send(res,400,"Invalid password");
+
+        return await generateConnectionToken(user,res)
+
+    } catch (error) {
+        throw error;        
+    }
+}
+
+
+export const authenticate = async (req: Request, res: Response) => {
+    try {
+        if (!res.locals.user)
+            return Res.send(res, 401, "unAuth");
+
+        return Res.send(res, 200, "auth", res.locals.user);
+    } catch (error) {
+        return Res.send(res, 500, serverError);
+    }
+}
+
+//#endregion
