@@ -8,9 +8,11 @@ export class User extends Model {
 
     @Column({unique : true})
     @IsEmail()
+    @IsNotEmpty()
     email: string;  
 
     @Column()
+    @IsNotEmpty()
     password: string;   
 
     @Column()
@@ -20,6 +22,11 @@ export class User extends Model {
     @Column()
     @IsNotEmpty()
     lastName: string;
+
+
+    @Column({ default : false })
+    @IsNotEmpty()
+    isAdmin : boolean;
 
     constructor(email: string, password: string, firstName: string, lastName: string) {
         super();
