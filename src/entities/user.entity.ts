@@ -1,7 +1,8 @@
 import { Entity, Column } from "typeorm";
 import Model from "./model.entity";
-import { IsEmail, validate } from "class-validator";
-import { Request } from "express-serve-static-core";
+import { IsEmail, validate, IsNotEmpty } from "class-validator";
+import { Request } from "express";
+import { compare, hash } from "bcrypt";
 @Entity('users')
 export class User extends Model {
 
@@ -13,9 +14,11 @@ export class User extends Model {
     password: string;   
 
     @Column()
+    @IsNotEmpty()
     firstName: string;
 
     @Column()
+    @IsNotEmpty()
     lastName: string;
 
     constructor(email: string, password: string, firstName: string, lastName: string) {
@@ -26,7 +29,6 @@ export class User extends Model {
         this.lastName = lastName;
     }
 }
-
 
 export const validateUser = async (req : Request) => {
     const { email, password, firstName, lastName } = req.body;
