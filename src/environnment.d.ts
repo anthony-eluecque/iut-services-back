@@ -8,5 +8,6 @@ declare namespace NodeJS {
         NODE_ENV: string;
         BCRYPT_SALTROUND : string;
         JWT_SECRET : string;
+        AES_SECRET : string;
     }
 }
