@@ -4,12 +4,12 @@ import { getServices, getServiceById, createService, updateService, deleteServic
 const router = Router();
 
 router.use(express.urlencoded({ extended: false }));
-// router.get('/', getServices);
+router.get('/', getServices);
 router.get('/:id', getServiceById);
 router.post('/', createService);
 router.put('/', updateService);
 router.delete('/:id', deleteServiceById);
 router.get('/teacher/:teacherId/year/:year', getServiceForTeacherInYear);
-router.get('/',getServicesAscending)
+router.get('/:id/ascending',getServicesAscending)
 
 export default router;

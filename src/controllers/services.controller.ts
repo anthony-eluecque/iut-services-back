@@ -6,7 +6,7 @@ import { getAll } from './abstract.controller';
 import messages from '../docs/messages.json';
 import { In } from 'typeorm';
 
-const { gotOne, created, updated, deleted, notFound } = messages.services;
+const { gotOne, created, updated, deleted, notFound,gotAll } = messages.services;
 const options = { relations: ['items', 'teacher','items.lesson'] };
 
 const servicesRepository = AppDataSource.getRepository(Service);
@@ -15,13 +15,15 @@ const itemsRepository = AppDataSource.getRepository(Item);
 
 export const getServices = async (req: Request, res: Response) => getAll(req, res, servicesRepository, options.relations)
     
-
 export const getServicesAscending = async (req: Request, res: Response) => {
     try {
         const relations = ['items', 'items.lesson'];
 
         const entities = await servicesRepository.find({
             relations,
+            where : {
+                id : req.params.id
+            },
             order: {
                 items: {
                     lesson: {
@@ -29,9 +31,10 @@ export const getServicesAscending = async (req: Request, res: Response) => {
                     }
                 }  
             }
+
         });
 
-        res.json(entities);
+        return Res.send(res, 200, gotAll, entities);
     }
     catch (error) {
         console.error(error);
