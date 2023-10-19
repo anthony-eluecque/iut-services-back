@@ -17,7 +17,6 @@ const router = Router();
 router.get('/', isAuth, isAdmin, getUsers); 
 router.post('/', createUser);
 
-
 router.get('/auth', isAuth, authenticate);
 router.post('/login', login);
 router.post('/logout', logout);
