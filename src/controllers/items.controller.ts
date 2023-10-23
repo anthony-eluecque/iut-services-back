@@ -22,31 +22,34 @@ export const getItemFilterPage = async (req : Request, res : Response) => {
         
         const pageCount = 5;
         const skip = (page - 1) * pageCount;
+        
+        const { id, firstName, lastName, givenId, nameLesson } = req.query
 
         let where: FindOptionsWhere<any> = 
                {
                         service: {
                         year: req.query.year,
                             teacher: {
-                                givenId: req.query.id != '' && req.query.id 
-                                    ? ILike('%' + req.query.id + '%') 
+                                givenId: id != '' && id 
+                                    ? ILike('%' + id + '%') 
                                     : null,
-                                firstName: req.query.firstName != '' && req.query.firstName 
-                                    ? ILike('%' + req.query.firstName + '%') 
+                                firstName: firstName != '' && firstName 
+                                    ? ILike('%' + firstName + '%') 
                                     : null,
-                                lastName: req.query.lastName != '' && req.query.lastName 
-                                    ? ILike('%' + req.query.lastName + '%') : null
+                                lastName: lastName != '' && lastName 
+                                    ? ILike('%' + lastName + '%') : null
                             }
                     },
                     lesson: {
-                        givenId: req.query.givenId != '' && req.query.givenId 
-                            ?  ILike('%' + req.query.givenId + '%') 
+                        givenId: givenId != '' && givenId 
+                            ?  ILike('%' + givenId + '%') 
                             : null,
-                        name: req.query.nameLesson != '' && req.query.nameLesson 
-                            ? ILike('%' + req.query.nameLesson + '%') 
+                        name: nameLesson != '' && nameLesson 
+                            ? ILike('%' + nameLesson + '%') 
                             : null,
                     }
                 };
+
                 
 
         const itemsCount = await itemsRepository.findAndCount({
