@@ -1,5 +1,5 @@
 import { MigrationInterface, QueryRunner } from "typeorm"
-import { AppDataSource } from "../config/data-source";
+import { AppDataStore } from "../config";
 import { encryptData } from "../services/aes.service";
 import { hashPassword } from "../services/hash.service";
 import { User } from "../entities";
@@ -7,7 +7,7 @@ import { User } from "../entities";
 export class AdminUser1697584169917 implements MigrationInterface {
 
     public async up(queryRunner: QueryRunner): Promise<void> {
-        const usersRepository = AppDataSource.getRepository(User);
+        const usersRepository = AppDataStore.getRepository(User);
 
         const newUser = usersRepository.create({
             email : "iutinfo@univ-littoral.fr",

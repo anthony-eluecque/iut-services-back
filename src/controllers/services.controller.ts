@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { Service, Teacher, Item } from '../entities';
-import { AppDataSource } from '../config/data-source';
+import { AppDataStore } from '../config';
 import Res from '../helpers/res.helper';
 import { getAll } from './abstract.controller';
 import messages from '../docs/messages.json';
@@ -9,9 +9,9 @@ import { In } from 'typeorm';
 const { gotOne, created, updated, deleted, notFound,gotAll } = messages.services;
 const options = { relations: ['items', 'teacher','items.lesson'] };
 
-const servicesRepository = AppDataSource.getRepository(Service);
-const teachersRepository = AppDataSource.getRepository(Teacher);
-const itemsRepository = AppDataSource.getRepository(Item);
+const servicesRepository = AppDataStore.getRepository(Service);
+const teachersRepository = AppDataStore.getRepository(Teacher);
+const itemsRepository = AppDataStore.getRepository(Item);
 
 export const getServices = async (req: Request, res: Response) => getAll(req, res, servicesRepository, options.relations)
     

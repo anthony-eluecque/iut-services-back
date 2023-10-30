@@ -1,14 +1,13 @@
 import { Request, Response } from 'express';
 import { Item, Lesson } from '../entities';
-import { AppDataSource } from '../config/data-source';
+import { AppDataStore } from '../config';
 import Res from '../helpers/res.helper';
 import messages from '../docs/messages.json';
 import { getAll } from './abstract.controller';
 
 const { created, updated, gotOne, deleted, notFound } = messages.lessons;
-
-const lessonsRepository = AppDataSource.getRepository(Lesson);
-const itemsRepository = AppDataSource.getRepository(Item);
+const lessonsRepository = AppDataStore.getRepository(Lesson);
+const itemsRepository = AppDataStore.getRepository(Item);
 const options = {
     relations: ["items"]
 };

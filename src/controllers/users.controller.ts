@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { User, validateUser } from '../entities';
-import { AppDataSource } from '../config/data-source';
+import { AppDataStore } from '../config';
 import Res from '../helpers/res.helper';
 import { hashPassword } from '../services/hash.service';
 import CryptoJS, { AES } from "crypto-js";
@@ -13,7 +13,7 @@ import { ObjectId } from 'typeorm';
 import { validationResult } from 'express-validator';
 
 const { serverError } = messages.defaults
-const usersRepository = AppDataSource.getRepository(User);
+const usersRepository = AppDataStore.getRepository(User);
 
 
 

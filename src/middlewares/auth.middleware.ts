@@ -1,12 +1,12 @@
 import { NextFunction, Request, Response } from "express"
 import jwt, { JwtPayload } from 'jsonwebtoken';
 import Res from "../helpers/res.helper";
-import { AppDataSource } from "../config/data-source";
+import { AppDataStore } from "../config";
 import { User } from "../entities";
 import messages from '../docs/messages.json';
 
 const { serverError, unAuth } = messages.defaults
-const usersRepository = AppDataSource.getRepository(User);
+const usersRepository = AppDataStore.getRepository(User);
 
 export const isAuth = async (req : Request, res : Response, next : NextFunction) => {
     try {

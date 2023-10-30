@@ -1,17 +1,17 @@
 import { Request, Response } from 'express';
 import { Item, Lesson } from '../entities';
-import { AppDataSource } from '../config/data-source';
+import { AppDataStore } from '../config';
 import Res from '../helpers/res.helper';
 import { getAll } from './abstract.controller';
 import messages from '../docs/messages.json';
 import { FindOptionsWhere } from 'typeorm/find-options/FindOptionsWhere';
 import { ILike } from 'typeorm';
 
+
 const { gotAll, created, updated, deleted, notFound  } = messages.items;
 const options = { relations: ["lesson", "service"] };
-
-const itemsRepository = AppDataSource.getRepository(Item);
-const lessonsRepository = AppDataSource.getRepository(Lesson);
+const itemsRepository = AppDataStore.getRepository(Item);
+const lessonsRepository = AppDataStore.getRepository(Lesson);
 
 export const getItems = (req : Request, res : Response) => getAll(req,res,itemsRepository,options.relations);
 

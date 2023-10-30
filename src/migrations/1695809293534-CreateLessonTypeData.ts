@@ -1,11 +1,11 @@
 import { MigrationInterface, QueryRunner } from "typeorm"
 import { Lesson_type } from "../entities/lesson_type.entity";
-import { AppDataSource } from "../config/data-source";
+import { AppDataStore } from "../config";
 
 export class CreateLessonTypeData1695809293534 implements MigrationInterface {
 
     public async up(queryRunner: QueryRunner): Promise<void> {
-        const lessonTypeRepository = AppDataSource.getRepository(Lesson_type);
+        const lessonTypeRepository = AppDataStore.getRepository(Lesson_type);
 
         // Ajoutez les enregistrements "TP", "TD", "CM"
         const lessonTypesData = [
