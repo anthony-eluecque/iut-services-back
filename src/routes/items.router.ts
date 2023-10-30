@@ -11,5 +11,4 @@ router.post('/',isAuth,createItem);
 router.get('/:page',isAuth,getItemFilterPage)
 router.delete('/:id',isAuth,deleteItemById);
 router.put('/',isAuth,updateItem);
-/******************************************/ 
 export default router;
