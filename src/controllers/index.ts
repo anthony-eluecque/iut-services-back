@@ -1,4 +1,4 @@
-export { createRole, getRoles, deleteRoleById } from "./roles.controller";
+// export { createRole, getRoles, deleteRoleById } from "./roles.controller";
 export { createItem, getItems, deleteItemById, updateItem, getItemFilterPage } from "./items.controller";
 export { getUsers, getUser, createUser, login, authenticate, logout, deleteUser, updateUser } from "./users.controller";
 export { getTeachers, getTeacherById, createTeacher, updateTeacher, deleteTeacherById } from "./teachers.controller";

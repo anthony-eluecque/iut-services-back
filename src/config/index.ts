@@ -1,1 +1,1 @@
-export { connectToDb } from './connectToDb';
+export { initDbStore, initDbStoreForTests, AppDataStore } from "./dbConnectionManager";
