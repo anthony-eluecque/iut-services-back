@@ -1,32 +1,55 @@
-import express from 'express';
-// import { connectToDb } from './src/config/database';
-import dotenv from 'dotenv';
-dotenv.config();
+import * as path from "path"
+import "reflect-metadata";
+import { config } from 'dotenv';
+import { displayEnv } from "dotenv-display"
+import { initDbStore } from "./src/config";
+
+let configPath = path.join(__dirname, "./.env")
+let env = config({path: configPath});
+
+import { Server } from './src/server';
 
 
-import bodyParser from 'body-parser';
-import cookieParser from 'cookie-parser';
-import cors from 'cors';
-import { connectToDb } from './src/config';
-import useRouter from './src/routes'
+// displayEnv(env.parsed)
 
-const app = express();
+const server = new Server()
+// server.setSwagger()
 
+server.initDb()
+server.setRoutes()
+server.setSwagger()
+server.startServer()
 
-app.use(bodyParser.json());
-app.use(cookieParser());
-app.use(cors({
-  origin : [
-    process.env.CORS_ORIGIN
-  ],
-  credentials : true
-}));
-
-const port = process.env.NODEJS_PORT || 3000;
-connectToDb();
-
-app.listen(port, () => {
-  console.log(`Express is listening at http://localhost:${port}`);
-});
-
-app.use(useRouter);
+// const options = {
+//     definition: {
+//       openapi: "3.1.0",
+//       info: {
+//         title: "LogRocket Express API with Swagger",
+//         version: "0.1.0",
+//         description:
+//           "This is a simple CRUD API application made with Express and documented with Swagger",
+//         license: {
+//           name: "MIT",
+//           url: "https://spdx.org/licenses/MIT.html",
+//         },
+//         contact: {
+//           name: "LogRocket",
+//           url: "https://logrocket.com",
+//           email: "info@email.com",
+//         },
+//       },
+//       servers: [
+//         {
+//           url: "http://localhost:3000",
+//         },
+//       ],
+//     },
+//     apis: ["./routes/*.js"],
+// };
+  
+//   const specs = swaggerJsdoc(options);
+//   app.use(
+//     "/api-docs",
+//     swaggerUi.serve,
+//     swaggerUi.setup(specs)
+//   );
