@@ -6,7 +6,9 @@ import cors from 'cors';
 import useRouter from './routes'
 import { initDbStore } from './config';
 import swaggerUI from 'swagger-ui-express' 
-import swaggerDocument from './swagger.json'
+import { options } from './swagger';
+import swaggerJSDoc from "swagger-jsdoc";
+
 config()
 export class Server {
     private app : Express;
@@ -49,7 +51,8 @@ export class Server {
     }
 
     public setSwagger = () => {
-        this.app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocument, { "showExplorer": true }));
+        const swaggerSpec = swaggerJSDoc(options)
+        this.app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerSpec));
     }
 
     public setRoutes = () => {
