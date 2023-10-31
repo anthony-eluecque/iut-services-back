@@ -13,12 +13,13 @@ import { ObjectId } from 'typeorm';
 import { validationResult } from 'express-validator';
 
 const { serverError } = messages.defaults
-const usersRepository = AppDataStore.getRepository(User);
 
 
 
 export const getUsers = async (req : Request, res : Response) => {
     try {
+        const usersRepository = AppDataStore.getRepository(User);
+
         const users = await usersRepository.find({});
         return Res.send(res,200,'Success',users);
     } catch (error) {
@@ -28,6 +29,7 @@ export const getUsers = async (req : Request, res : Response) => {
 
 export const getUser = async (req : Request, res: Response) => {
     try {
+        const usersRepository = AppDataStore.getRepository(User);
         const user = await usersRepository.findOne({where : {
             id : req.params.id
         }})
@@ -51,6 +53,8 @@ export const getUser = async (req : Request, res: Response) => {
 
 export const createUser = async (req: Request, res: Response) => {
     try {
+        const usersRepository = AppDataStore.getRepository(User);
+        
         const { email, password, firstName, lastName } = req.body;
         
         const userFinded = await usersRepository.findOne({where : { email : email}})
@@ -58,7 +62,6 @@ export const createUser = async (req: Request, res: Response) => {
             return Res.send(res,409,'User already exist',userFinded)
         } 
         const hashPwd = await hashPassword(password)
-
         const newUser = usersRepository.create({
             email : email,
             firstName : encryptData(firstName).toString(),
@@ -79,6 +82,8 @@ export const createUser = async (req: Request, res: Response) => {
 
 export const updateUser = async (req: Request, res: Response) => {
     try {
+        const usersRepository = AppDataStore.getRepository(User);
+
         const { id } = req.body;
         const { isAdmin } = res.locals.user;
         const idUser = res.locals.user.id?.toString()?.toString()
@@ -126,6 +131,8 @@ export const updateUser = async (req: Request, res: Response) => {
 
 export const deleteUser = async (req: Request, res: Response) => {
     try {
+        const usersRepository = AppDataStore.getRepository(User);
+
         const { id } = req.params;
 
         // Accès au user depuis ça pour la partie admin : 
@@ -145,6 +152,8 @@ export const deleteUser = async (req: Request, res: Response) => {
 
 export const login = async (req : Request , res : Response) => {
     try {
+        const usersRepository = AppDataStore.getRepository(User);
+
         const { email,password } = req.body
 
         if (!email || !password)  return Res.send(res,400,"Incorrect inputs")

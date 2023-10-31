@@ -18,5 +18,7 @@ export const options = {
     apis: [
         `${rootFolder}/routes/*.ts`,
         "./dist/routes/*.js",
+        `${rootFolder}/entities/*.ts`,
+        "./dist/entities/*.js"
     ],
 }
