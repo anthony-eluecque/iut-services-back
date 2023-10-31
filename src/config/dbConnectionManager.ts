@@ -9,11 +9,12 @@ const getDirEntities = () => {
     const isTsNode = process.env.TS_NODE_DEV;
     // A CHANGER ICI POUR LA PROD
     const dirNameEntities = isTsNode ? rootFolder + '/entities/*.ts' : rootFolder + '/entities/*.ts';
+    console.log(dirNameEntities)
     return dirNameEntities
 }
 
 const getDirMigrations = () =>{
-    const migrations = `${__dirname}/migrations/*.ts`
+    const migrations = `${rootFolder}/migrations/*.ts`
     return migrations
 }
 
