@@ -55,6 +55,10 @@ export class Server {
         this.app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerSpec));
     }
 
+    public getApp = () => {
+        return this.app
+    }
+
     public setRoutes = () => {
         this.app.use(useRouter)
     }
