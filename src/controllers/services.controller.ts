@@ -9,14 +9,13 @@ import { In } from 'typeorm';
 const { gotOne, created, updated, deleted, notFound,gotAll } = messages.services;
 const options = { relations: ['items', 'teacher','items.lesson'] };
 
-const servicesRepository = AppDataStore.getRepository(Service);
-const teachersRepository = AppDataStore.getRepository(Teacher);
-const itemsRepository = AppDataStore.getRepository(Item);
 
-export const getServices = async (req: Request, res: Response) => getAll(req, res, servicesRepository, options.relations)
+export const getServices = async (req: Request, res: Response) => getAll(req, res, AppDataStore.getRepository(Service), options.relations)
     
 export const getServicesAscending = async (req: Request, res: Response) => {
     try {
+
+        const servicesRepository = AppDataStore.getRepository(Service);
         const relations = ['items', 'items.lesson'];
 
         const entities = await servicesRepository.find({
@@ -46,6 +45,7 @@ export const getServicesAscending = async (req: Request, res: Response) => {
 
 export const getServiceById = async (req: Request, res: Response) => {
     try {
+        const servicesRepository = AppDataStore.getRepository(Service);
         const id = req.params.id;
         const service = await servicesRepository.findOne({ where: { id }, relations: options.relations });
         if (!service) return Res.send(res, 404, notFound);
@@ -57,6 +57,9 @@ export const getServiceById = async (req: Request, res: Response) => {
 
 export const createService = async (req: Request, res: Response) => {
     try {
+        const servicesRepository = AppDataStore.getRepository(Service);
+        const teachersRepository = AppDataStore.getRepository(Teacher);
+        const itemsRepository = AppDataStore.getRepository(Item);
         const teacherId = req.body.teacher;
         const teacher = await teachersRepository.findOne({ where: { id: teacherId } });
         if (!teacher) return Res.send(res, 404, "Teacher doesn't exist", teacherId);
@@ -86,6 +89,7 @@ export const createService = async (req: Request, res: Response) => {
 
 export const updateService = async (req: Request, res: Response) => {
     try {
+        const servicesRepository = AppDataStore.getRepository(Service);
         const id = req.body.id;
         const service = await servicesRepository.findOne({ where: { id }, relations: options.relations });
         if (!service) return Res.send(res, 404, notFound);
@@ -98,6 +102,7 @@ export const updateService = async (req: Request, res: Response) => {
 
 export const deleteServiceById = async (req: Request, res: Response) => {
     try {
+        const servicesRepository = AppDataStore.getRepository(Service);
         const id = req.params.id;
         const service = await servicesRepository.findOne({ where: { id }, relations: options.relations });
         if (!service) return Res.send(res, 404, notFound);
@@ -110,6 +115,9 @@ export const deleteServiceById = async (req: Request, res: Response) => {
 
 export const getServiceForTeacherInYear = async (req: Request, res: Response) => {
     try {
+        const servicesRepository = AppDataStore.getRepository(Service);
+        const teachersRepository = AppDataStore.getRepository(Teacher);
+
         const teacherId = req.params.teacherId;
         const year = parseInt(req.params.year);
 

@@ -6,7 +6,7 @@ import { isAdmin } from "../middlewares/admin.middleware";
 const router = Router();
 
 router.use(express.urlencoded({ extended: false }));
-router.get('/',isAuth,isAdmin,getTeachers);
+router.get('/',isAuth,getTeachers);
 router.post('/',isAuth,createTeacher);
 router.put('/',isAuth,updateTeacher);
 router.get('/:id',isAuth,getTeacherById);

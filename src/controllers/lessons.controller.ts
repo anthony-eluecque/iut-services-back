@@ -6,15 +6,14 @@ import messages from '../docs/messages.json';
 import { getAll } from './abstract.controller';
 
 const { created, updated, gotOne, deleted, notFound } = messages.lessons;
-const lessonsRepository = AppDataStore.getRepository(Lesson);
-const itemsRepository = AppDataStore.getRepository(Item);
 const options = {
     relations: ["items"]
 };
-export const getLessons = (req, res) => getAll(req, res, lessonsRepository, options.relations);
+export const getLessons = (req, res) => getAll(req, res, AppDataStore.getRepository(Lesson), options.relations);
 
 export const createLesson = async (req: Request, res: Response) => {
     try {
+        const lessonsRepository = AppDataStore.getRepository(Lesson);
         // Vérifier si le leçon existe sur son nom
         const lessonName = req.body.name;
 
@@ -43,6 +42,8 @@ export const createLesson = async (req: Request, res: Response) => {
 
 export const getLessonById = async (req: Request, res: Response) => {
     try {
+        const lessonsRepository = AppDataStore.getRepository(Lesson);
+
         const lessonId = req.params.id;
 
         const lessonToGet = await lessonsRepository.findOne({
@@ -67,6 +68,8 @@ export const getLessonById = async (req: Request, res: Response) => {
 
 export const updateLesson = async (req: Request, res: Response) => {
     try {
+        const lessonsRepository = AppDataStore.getRepository(Lesson);
+
         const lessonId = req.body.id;
 
         const lessonToUpdate = await lessonsRepository.findOne({
@@ -90,6 +93,8 @@ export const updateLesson = async (req: Request, res: Response) => {
 
 export const deleteLessonById = async (req: Request, res: Response) => {
     try {
+        const itemsRepository = AppDataStore.getRepository(Item);
+        const lessonsRepository = AppDataStore.getRepository(Lesson);
 
         const lessonId = req.params.id;
 
@@ -120,6 +125,8 @@ export const deleteLessonById = async (req: Request, res: Response) => {
 
 export const getLessonByGivenId = async (req: Request, res: Response) => {
     try {
+        const lessonsRepository = AppDataStore.getRepository(Lesson);
+        
         const givenId = req.params.givenId;
         const lesson = await lessonsRepository.findOne(
             { where: { givenId : givenId}}

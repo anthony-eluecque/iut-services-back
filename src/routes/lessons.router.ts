@@ -8,7 +8,7 @@ const router = Router();
 
 
 router.use(express.urlencoded({ extended: false }));
-router.get('/',isAuth,isAdmin,getLessons); 
+router.get('/',isAuth,getLessons); 
 router.post('/',isAuth,createLesson);
 router.get('/:id',isAuth,getLessonById);
 router.delete('/:id',isAuth,deleteLessonById);

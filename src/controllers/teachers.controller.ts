@@ -6,15 +6,15 @@ import { getAll } from './abstract.controller';
 import messages from '../docs/messages.json';
 
 const { gotOne, created, updated, deleted, notFound } = messages.teachers;
-const options = { relations : ['role', 'services'] };
+const options = { relations : ['services'] };
 
-const teachersRepository = AppDataStore.getRepository(Teacher);
 // const rolesRepository = AppDataSource.getRepository(Role);
 
-export const getTeachers = (req: Request, res: Response) => getAll(req, res, teachersRepository, options.relations);
+export const getTeachers = (req: Request, res: Response) => getAll(req, res, AppDataStore.getRepository(Teacher), options.relations);
 
 export const getTeacherById = async (req: Request, res: Response) => {
     try {
+        const teachersRepository = AppDataStore.getRepository(Teacher);
         const id = req.params.id;
         const teacher = await teachersRepository.findOne({ where: { id } });
         if (!teacher) return Res.send(res, 404, notFound);
@@ -26,6 +26,7 @@ export const getTeacherById = async (req: Request, res: Response) => {
 
 export const createTeacher = async (req: Request, res: Response) => {
     try {
+        const teachersRepository = AppDataStore.getRepository(Teacher);
         const roleName = req.body.roleName;
         // const role = await rolesRepository.findOne({
         //     where : {
@@ -50,6 +51,7 @@ export const createTeacher = async (req: Request, res: Response) => {
 
 export const getTeacherByGivenId = async (req: Request, res: Response) => {
     try {
+        const teachersRepository = AppDataStore.getRepository(Teacher);
         const givenId = req.params.givenId;
         const teacher = await teachersRepository.findOne(
             { where: { givenId : givenId}, relations : options.relations}
@@ -63,6 +65,7 @@ export const getTeacherByGivenId = async (req: Request, res: Response) => {
 
 export const updateTeacher = async (req: Request, res: Response) => {
     try {
+        const teachersRepository = AppDataStore.getRepository(Teacher);
         const id = req.body.id;
         const teacher = await teachersRepository.findOne({ where: { id } });
         if (!teacher) return Res.send(res, 404, notFound); 
@@ -75,6 +78,7 @@ export const updateTeacher = async (req: Request, res: Response) => {
 
 export const deleteTeacherById = async (req: Request, res: Response) => {
     try {
+        const teachersRepository = AppDataStore.getRepository(Teacher);
         const id = req.params.id;
         const teacher = await teachersRepository.findOne({ where: { id } });
         if (!teacher) return Res.send(res, 404, notFound);

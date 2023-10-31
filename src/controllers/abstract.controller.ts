@@ -14,6 +14,6 @@ export const getAll = async <T>(
         });
         return Res.send(res,200,'Successfully fetched data',entities);
     } catch (error) {
-        return Res.send(res,500,'Internal Server error');
+        return Res.send(res,500,'Internal Server error',error);
     }
 };
