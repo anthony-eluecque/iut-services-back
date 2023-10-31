@@ -4,7 +4,7 @@ export const options = {
     definition: {
         openapi: "3.1.0",
         info: {
-          title: "REST API for Swagger Documentation",
+          title: "Swagger API pour l'IUT Informatique de Calais",
           version: "1.0.0",
         },
         schemes: ["http", "https"],
