@@ -9,7 +9,6 @@ import messages from '../docs/messages.json'
 import { validate } from "class-validator";
 import { decryptData, encryptData } from '../services/aes.service';
 import CookieHelper from '../helpers/cookie.helper';
-import { ObjectId } from 'typeorm';
 import { validationResult } from 'express-validator';
 
 const { serverError } = messages.defaults
@@ -30,6 +29,7 @@ export const getUsers = async (req : Request, res : Response) => {
 export const getUser = async (req : Request, res: Response) => {
     try {
         const usersRepository = AppDataStore.getRepository(User);
+
         const user = await usersRepository.findOne({where : {
             id : req.params.id
         }})
