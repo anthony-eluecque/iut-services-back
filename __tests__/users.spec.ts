@@ -2,23 +2,12 @@ import { initDbStoreForTests } from "../src/config"
 import request from "supertest";
 import app from "../src/routes/index";
 import { Server } from "../src/server";
+import { connectionHandler, loginUser, testUser } from "./connectionHandler";
 
 const server = new Server()
 server.setRoutes()
 
 const baseUrl = '/users'
-
-const testUser = {
-    firstName : 'Anthony',
-    lastName : 'ELUECQUE',
-    password: 'test',
-    email: 'anthony76520.ae@gmail.com'
-}
-
-const loginUser = {
-    email: 'anthony76520.ae@gmail.com',
-    password: 'test'
-}
 
 const runFirstTest = () => it('Unauthorized to get all users', async () => {
     const response = await request(server.getApp()).get(baseUrl)
@@ -38,18 +27,14 @@ const runThirdTest = () => it('Login as user', async () => {
 
 
 const runFourthTest = () => it('Login as user and auth myself', async () => {
-    const response = await request(server.getApp()).post(baseUrl).send(testUser)
-    const loginResponse = await request(server.getApp()).post(baseUrl+'/login').send(loginUser)
-    const cookies = loginResponse.headers['set-cookie']
+    const cookies = await connectionHandler(server)
     const authResponse = await request(server.getApp()).get(baseUrl+'/auth').set('Cookie',cookies)
     expect(authResponse.statusCode).toBe(200)
 })
 
 
 const runFifthTest = () => it('Login and logout myself', async () => {
-    const response = await request(server.getApp()).post(baseUrl).send(testUser)
-    const loginResponse = await request(server.getApp()).post(baseUrl+'/login').send(loginUser)
-    const cookies = loginResponse.headers['set-cookie']
+    const cookies = await connectionHandler(server)
     const logoutResponse = await request(server.getApp()).post(baseUrl+'/logout').set('Cookie',cookies)
     expect(logoutResponse.statusCode).toBe(204)
 })
