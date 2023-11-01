@@ -54,7 +54,7 @@ const runFifthTest = () => it('Login and logout myself', async () => {
     expect(logoutResponse.statusCode).toBe(204)
 })
 
-describe("User routes test",() => {
+describe("Users routes test",() => {
     beforeEach(async () => {
         console.log("Before each is executed...");
         await initDbStoreForTests();
