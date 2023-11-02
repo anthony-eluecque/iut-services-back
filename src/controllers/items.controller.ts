@@ -56,7 +56,7 @@ export const getItemFilterPage = async (req : Request, res : Response) => {
         const itemsCount = await itemsRepository.findAndCount({
             skip,
             take: pageCount,
-            relations: [...options.relations, "service.teacher"],
+            relations: [...options.relations, "service.teacher",'lessonTypes','lessonTypes.lessonType'],
             where
         });
 
@@ -131,8 +131,9 @@ export const updateItem = async (req: Request, res: Response) => {
         const itemsRepository = AppDataStore.getRepository(Item);
         const lessonsTypesRepository = AppDataStore.getRepository(Lesson_type);
         const itemsLessonsJoin = AppDataStore.getRepository(CustomJoinItemsLessons)
-        
-        const { id, types } = req.body
+        const lessonsRepository = AppDataStore.getRepository(Lesson);
+
+        const { id, types, lesson, service } = req.body
         const names = types.map((type) => type.name) as Array<string>
 
         let lessonsTypes = await lessonsTypesRepository.find({
@@ -143,7 +144,8 @@ export const updateItem = async (req: Request, res: Response) => {
             where: {
                 id: id
             },
-            relations: [...options.relations,"lessonTypes","lessonTypes.lessonType"]});
+            relations: [...options.relations,"lessonTypes","lessonTypes.lessonType","service.teacher"]
+        });
         
         if (!oldItem){
             return Res.send(res,404,notFound);
@@ -173,6 +175,10 @@ export const updateItem = async (req: Request, res: Response) => {
                 await itemsLessonsJoin.insert(newType);
             }
         }
+
+        oldItem.lesson = lesson
+        oldItem.service = service
+        await itemsRepository.save(oldItem)
         return Res.send(res,200,updated,oldItem);
 
     } catch (error) {
@@ -204,5 +210,27 @@ export const deleteItemById = async (req: Request, res: Response) => {
         return Res.send(res,500,messages.defaults.serverError,error); 
     }    
 };
+
+
+export const getItemById = async (req: Request, res: Response) => {
+    try {
+        const itemsRepository = AppDataStore.getRepository(Item)
+
+        const { id } = req.query; 
+        
+        const isExistingItem = await itemsRepository.findOne({
+            where: {
+                id: id as string,
+            },
+            relations : [...options.relations,'service.teacher','lessonTypes','lessonTypes.lessonType']
+        });
+
+        if (!isExistingItem) return Res.send(res,404,notFound);
+        return Res.send(res,200,messages.items.gotOne,isExistingItem);
+
+    } catch (error) {
+        
+    }
+}
 
 
