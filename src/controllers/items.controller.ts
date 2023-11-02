@@ -5,7 +5,9 @@ import Res from '../helpers/res.helper';
 import { getAll } from './abstract.controller';
 import messages from '../docs/messages.json';
 import { FindOptionsWhere } from 'typeorm/find-options/FindOptionsWhere';
-import { ILike } from 'typeorm';
+import { ILike, In } from 'typeorm';
+import { Lesson_type } from '../entities/lesson_type.entity';
+import { CustomJoinItemsLessons } from '../entities/joinItemsLessons';
 
 
 const { gotAll, created, updated, deleted, notFound  } = messages.items;
@@ -57,8 +59,6 @@ export const getItemFilterPage = async (req : Request, res : Response) => {
             relations: [...options.relations, "service.teacher"],
             where
         });
-
-        console.log(itemsCount)
 
         return Res.send(res,200,gotAll, {items: itemsCount[0], count: itemsCount[1]});
     } catch (error) {
@@ -115,7 +115,6 @@ export const createItem = async (req: Request, res: Response) => {
 
 
         const newItem = itemsRepository.create({
-            amountHours : 0,
             lesson : lesson,
             service : service,
             lessonTypes : [],
@@ -124,27 +123,57 @@ export const createItem = async (req: Request, res: Response) => {
         return Res.send(res,200,messages.items.created,newItem)
     } catch (error) {
         return Res.send(res,500,messages.defaults.serverError,error);
-    }
+    }   
 };
 
 export const updateItem = async (req: Request, res: Response) => {
     try {
-        const lessonsRepository = AppDataStore.getRepository(Lesson);
         const itemsRepository = AppDataStore.getRepository(Item);
-
-        const itemId = req.body.id;
-
-        const itemToUpdate = await itemsRepository.findOne({
-            where: {
-                id: itemId,
-            }});
+        const lessonsTypesRepository = AppDataStore.getRepository(Lesson_type);
+        const itemsLessonsJoin = AppDataStore.getRepository(CustomJoinItemsLessons)
         
-        if (!itemToUpdate){
+        const { id, types } = req.body
+        const names = types.map((type) => type.name) as Array<string>
+
+        let lessonsTypes = await lessonsTypesRepository.find({
+            where: {name : In(names)}
+        })
+
+        const oldItem = await itemsRepository.findOne({
+            where: {
+                id: id
+            },
+            relations: [...options.relations,"lessonTypes","lessonTypes.lessonType"]});
+        
+        if (!oldItem){
             return Res.send(res,404,notFound);
         }
+        for (const lessonType of lessonsTypes) {
+            const obj = types.find(obj => obj.name == lessonType.name)
 
-        await itemsRepository.merge(itemToUpdate,req.body).save();
-        return Res.send(res,200,updated,itemToUpdate);
+            const isExistingJoin = await itemsLessonsJoin.findOne({
+                where: {
+                    item : {
+                        id: oldItem.id
+                    },
+                    lessonType: {
+                        name : lessonType.name
+                    }
+                }
+            })
+            if (isExistingJoin){
+                isExistingJoin.amountHours = obj.amountHours
+                await itemsLessonsJoin.save(isExistingJoin)
+            } else {
+                const newType = await itemsLessonsJoin.create({
+                    amountHours: obj.amountHours,
+                    item : oldItem,
+                    lessonType: lessonType
+                }) 
+                await itemsLessonsJoin.insert(newType);
+            }
+        }
+        return Res.send(res,200,updated,oldItem);
 
     } catch (error) {
         return Res.send(res,500,messages.defaults.serverError,error);  
