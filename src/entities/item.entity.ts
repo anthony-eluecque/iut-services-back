@@ -1,14 +1,12 @@
-import { Entity, Column, ManyToOne, ManyToMany, JoinTable } from "typeorm";
+import { Entity, Column, ManyToOne, ManyToMany, JoinTable, OneToMany } from "typeorm";
 import Model from "./model.entity";
 import { Lesson } from "./lesson.entity";
 import { Service } from "./service.entity";
 import { Lesson_type } from "./lesson_type.entity";
+import { CustomJoinItemsLessons } from "./joinItemsLessons";
 
 @Entity('items')
 export class Item extends Model {
-
-    @Column()
-    amountHours: number;
 
     @ManyToOne(() => Lesson, lesson => lesson.items, { onDelete : 'CASCADE' })
     lesson: Lesson;
@@ -16,8 +14,8 @@ export class Item extends Model {
     @ManyToOne(() => Service, service => service.items, { onDelete : 'CASCADE' })
     service: Service;
 
-    @ManyToMany(() => Lesson_type, lessonType => lessonType.items)
+    @OneToMany(() => CustomJoinItemsLessons, CustomJoin => CustomJoin.item)
     @JoinTable()
-    lessonTypes: Lesson_type[];
+    lessonTypes: CustomJoinItemsLessons[];
 
-}
+}   
