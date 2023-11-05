@@ -16,7 +16,7 @@ export const getServicesAscending = async (req: Request, res: Response) => {
     try {
 
         const servicesRepository = AppDataStore.getRepository(Service);
-        const relations = ['items', 'items.lesson'];
+        const relations = [...options.relations, 'items.lesson','items.lessonTypes','items.lessonTypes.lessonType'];
 
         const entities = await servicesRepository.find({
             relations,
