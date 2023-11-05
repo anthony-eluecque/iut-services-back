@@ -27,8 +27,6 @@ export const getItemFilterPage = async (req : Request, res : Response) => {
         
         const { id, firstName, lastName, givenId, nameLesson } = req.query
 
-        console.log(req.query)
-
         let where: FindOptionsWhere<any> = {
             service: {
                 year: year,
@@ -176,12 +174,20 @@ export const updateItem = async (req: Request, res: Response) => {
             }
         }
 
-        oldItem.lesson = lesson
-        oldItem.service = service
-        await itemsRepository.save(oldItem)
+        // await itemsRepository.update({
+
+        // },{
+        //     lesson,
+        //     service
+        // })
+
+        // oldItem.lesson = lesson
+        // oldItem.service = service
+        // await itemsRepository.save(oldItem)
         return Res.send(res,200,updated,oldItem);
 
     } catch (error) {
+        console.error(error)
         return Res.send(res,500,messages.defaults.serverError,error);  
     }
 };

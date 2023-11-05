@@ -45,9 +45,10 @@ export const getServicesAscending = async (req: Request, res: Response) => {
 
 export const getServiceById = async (req: Request, res: Response) => {
     try {
+        const relations = [...options.relations,'items', 'items.lesson','items.lessonTypes','items.lessonTypes.lessonType'];
         const servicesRepository = AppDataStore.getRepository(Service);
         const id = req.params.id;
-        const service = await servicesRepository.findOne({ where: { id }, relations: options.relations });
+        const service = await servicesRepository.findOne({ where: { id }, relations: relations});
         if (!service) return Res.send(res, 404, notFound);
         return Res.send(res, 200, gotOne, service);
     } catch (error) {
