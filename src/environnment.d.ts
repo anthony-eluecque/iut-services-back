@@ -11,5 +11,11 @@ declare namespace NodeJS {
         BCRYPT_SALTROUND : string;
         JWT_SECRET : string;
         AES_SECRET : string;
+        JWT_RESET_PASSWORD_SECRET: string;
+        SERVER_SMTP: string;
+        PORT_SMTP: string;
+        LOGIN_EMAIL: string;
+        PASSWORD_EMAIL: string;
+        FROM_EMAIL: string;
     }
 }

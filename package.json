@@ -12,11 +12,11 @@
     "lint": "eslint ./src/**/*.ts",
     "typeorm": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli -d ./src/config/data-source.ts",
     "docker": "nodemon -L -e ts --exec 'tsc -p ./tsconfig.json && node ./dist/server.js'",
-    "migration:create": "ts-node -r tsconfig-paths/register node_modules/typeorm/cli migration:create src/migrations/%npm_config_name%",    
+    "migration:create": "ts-node -r tsconfig-paths/register node_modules/typeorm/cli migration:create src/migrations/%npm_config_name%",
     "migration:generate": "npm run typeorm -- migration:generate ./src/migrations/$npm_config_name",
     "migration:revert": "npm run typeorm -- migration:revert",
     "migration:run": "npm run typeorm -- migration:run"
-  }, 
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/anthony-eluecque/iut-services-back.git"
@@ -38,8 +38,8 @@
     "eslint-plugin-n": "^16.0.2",
     "eslint-plugin-promise": "^6.1.1",
     "nodemon": "^3.0.1",
-    "typescript": "^5.2.2",
-    "tsconfig-paths": "^4.2.0"
+    "tsconfig-paths": "^4.2.0",
+    "typescript": "^5.2.2"
   },
   "dependencies": {
     "@types/bcrypt": "^5.0.0",
@@ -57,6 +57,7 @@
     "install": "^0.13.0",
     "jsonwebtoken": "^9.0.2",
     "md5": "^2.3.0",
+    "nodemailer": "^6.9.7",
     "npm": "^10.1.0",
     "pg": "^8.4.0",
     "reflect-metadata": "^0.1.13",
