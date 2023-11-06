@@ -73,6 +73,23 @@ export const createItem = async (req: Request, res: Response) => {
         let { service, lesson } = req.body;
         let { teacher } = service;
 
+
+        const itemAlreadyExisting = await itemsRepository.findOne({
+            where:{
+                service: {
+                    teacher: {
+                        givenId: teacher.givenId
+                    }
+                },
+                lesson : {
+                    givenId: lesson.givenId
+                },
+            }
+        })
+        if (itemAlreadyExisting){
+            return Res.send(res,409,"Already existing in database",itemAlreadyExisting)
+        }
+
         const isExistingTeacher = await teachersRepository.findOne({where:{givenId:teacher.givenId}})
         if (!isExistingTeacher){
             // Le teacher n'existe pas
@@ -111,16 +128,6 @@ export const createItem = async (req: Request, res: Response) => {
             await servicesRepository.save(service)
         } else { service = isExistingService }
 
-        const itemAlreadyExisting = await itemsRepository.findOne({
-            where:{
-                service: service,
-                lesson : lesson,
-            }
-        })
-        if (itemAlreadyExisting){
-            return Res.send(res,409,"Already existing in database",itemAlreadyExisting)
-        }
-        
         const newItem = itemsRepository.create({
             lesson : lesson,
             service : service,
