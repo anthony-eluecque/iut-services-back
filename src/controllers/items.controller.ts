@@ -111,7 +111,16 @@ export const createItem = async (req: Request, res: Response) => {
             await servicesRepository.save(service)
         } else { service = isExistingService }
 
-
+        const itemAlreadyExisting = await itemsRepository.findOne({
+            where:{
+                service: service,
+                lesson : lesson,
+            }
+        })
+        if (itemAlreadyExisting){
+            return Res.send(res,409,"Already existing in database",itemAlreadyExisting)
+        }
+        
         const newItem = itemsRepository.create({
             lesson : lesson,
             service : service,
