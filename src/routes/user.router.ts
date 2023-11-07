@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { 
     getUsers, 
+    getUserFilterPage,
     createUser, 
     authenticate , 
     login, 
@@ -222,6 +223,27 @@ router.get('/:id',isAuth,getUser);
  *         description: Erreur interne du serveur.
  */
 router.put("/",isAuth, updateUser)
+
+/**
+ * @swagger
+ * /users/{page}:
+ *  get:
+ *      summary: Récupère la liste des utilisateurs avec pagination.
+ *      tags: [Users]
+ *      parameters:
+ *        - in: path
+ *          name: page
+ *          required: true
+ *          description: Numéro de la page à récupérer.
+ *          schema:
+ *              type: integer
+ *      responses:
+ *          200:
+ *              description: Liste des utilisateurs récupérée avec succès.
+ *          500:
+ *              description: Erreur interne du serveur.
+ */
+router.get('/filter/:page', isAuth, isAdmin, getUserFilterPage)
 
 /**
  * @swagger

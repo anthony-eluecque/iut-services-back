@@ -10,6 +10,7 @@ import { validate } from "class-validator";
 import { decryptData, encryptData } from '../services/aes.service';
 import CookieHelper from '../helpers/cookie.helper';
 import { validationResult } from 'express-validator';
+import { ILike } from 'typeorm';
 
 const { serverError } = messages.defaults
 
@@ -25,6 +26,30 @@ export const getUsers = async (req : Request, res : Response) => {
         return Res.send(res,500,'Internal Server error');
     }
 };
+
+export const getUserFilterPage = async (req : Request, res : Response) => {
+    try {
+        const usersRepository = AppDataStore.getRepository(User);
+        const page = parseInt(req.params.page) || 1;
+        const pageCount = 5;
+        const skip = (page - 1) * pageCount;
+        const { id, firstName, lastName, email } = req.query
+        let where = {
+            id: id != '' && id ? ILike('%' + id + '%') : null,
+            firstName: firstName != '' && firstName ? decryptData(firstName).toString(CryptoJS.enc.Utf8) : null,
+            lastName: lastName != '' && lastName ? decryptData(lastName).toString(CryptoJS.enc.Utf8) : null,
+            email: email != '' && email ? ILike('%' + email + '%') : null
+        }
+        const usersCount = await usersRepository.findAndCount({
+            skip,
+            take: pageCount,
+            where
+        });
+        return Res.send(res,200,'Success', {users: usersCount[0], count: usersCount[1]});
+    } catch (error) {
+        return Res.send(res,500,'Internal Server error');
+    }
+}
 
 export const getUser = async (req : Request, res: Response) => {
     try {
