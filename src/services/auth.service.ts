@@ -66,14 +66,16 @@ const sendMailResetPassword = async(req: Request, res: Response, user: User) => 
 
     const transporter = nodemailer.createTransport({
         host: process.env.SERVER_SMTP,
-        secureConnection: false,
         port: process.env.PORT_SMTP,
+        secure: true,
+        service:process.env.TYPE_SERVICE,
         auth: {
             user: process.env.LOGIN_EMAIL,
             pass: process.env.PASSWORD_EMAIL,
         },
     });
-  
+    module.exports = { transporter };
+    
     const firstName = decryptData(user.firstName).toString(CryptoJS.enc.Utf8);
     const lastName = decryptData(user.lastName).toString(CryptoJS.enc.Utf8);
 
