@@ -51,6 +51,11 @@ export const getUserFilterPage = async (req: Request, res: Response) => {
             });
         }
 
+        users.forEach(user => {
+            user.firstName = decryptData(user.firstName).toString(CryptoJS.enc.Utf8);
+            user.lastName = decryptData(user.lastName).toString(CryptoJS.enc.Utf8);
+        });
+
         return Res.send(res, 200, 'Success', { users: users, count: users.length });
     } catch (error) {
         return Res.send(res, 500, 'Internal Server error');
