@@ -4,17 +4,16 @@ import { AppDataStore } from '../config';
 import Res from '../helpers/res.helper';
 import { hashPassword } from '../services/hash.service';
 import CryptoJS, { AES } from "crypto-js";
-import { generateConnectionToken, verifyPassword } from '../services/auth.service';
+import { changePasswordUser, forgotPasswordUser, generateConnectionToken, resetPasswordUser, verifyPassword } from '../services/auth.service';
 import messages from '../docs/messages.json'
 import { validate } from "class-validator";
 import { decryptData, encryptData } from '../services/aes.service';
 import CookieHelper from '../helpers/cookie.helper';
 import { validationResult } from 'express-validator';
+import { contextsKey } from 'express-validator/src/base';
 import { ILike } from 'typeorm';
 
 const { serverError } = messages.defaults
-
-
 
 export const getUsers = async (req : Request, res : Response) => {
     try {
@@ -178,13 +177,43 @@ export const deleteUser = async (req: Request, res: Response) => {
         return Res.send(res,204,"deleted")
 
     } catch (error) {
-        console.log(error)
         return Res.send(res,500,serverError)
     }
 }
 
-
 //#region  AUTH 
+
+export const resetPassword =async (req: Request, res: Response) => {
+    try {
+        if (!req.body.password) return Res.send(res,400,"Incorrect inputs")
+
+        await resetPasswordUser(req, res);
+    } catch (error) {
+        console.log(error)
+        return Res.send(res,500,serverError)
+    }
+} 
+
+export const forgotPassword  = async(req: Request, res: Response) => {
+    try {
+        if (!req.body.email) return Res.send(res,400,"Incorrect inputs");
+
+        forgotPasswordUser(req, res);
+    } catch (error) {
+        return Res.send(res,500,serverError)
+    }
+} 
+
+export const changePassword = async(req: Request, res: Response) => {
+    try {
+        const { password, token } = req.body;
+        if (!password || !token) return Res.send(res,400,"Incorrect inputs");
+
+        changePasswordUser(req, res);
+    } catch (error) {
+        return Res.send(res,500,serverError)
+    }
+}
 
 export const login = async (req : Request , res : Response) => {
     try {
@@ -198,7 +227,7 @@ export const login = async (req : Request , res : Response) => {
             email : email
         }})
         if (!user) return Res.send(res,400,"User not found");
-
+  
         const matchedPassword = await verifyPassword(user,password);
 
         if (!matchedPassword) return Res.send(res,400,"Invalid password");
@@ -228,5 +257,7 @@ export const authenticate = async (req: Request, res: Response) => {
         return Res.send(res, 500, serverError);
     }
 }
+
+
 
 //#endregion

@@ -8,7 +8,10 @@ import {
     getUser, 
     logout, 
     deleteUser,
-    updateUser} from "../controllers";
+    updateUser,
+    resetPassword,
+    changePassword,
+    forgotPassword} from "../controllers";
 import { isAuth } from "../middlewares/auth.middleware";
 import { isAdmin } from "../middlewares/admin.middleware";
 
@@ -183,6 +186,10 @@ router.post('/logout', logout);
  *       500:
  *         description: Erreur interne du serveur.
  */
+
+router.post('/resetPassword', isAuth, resetPassword);
+router.post('/changePassword', changePassword);
+router.post('/forgotPassword', forgotPassword);
 
 router.get('/:id',isAuth,getUser);
 
