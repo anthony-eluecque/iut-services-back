@@ -27,27 +27,33 @@ export const getUsers = async (req : Request, res : Response) => {
     }
 };
 
-export const getUserFilterPage = async (req : Request, res : Response) => {
+export const getUserFilterPage = async (req: Request, res: Response) => {
     try {
         const usersRepository = AppDataStore.getRepository(User);
         const page = parseInt(req.params.page) || 1;
         const pageCount = 5;
         const skip = (page - 1) * pageCount;
-        const { id, firstName, lastName, email } = req.query
+        const { firstName, lastName, email } = req.query;
         let where = {
-            id: id != '' && id ? ILike('%' + id + '%') : null,
-            firstName: firstName != '' && firstName ? decryptData(firstName).toString(CryptoJS.enc.Utf8) : null,
-            lastName: lastName != '' && lastName ? decryptData(lastName).toString(CryptoJS.enc.Utf8) : null,
-            email: email != '' && email ? ILike('%' + email + '%') : null
-        }
-        const usersCount = await usersRepository.findAndCount({
+            email: email != '' && email ? ILike('%' + email + '%') : null,
+            isAdmin: false,
+        };
+        let [users, _] = await usersRepository.findAndCount({
             skip,
-            take: pageCount,
             where
         });
-        return Res.send(res,200,'Success', {users: usersCount[0], count: usersCount[1]});
+
+        if (firstName || lastName) {
+            users = users.filter(user => {
+                const decryptedFirstName = user.firstName ? decryptData(user.firstName).toString(CryptoJS.enc.Utf8) : '';
+                const decryptedLastName = user.lastName ? decryptData(user.lastName).toString(CryptoJS.enc.Utf8) : '';
+                return (!firstName || decryptedFirstName === firstName) && (!lastName || decryptedLastName === lastName);
+            });
+        }
+
+        return Res.send(res, 200, 'Success', { users: users, count: users.length });
     } catch (error) {
-        return Res.send(res,500,'Internal Server error');
+        return Res.send(res, 500, 'Internal Server error');
     }
 }
 
