@@ -7,7 +7,7 @@ import { getAll } from './abstract.controller';
 
 const { created, updated, gotOne, deleted, notFound } = messages.lessons;
 const options = {
-    relations: ["items"]
+    relations: ["items","items.lessonTypes","items.lesson","items.lessonTypes.lessonType"]
 };
 export const getLessons = (req, res) => getAll(req, res, AppDataStore.getRepository(Lesson), options.relations);
 
