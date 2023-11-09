@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import { User, validateUser } from '../entities';
 import { AppDataStore } from '../config';
 import Res from '../helpers/res.helper';
+import jwt, { JwtPayload } from 'jsonwebtoken';
 import { hashPassword } from '../services/hash.service';
 import CryptoJS, { AES } from "crypto-js";
 import { changePasswordUser, forgotPasswordUser, generateConnectionToken, resetPasswordUser, verifyPassword } from '../services/auth.service';
@@ -181,6 +182,19 @@ export const deleteUser = async (req: Request, res: Response) => {
     }
 }
 
+export const deleteAccount = async (req: Request, res: Response) => {
+    try {
+        const { token } = req.cookies;
+        const { id } = jwt.verify(token, process.env.JWT_SECRET) as JwtPayload;
+
+        await usersRepository.delete({id})
+        
+        return Res.send(res,200,"deleted")
+
+    } catch (error) {
+        return Res.send(res,500,serverError)
+    }
+}
 //#region  AUTH 
 
 export const resetPassword =async (req: Request, res: Response) => {

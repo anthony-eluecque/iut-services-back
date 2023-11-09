@@ -11,6 +11,7 @@ import {
     updateUser,
     resetPassword,
     changePassword,
+    deleteAccount,
     forgotPassword} from "../controllers";
 import { isAuth } from "../middlewares/auth.middleware";
 import { isAdmin } from "../middlewares/admin.middleware";
@@ -190,7 +191,7 @@ router.post('/logout', logout);
 router.post('/resetPassword', isAuth, resetPassword);
 router.post('/changePassword', changePassword);
 router.post('/forgotPassword', forgotPassword);
-
+router.post('/deleteAccount', isAuth, deleteAccount);
 router.get('/:id',isAuth,getUser);
 
 /**
