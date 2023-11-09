@@ -4,13 +4,11 @@ import { Server } from "../src/server";
 import { connectionHandler } from "./connectionHandler";
 import { requestGetHandler } from "./requestHandler";
 
-
-
 const server = new Server()
 server.setRoutes()
 const baseUrl = '/teachers'
 
-const testTeacher  = {
+export const testTeacher  = {
     firstName : 'Firstname Teacher',
     givenId : '123456789',
     lastName : 'Lastname Teacher'

@@ -4,6 +4,7 @@ import { Server } from "../src/server";
 import { connectionHandler } from "./connectionHandler";
 import { requestGetHandler } from "./requestHandler";
 import { Item, Service } from "../src/entities";
+import {testTeacher} from "./teachers.spec";
 
 
 
@@ -11,6 +12,10 @@ const server = new Server()
 server.setRoutes()
 const baseUrl = '/services'
 
+export const testServices = {
+    year: 2023,
+    teacher: testTeacher,
+}
 
 const runFirstTest = () => it('Unauthorized without being logged', async () => {
     const response = await requestGetHandler(server,baseUrl)
