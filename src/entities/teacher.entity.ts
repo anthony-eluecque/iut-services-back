@@ -37,12 +37,12 @@ export class Teacher extends Model {
  *         firstName:
  *           type: string
  *           description: Prénom de l'enseignant.
- *     required:
- *       - givenId
- *       - lastName
- *       - firstName
- *     example:
- *       givenId: 123456
- *       lastName: Dupont
- *       firstName: Jean
+ *       required:
+ *         - givenId
+ *         - lastName
+ *         - firstName
+ *       example:
+ *         givenId: 123456
+ *         lastName: Dupont
+ *         firstName: Jean
  */
