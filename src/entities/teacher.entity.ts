@@ -20,3 +20,32 @@ export class Teacher extends Model {
     @OneToMany(() => Service, (service) => service.teacher)
     services : Service[];
 }
+
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     Teacher:
+ *       type: object
+ *       properties:
+ *         id:
+ *             type: integer
+ *             description: Identifiant unique de l'enseignant.
+ *         givenId:
+ *             type: string
+ *             description: Matricule de l'enseignant.
+ *         lastName:
+ *             type: string
+ *             description: Nom de l'enseignant.
+ *         firstName:
+ *             type: string
+ *             description: Prénom de l'enseignant.
+ *     required:
+ *       - givenId
+ *       - lastName
+ *       - firstName
+ *     example:
+ *       givenId: 123456
+ *       lastName: Dupont
+ *       firstName: Jean
+ */
