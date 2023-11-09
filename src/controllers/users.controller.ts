@@ -184,6 +184,8 @@ export const deleteUser = async (req: Request, res: Response) => {
 
 export const deleteAccount = async (req: Request, res: Response) => {
     try {
+        const usersRepository = AppDataStore.getRepository(User);
+
         const { token } = req.cookies;
         const { id } = jwt.verify(token, process.env.JWT_SECRET) as JwtPayload;
 
