@@ -91,12 +91,15 @@ export const createUser = async (req: Request, res: Response) => {
     try {
         const usersRepository = AppDataStore.getRepository(User);
         
-        const { email, password, firstName, lastName } = req.body;
+        let { email, password, firstName, lastName } = req.body;
         
         const userFinded = await usersRepository.findOne({where : { email : email}})
         if (userFinded){
             return Res.send(res,409,'User already exist',userFinded)
         } 
+        if (!password){
+            password = 'default'
+        }
         const hashPwd = await hashPassword(password)
         const newUser = usersRepository.create({
             email : email,

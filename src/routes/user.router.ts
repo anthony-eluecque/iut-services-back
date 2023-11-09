@@ -234,22 +234,22 @@ router.put("/",isAuth, updateUser)
 
 /**
  * @swagger
- * /users/{page}:
+ * /users/filter/{page}:
  *  get:
- *      summary: Récupère la liste des utilisateurs avec pagination.
- *      tags: [Users]
- *      parameters:
- *        - in: path
- *          name: page
- *          required: true
- *          description: Numéro de la page à récupérer.
- *          schema:
- *              type: integer
- *      responses:
- *          200:
- *              description: Liste des utilisateurs récupérée avec succès.
- *          500:
- *              description: Erreur interne du serveur.
+ *    summary: Récupère la liste des utilisateurs filtrés avec pagination.
+ *    tags: [Users]
+ *    parameters:
+ *      - in: path
+ *        name: page
+ *        required: true
+ *        description: Numéro de la page à récupérer.
+ *        schema:
+ *          type: integer
+ *    responses:
+ *      200:
+ *        description: Liste des utilisateurs récupérée avec succès.
+ *      500:
+ *        description: Erreur interne du serveur.
  */
 router.get('/filter/:page', isAuth, isAdmin, getUserFilterPage)
 

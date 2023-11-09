@@ -8,7 +8,7 @@ const server = new Server()
 server.setRoutes()
 const baseUrl = '/lessons'
 
-const testLessons  = {
+export const testLessons  = {
     name : 'Maths',
     givenId : '0568',
 }
