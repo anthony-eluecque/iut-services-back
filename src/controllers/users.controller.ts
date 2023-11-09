@@ -267,8 +267,14 @@ export const logout = async (req : Request, res: Response) => {
 export const authenticate = async (req: Request, res: Response) => {
     try {
         if (!res.locals.user) return Res.send(res, 401, "unAuth");
+        const decryptedUser = {
+            email : res.locals.user.email,
+            firstName : decryptData(res.locals.user.firstName).toString(CryptoJS.enc.Utf8),
+            lastName : decryptData(res.locals.user.lastName).toString(CryptoJS.enc.Utf8),
+            isAdmin : res.locals.user.isAdmin
+        };
 
-        return Res.send(res, 200, "auth", res.locals.user);
+        return Res.send(res, 200, "auth", decryptedUser);
     } catch (error) {
         return Res.send(res, 500, serverError);
     }
