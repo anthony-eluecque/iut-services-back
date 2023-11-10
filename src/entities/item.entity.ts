@@ -14,7 +14,7 @@ export class Item extends Model {
     @ManyToOne(() => Service, service => service.items, { onDelete : 'CASCADE' })
     service: Service;
 
-    @OneToMany(() => CustomJoinItemsLessons, CustomJoin => CustomJoin.item)
+    @OneToMany(() => CustomJoinItemsLessons, CustomJoin => CustomJoin.item, { onDelete : 'CASCADE' })
     @JoinTable()
     lessonTypes: CustomJoinItemsLessons[];
 
