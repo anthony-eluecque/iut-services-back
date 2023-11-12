@@ -7,7 +7,7 @@ import { isAdmin } from "../middlewares/admin.middleware";
  * @swagger
  * tags:
  *   name: Services
- *   description: Operations sur les services de l'application
+ *   description: Opérations sur les services de l'application
  */
 const router = Router();
 

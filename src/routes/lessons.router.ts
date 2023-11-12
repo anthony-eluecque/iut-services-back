@@ -7,7 +7,7 @@ import { isAuth } from "../middlewares/auth.middleware";
  * @swagger
  * tags:
  *   name: Lessons
- *   description: Operations sur les cours
+ *   description: Opérations sur les cours
  */
 const router = Router();
 
