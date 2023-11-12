@@ -4,6 +4,7 @@ import { AppDataStore } from '../config';
 import Res from '../helpers/res.helper';
 import { getAll } from './abstract.controller';
 import messages from '../docs/messages.json';
+import { ILike } from 'typeorm';
 
 const { gotOne, created, updated, deleted, notFound } = messages.teachers;
 const options = { relations : ['services'] };
@@ -23,6 +24,25 @@ export const getTeacherById = async (req: Request, res: Response) => {
         return Res.send(res, 500, messages.defaults.serverError, error);
     }
 };
+
+export const getFilteredTeachers = async (req: Request, res: Response) => {
+    try {
+        const teachersRepository = AppDataStore.getRepository(Teacher);
+        const { givenId, lastName, firstName } = req.query;
+        const where = {
+            givenId: givenId != '' && givenId ? ILike('%' + givenId + '%') : null,
+            lastName: lastName != '' && lastName ? ILike('%' + lastName + '%') : null,
+            firstName: firstName != '' && firstName ? ILike('%' + firstName + '%') : null,
+        };
+        const teachers = await teachersRepository.find({
+            where
+        });
+        return Res.send(res, 200, 'Success', teachers);
+    } catch (error) {
+        return Res.send(res, 500, 'Internal Server error');
+    }
+
+}
 
 export const createTeacher = async (req: Request, res: Response) => {
     try {
@@ -44,7 +64,6 @@ export const createTeacher = async (req: Request, res: Response) => {
 
         return Res.send(res, 200, created, newTeacher);
     } catch (error) {
-        console.warn(error);
         return Res.send(res, 500, messages.defaults.serverError, error);
     }
 };

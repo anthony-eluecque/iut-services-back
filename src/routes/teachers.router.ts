@@ -2,6 +2,7 @@ import { Router } from "express";
 import {
     getTeachers,
     getTeacherById,
+    getFilteredTeachers,
     createTeacher,
     updateTeacher,
     deleteTeacherById,
@@ -37,29 +38,6 @@ const router = Router();
  *         description: Erreur de serveur interne.
  */
 router.get('/', isAuth, getTeachers);
-
-/**
- * @swagger
- * /teachers/{id}:
- *   get:
- *     summary: Récupère un enseignant spécifique par son ID.
- *     tags: [Teachers]
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         description: ID de l'enseignant à récupérer.
- *         schema:
- *           type: string
- *     responses:
- *       200:
- *         description: Informations de l'enseignant récupérées avec succès.
- *       404:
- *         description: Enseignant non trouvé.
- *       500:
- *         description: Erreur de serveur interne.
- */
-router.get('/:id', isAuth, getTeacherById);
 
 /**
  * @swagger
@@ -132,6 +110,63 @@ router.post('/', isAuth, createTeacher);
  *         description: Erreur de serveur interne.
  */
 router.put('/', isAuth, updateTeacher);
+
+/**
+ * @swagger
+ * /teachers/filter/:
+ *   get:
+ *     summary: Récupère la liste des enseignants filtrés.
+ *     tags: [Teachers]
+ *     description: Récupère une liste des enseignants enregistrés filtrés par nom, prénom ou ID.
+ *     parameters:
+ *       - in: query
+ *         name: givenId
+ *         required: false
+ *         description: Matricule de l'enseignant à filtrer.
+ *         schema:
+ *           type: string
+ *       - in: query
+ *         name: lastName
+ *         required: false
+ *         description: Nom de l'enseignant à filtrer.
+ *         schema:
+ *           type: string
+ *       - in: query
+ *         name: firstName
+ *         required: false
+ *         description: Prénom de l'enseignant à filtrer.
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Liste des enseignants récupérée avec succès.
+ *       500:
+ *         description: Erreur de serveur interne.
+ */
+router.get('/filter/', isAuth, getFilteredTeachers);
+
+/**
+ * @swagger
+ * /teachers/{id}:
+ *   get:
+ *     summary: Récupère un enseignant spécifique par son ID.
+ *     tags: [Teachers]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: ID de l'enseignant à récupérer.
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Informations de l'enseignant récupérées avec succès.
+ *       404:
+ *         description: Enseignant non trouvé.
+ *       500:
+ *         description: Erreur de serveur interne.
+ */
+router.get('/:id', isAuth, getTeacherById);
 
 /**
  * @swagger
