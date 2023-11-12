@@ -88,7 +88,6 @@ export const createItem = async (req: Request, res: Response) => {
         let { service, lesson } = req.body;
         let { teacher } = service;
 
-
         const itemAlreadyExisting = await itemsRepository.findOne({
             where:{
                 service: {
@@ -224,7 +223,6 @@ export const updateItem = async (req: Request, res: Response) => {
         return Res.send(res,200,updated,oldItem);
 
     } catch (error) {
-        console.error(error);
         return Res.send(res,500,messages.defaults.serverError,error);  
     }
 };
