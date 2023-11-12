@@ -3,7 +3,7 @@ module.exports = {
     testEnvironment: 'node',
     testMatch: ['**/*.spec.ts'],
     modulePaths: ['<rootDir>/src'],
-    // collectCoverage: true,
-    // coverageDirectory: "coverage",
-    // collectCoverageFrom: ["src/**/*.ts"]
+    collectCoverage: true,
+    coverageDirectory: "coverage",
+    collectCoverageFrom: ["src/**/*.ts"]
 };
