@@ -9,10 +9,6 @@ import { hash } from 'bcrypt';
  * @throws {Error} Une erreur si la fonction de hachage échoue.
  */
 export const hashPassword = async (data : string) => {
-    try {
-        const hashPwd = hash(data,parseInt(process.env.BCRYPT_SALTROUND));
-        return hashPwd;
-    } catch (error) {
-        throw error;
-    }
-}
+    const hashPwd = hash(data,parseInt(process.env.BCRYPT_SALTROUND));
+    return hashPwd;
+};

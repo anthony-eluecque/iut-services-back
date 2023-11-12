@@ -55,7 +55,7 @@ export const getFilteredTeachers = async (req: Request, res: Response) => {
         return Res.send(res, 500, 'Internal Server error');
     }
 
-}
+};
 
 /**
  * Crée un nouvel enseignant en utilisant les données fournies dans le corps de la requête.

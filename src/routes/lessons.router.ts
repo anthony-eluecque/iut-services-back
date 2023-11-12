@@ -2,7 +2,6 @@ import express,{ Router } from "express";
 import { createLesson , getLessons, getLessonById, deleteLessonById, updateLesson} from "../controllers";
 import { getLessonByGivenId } from "../controllers/lessons.controller";
 import { isAuth } from "../middlewares/auth.middleware";
-import { isAdmin } from "../middlewares/admin.middleware";
 
 const router = Router();
 

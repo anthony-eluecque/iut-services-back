@@ -1,11 +1,11 @@
-import { NextFunction, Request, Response } from "express"
+import { NextFunction, Request, Response } from "express";
 import jwt, { JwtPayload } from 'jsonwebtoken';
 import Res from "../helpers/res.helper";
 import { AppDataStore } from "../config";
 import { User } from "../entities";
 import messages from '../docs/messages.json';
 
-const { serverError, unAuth } = messages.defaults
+const { serverError, unAuth } = messages.defaults;
 
 /**
  * Middleware pour vérifier l'authentification de l'utilisateur.
@@ -42,4 +42,4 @@ export const isAuth = async (req : Request, res : Response, next : NextFunction)
     } catch (error) {
         return Res.send(res, 500, serverError);
     }
-}
+};

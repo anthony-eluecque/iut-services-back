@@ -21,4 +21,4 @@ export const options = {
         `${rootFolder}/entities/*.ts`,
         "./dist/entities/*.js"
     ],
-}
+};

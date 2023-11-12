@@ -23,4 +23,4 @@ export const isAdmin = async (req: Request, res: Response, next: NextFunction) =
     } catch (error) {
         return Res.send(res, 500, serverError);
     }
-}
+};

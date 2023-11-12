@@ -12,6 +12,6 @@ router.post('/',isAuth,createService);
 router.put('/',isAuth,updateService);
 router.delete('/:id',isAuth,deleteServiceById);
 router.get('/teacher/:teacherId/year/:year',isAuth,getServiceForTeacherInYear);
-router.get('/:id/ascending',getServicesAscending)
+router.get('/:id/ascending',getServicesAscending);
 
 export default router;

@@ -1,21 +1,21 @@
-import express,{ Express } from 'express'
+import express,{ Express } from 'express';
 import { config } from 'dotenv';
 import cookieParser from 'cookie-parser';
 import bodyParser from 'body-parser';
 import cors from 'cors';
-import useRouter from './routes'
+import useRouter from './routes';
 import { initDbStore } from './config';
-import swaggerUI from 'swagger-ui-express' 
+import swaggerUI from 'swagger-ui-express'; 
 import { options } from './swagger';
 import swaggerJSDoc from "swagger-jsdoc";
 
-config()
+config();
 /**
  * Classe représentant le serveur de l'application.
  */
 export class Server {
     private app : Express;
-    private port : any = 3000;
+    private port : number|string = 3000;
 
     /**
     * Initialise une nouvelle instance de la classe Server.
@@ -23,7 +23,7 @@ export class Server {
     constructor() {
         this.app = express();
         this.app.use(cookieParser());
-        this.app.use(bodyParser.json())
+        this.app.use(bodyParser.json());
 
         this.app.use(cors({
             origin : [
@@ -54,7 +54,7 @@ export class Server {
     */
     public startServer = () => {
         this.onServerListen();
-    }
+    };
     
     /**
       * Écoute les connexions sur le port spécifié.
@@ -62,31 +62,31 @@ export class Server {
     private onServerListen = () => {
         this.app.listen(this.port, () => {
             console.log(`Express is listening at http://localhost:${this.port}`);
-            console.log(`For exploring the apis open: http://localhost:${this.port}/api-docs`)
+            console.log(`For exploring the apis open: http://localhost:${this.port}/api-docs`);
         });
-    }
+    };
     /**
      * Configure Swagger pour la documentation API.
      */
     public setSwagger = () => {
-        const swaggerSpec = swaggerJSDoc(options)
+        const swaggerSpec = swaggerJSDoc(options);
         this.app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerSpec));
-    }
+    };
 
     /**
      * Récupère l'instance de l'application Express.
      * @returns {Express} L'instance de l'application Express.
      */
     public getApp = () => {
-        return this.app
-    }
+        return this.app;
+    };
 
     /**
      * Configure les routes de l'application.
      */
     public setRoutes = () => {
-        this.app.use(useRouter)
-    }
+        this.app.use(useRouter);
+    };
 
 
 }

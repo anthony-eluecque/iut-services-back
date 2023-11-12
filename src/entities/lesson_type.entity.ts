@@ -1,6 +1,5 @@
-import { Entity, Column, ManyToMany, JoinTable } from "typeorm";
+import { Entity, Column, ManyToMany } from "typeorm";
 import Model from "./model.entity";
-import { Item } from "./item.entity";
 import { CustomJoinItemsLessons } from "./joinItemsLessons";
 
 @Entity('lesson_types')

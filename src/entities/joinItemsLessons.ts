@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, ManyToOne, Column } from "typeorm";
+import { Entity, ManyToOne, Column } from "typeorm";
 import { Item } from "./item.entity";
 import { Lesson_type } from "./lesson_type.entity";
 import Model from "./model.entity";
@@ -13,5 +13,5 @@ export class CustomJoinItemsLessons extends Model {
   lessonType: Lesson_type;
 
   @Column()
-  amountHours: number
+  amountHours: number;
 }

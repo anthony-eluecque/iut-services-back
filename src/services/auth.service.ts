@@ -1,17 +1,14 @@
 import { CookieOptions, Request, Response } from "express";
 import { User } from "../entities";
 import jwt, { JwtPayload } from 'jsonwebtoken';
-import CookieHelper from '../helpers/cookie.helper'
+import CookieHelper from '../helpers/cookie.helper';
 import Res from "../helpers/res.helper";
 import { compare } from "bcrypt";
-import { matchedData } from "express-validator";
 import nodemailer from 'nodemailer';
 import { decryptData } from "./aes.service";
 import CryptoJS from "crypto-js";
 import { hashPassword } from "./hash.service";
 import { AppDataStore } from "../config";
-const usersRepository = AppDataStore.getRepository(User);
-
 
 /**
  * Génère un jeton de connexion pour un utilisateur et l'envoie dans un cookie.
@@ -35,7 +32,7 @@ export const generateConnectionToken = async (user: User, res: Response) => {
     });
 
     return Res.send(res, 204, "");
-}
+};
 
 
 
@@ -47,6 +44,7 @@ export const generateConnectionToken = async (user: User, res: Response) => {
  * @returns {Promise<void>} Une promesse résolue une fois que l'e-mail est envoyé.
  */
 export const forgotPasswordUser = async(req: Request, res: Response) => {
+    const usersRepository = AppDataStore.getRepository(User);
     const { email } = req.body;
     const user = await usersRepository.findOne({where : { email }});
 
@@ -55,7 +53,7 @@ export const forgotPasswordUser = async(req: Request, res: Response) => {
     }
 
     await sendMailResetPassword(req, res, user);
-}
+};
 
 
 /**
@@ -66,6 +64,8 @@ export const forgotPasswordUser = async(req: Request, res: Response) => {
  * @returns {Promise<void>} Une promesse résolue une fois que le mot de passe est réinitialisé.
  */
 export const resetPasswordUser = async(req: Request, res: Response) => {
+    const usersRepository = AppDataStore.getRepository(User);
+
     const { token } = req.cookies;
     const { id } = jwt.verify(token, process.env.JWT_SECRET) as JwtPayload;
     const { password } = req.body;
@@ -84,7 +84,7 @@ export const resetPasswordUser = async(req: Request, res: Response) => {
     }
 
     await sendMailResetPassword(req, res, user);
-}
+};
 
 /**
  * Envoie un e-mail de réinitialisation de mot de passe à l'utilisateur.
@@ -126,7 +126,7 @@ const sendMailResetPassword = async(req: Request, res: Response, user: User) => 
         
         return Res.send(res, 200, "Envoi mail réinitialisation !");   
     });
-}
+};
 
 /**
  * Change le mot de passe de l'utilisateur à partir d'un jeton de réinitialisation.
@@ -136,6 +136,8 @@ const sendMailResetPassword = async(req: Request, res: Response, user: User) => 
  * @returns {Promise<void>} Une promesse résolue une fois que le mot de passe est changé.
  */
 export const changePasswordUser = async(req: Request, res: Response) => {
+    const usersRepository = AppDataStore.getRepository(User);
+
     const { password, token } = req.body;
     const { id } = jwt.verify(token, process.env.JWT_RESET_PASSWORD_SECRET) as JwtPayload;
     const user = await usersRepository.findOne({where : { id }});
@@ -156,7 +158,7 @@ export const changePasswordUser = async(req: Request, res: Response) => {
         });
 
     return Res.send(res, 200, "Mot de passe modifié !");     
-}
+};
 
 /**
  * Vérifie si le mot de passe fourni correspond au mot de passe de l'utilisateur.
@@ -167,6 +169,6 @@ export const changePasswordUser = async(req: Request, res: Response) => {
  */
 export const verifyPassword = async (user : User, password : string ): Promise<boolean> => {
 	return compare(password,user.password);
-}
+};
 
 

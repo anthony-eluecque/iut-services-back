@@ -1,4 +1,4 @@
-import { MigrationInterface, QueryRunner } from "typeorm"
+import { MigrationInterface, QueryRunner } from "typeorm";
 import { Lesson_type } from "../entities/lesson_type.entity";
 import { AppDataStore } from "../config";
 

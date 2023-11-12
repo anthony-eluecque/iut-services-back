@@ -230,7 +230,7 @@ router.get('/:id',isAuth,getUser);
  *       500:
  *         description: Erreur interne du serveur.
  */
-router.put("/",isAuth, updateUser)
+router.put("/",isAuth, updateUser);
 
 /**
  * @swagger
@@ -251,7 +251,7 @@ router.put("/",isAuth, updateUser)
  *      500:
  *        description: Erreur interne du serveur.
  */
-router.get('/filter/:page', isAuth, isAdmin, getUserFilterPage)
+router.get('/filter/:page', isAuth, isAdmin, getUserFilterPage);
 
 /**
  * @swagger

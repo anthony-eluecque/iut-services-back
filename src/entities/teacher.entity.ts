@@ -1,6 +1,5 @@
-import { Entity, Column, ManyToOne, OneToMany } from "typeorm";
+import { Entity, Column, OneToMany } from "typeorm";
 import Model from "./model.entity";
-// import { Role } from "./role.entity";
 import { Service } from "./service.entity";
 
 @Entity('teachers')

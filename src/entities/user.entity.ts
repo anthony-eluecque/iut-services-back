@@ -2,7 +2,7 @@ import { Entity, Column } from "typeorm";
 import Model from "./model.entity";
 import { IsEmail, validate, IsNotEmpty } from "class-validator";
 import { Request } from "express";
-import { compare, hash } from "bcrypt";
+
 @Entity('users')
 export class User extends Model {
 
@@ -50,8 +50,8 @@ export const validateUser = async (req : Request): Promise<boolean> => {
     const { email, password, firstName, lastName } = req.body;
     const user = new User(email,password,firstName,lastName);
     const errors = await validate(user);
-    return errors.length == 0 ? true : false
-}
+    return errors.length == 0 ? true : false;
+};
 
 /**
  * @swagger

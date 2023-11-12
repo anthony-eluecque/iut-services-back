@@ -10,7 +10,7 @@ const { gotOne, created, updated, deleted, notFound,gotAll } = messages.services
 const options = { relations: ['items', 'teacher','items.lesson'] };
 
 
-export const getServices = async (req: Request, res: Response) => getAll(req, res, AppDataStore.getRepository(Service), options.relations)
+export const getServices = async (req: Request, res: Response) => getAll(req, res, AppDataStore.getRepository(Service), options.relations);
     
 /**
  * Récupère tous les services triés par ordre croissant des identifiants des cours associés.
@@ -48,7 +48,7 @@ export const getServicesAscending = async (req: Request, res: Response) => {
     }
 
     
-    }
+    };
 
 /**
  * Récupère un service en fonction de son identifiant avec les relations associées.
@@ -87,7 +87,7 @@ export const createService = async (req: Request, res: Response) => {
         const teacher = await teachersRepository.findOne({ where: { id: teacherId } });
         if (!teacher) return Res.send(res, 404, "Teacher doesn't exist", teacherId);
 
-        let ids = req.body.itemsIds
+        const ids = req.body.itemsIds;
         // Decomment if you use insomnia 
         // ids = JSON.parse(req.body.itemsIds); 
         const items = await itemsRepository.find({ where: { id: In(ids) } });
@@ -175,4 +175,4 @@ export const getServiceForTeacherInYear = async (req: Request, res: Response) =>
         console.warn(error);
         return Res.send(res, 500, messages.defaults.serverError, error);
     }
-}
+};

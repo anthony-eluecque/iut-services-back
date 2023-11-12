@@ -30,8 +30,8 @@ router.use(express.urlencoded({ extended: false }));
  */
 router.get('/',isAuth,isAdmin,getItems); 
 router.post('/',isAuth,createItem);
-router.get('/:page',isAuth,getItemFilterPage)
+router.get('/:page',isAuth,getItemFilterPage);
 router.delete('/:id',isAuth,deleteItemById);
 router.put('/',isAuth,updateItem);
-router.get('/item/:id',isAuth,getItemById)
+router.get('/item/:id',isAuth,getItemById);
 export default router;

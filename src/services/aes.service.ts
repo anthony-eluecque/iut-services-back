@@ -1,4 +1,4 @@
-import CryptoJS, { AES } from "crypto-js";
+import { AES } from "crypto-js";
 import dotenv from 'dotenv';
 dotenv.config();
 
@@ -11,8 +11,8 @@ const KEY = process.env.AES_SECRET;
  * @returns {any} Les données encryptées.
  */
 export const encryptData = (data : any) => {
-    return AES.encrypt(data,KEY)
-}
+    return AES.encrypt(data,KEY);
+};
 
 /**
  * Fonction pour décrypter les données encryptées en utilisant l'algorithme AES.
@@ -21,6 +21,6 @@ export const encryptData = (data : any) => {
  * @returns {any} Les données décryptées.
  */
 export const decryptData = (data : any) => {
-    return AES.decrypt(data,KEY)
-}
+    return AES.decrypt(data,KEY);
+};
 

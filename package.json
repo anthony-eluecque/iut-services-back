@@ -9,7 +9,7 @@
     "build": "tsc",
     "dev": "nodemon server.ts",
     "start": "ts-node src/index.ts",
-    "lint": "eslint ./src/**/*.ts",
+    "lint": "eslint ./src/**/*.ts --fix",
     "typeorm": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli -d ./src/config",
     "docker": "nodemon -L -e ts --exec 'tsc -p ./tsconfig.json && node ./dist/server.js'",
     "migration:create": "ts-node -r tsconfig-paths/register node_modules/typeorm/cli migration:create src/migrations/%npm_config_name%",
