@@ -1,5 +1,5 @@
 import express,{ Router } from "express";
-import { getItems, createItem, deleteItemById, updateItem, getItemFilterPage, getItemById} from "../controllers";
+import { getItems, createItem, deleteItemById, updateItem, getItemFilterPage, getItemById, deleteTypeFromItem} from "../controllers";
 import { isAuth } from "../middlewares/auth.middleware";
 import { isAdmin } from "../middlewares/admin.middleware";
 
@@ -34,4 +34,5 @@ router.get('/:page',isAuth,getItemFilterPage);
 router.delete('/:id',isAuth,deleteItemById);
 router.put('/',isAuth,updateItem);
 router.get('/item/:id',isAuth,getItemById);
+router.delete('/item/types/:id',isAuth,deleteTypeFromItem);
 export default router;

@@ -288,4 +288,26 @@ export const getItemById = async (req: Request, res: Response) => {
     }
 };
 
+export const deleteTypeFromItem = async (req: Request, res: Response) => {
+    try {
+        const itemsRepository = AppDataStore.getRepository(Item);
+        const lessonsTypesRepository = AppDataStore.getRepository(Lesson_type);
+        const itemsLessonsJoin = AppDataStore.getRepository(CustomJoinItemsLessons);
 
+        const { id } = req.params;
+
+        const type = await itemsLessonsJoin.findOne({
+            where: {
+                id: id,
+            }});
+        
+        if (!type) return Res.send(res,404,"Item doesn't have this lessonType");
+
+        await itemsLessonsJoin.delete(type.id);
+
+        return Res.send(res,204,deleted)
+
+    } catch (error) {
+        return Res.send(res,500,messages.defaults.serverError,error);
+    }
+}
