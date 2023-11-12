@@ -16,5 +16,25 @@ export class Item extends Model {
     @OneToMany(() => CustomJoinItemsLessons, CustomJoin => CustomJoin.item, { onDelete : 'CASCADE' })
     @JoinTable()
     lessonTypes: CustomJoinItemsLessons[];
+}
 
-}   
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     Item:
+ *       type: object
+ *       required:
+ *         - lesson
+ *         - service
+ *         - lessonTypes
+ *       properties:
+ *         lesson:
+ *           $ref: '#/components/schemas/Lesson'
+ *           description: Le cours associée.
+ *         service:
+ *           $ref: '#/components/schemas/Service'
+ *           description: Le service associé.
+ *         lessonTypes:
+ *           type: array
+ */
