@@ -15,6 +15,13 @@ const options = { relations: ["lesson", "service"] };
 
 export const getItems = (req : Request, res : Response) => getAll(req,res,AppDataStore.getRepository(Item),options.relations);
 
+/**
+ * Récupère une page filtrée d'éléments en fonction des paramètres de requête fournis.
+ *
+ * @param {Request} req - L'objet de requête Express.
+ * @param {Response} res - L'objet de réponse Express.
+ * @returns {Promise<Response>} Une promesse résolue avec la réponse indiquant la réussite de la récupération des éléments ou un message d'erreur en cas d'échec.
+ */
 export const getItemFilterPage = async (req : Request, res : Response) => {
     try {
         const itemsRepository = AppDataStore.getRepository(Item);
@@ -63,6 +70,13 @@ export const getItemFilterPage = async (req : Request, res : Response) => {
     }    
 };
 
+/**
+ * Crée un nouvel élément en fonction des données fournies dans la requête.
+ *
+ * @param {Request} req - L'objet de requête Express.
+ * @param {Response} res - L'objet de réponse Express.
+ * @returns {Promise<Response>} Une promesse résolue avec la réponse indiquant la réussite de la création de l'élément ou un message d'erreur en cas d'échec.
+ */
 export const createItem = async (req: Request, res: Response) => {
     try {
         const lessonsRepository = AppDataStore.getRepository(Lesson);
@@ -140,6 +154,13 @@ export const createItem = async (req: Request, res: Response) => {
     }   
 };
 
+/**
+ * Met à jour un élément existant en fonction des données fournies dans la requête.
+ *
+ * @param {Request} req - L'objet de requête Express.
+ * @param {Response} res - L'objet de réponse Express.
+ * @returns {Promise<Response>} Une promesse résolue avec la réponse indiquant la réussite de la mise à jour de l'élément ou un message d'erreur en cas d'échec.
+ */
 export const updateItem = async (req: Request, res: Response) => {
     try {
         const itemsRepository = AppDataStore.getRepository(Item);
@@ -208,6 +229,13 @@ export const updateItem = async (req: Request, res: Response) => {
     }
 };
 
+/**
+ * Supprime un élément en fonction de son identifiant.
+ *
+ * @param {Request} req - L'objet de requête Express.
+ * @param {Response} res - L'objet de réponse Express.
+ * @returns {Promise<Response>} Une promesse résolue avec la réponse indiquant la réussite de la suppression de l'élément ou un message d'erreur en cas d'échec.
+ */
 export const deleteItemById = async (req: Request, res: Response) => {
     try {
         const lessonsRepository = AppDataStore.getRepository(Lesson);
@@ -233,7 +261,13 @@ export const deleteItemById = async (req: Request, res: Response) => {
     }    
 };
 
-
+/**
+ * Récupère un élément en fonction de son identifiant.
+ *
+ * @param {Request} req - L'objet de requête Express.
+ * @param {Response} res - L'objet de réponse Express.
+ * @returns {Promise<Response>} Une promesse résolue avec la réponse indiquant la réussite de la récupération de l'élément ou un message d'erreur en cas d'échec.
+ */
 export const getItemById = async (req: Request, res: Response) => {
     try {
         const itemsRepository = AppDataStore.getRepository(Item)

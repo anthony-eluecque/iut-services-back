@@ -11,6 +11,13 @@ const options = {
 };
 export const getLessons = (req, res) => getAll(req, res, AppDataStore.getRepository(Lesson), options.relations);
 
+/**
+ * Crée une nouvelle leçon en fonction des données fournies dans la requête.
+ *
+ * @param {Request} req - L'objet de requête Express.
+ * @param {Response} res - L'objet de réponse Express.
+ * @returns {Promise<Response>} Une promesse résolue avec la réponse indiquant la réussite de la création de la leçon ou un message d'erreur en cas d'échec.
+ */
 export const createLesson = async (req: Request, res: Response) => {
     try {
         const lessonsRepository = AppDataStore.getRepository(Lesson);
@@ -40,6 +47,13 @@ export const createLesson = async (req: Request, res: Response) => {
     }
 };
 
+/**
+ * Récupère une leçon en fonction de son identifiant avec les relations associées.
+ *
+ * @param {Request} req - L'objet de requête Express.
+ * @param {Response} res - L'objet de réponse Express.
+ * @returns {Promise<Response>} Une promesse résolue avec la réponse indiquant la réussite de la récupération de la leçon ou un message d'erreur en cas d'échec.
+ */
 export const getLessonById = async (req: Request, res: Response) => {
     try {
         const lessonsRepository = AppDataStore.getRepository(Lesson);
@@ -66,6 +80,13 @@ export const getLessonById = async (req: Request, res: Response) => {
     }
 };
 
+/**
+ * Met à jour une leçon existante en fonction des données fournies dans la requête.
+ *
+ * @param {Request} req - L'objet de requête Express.
+ * @param {Response} res - L'objet de réponse Express.
+ * @returns {Promise<Response>} Une promesse résolue avec la réponse indiquant la réussite de la mise à jour de la leçon ou un message d'erreur en cas d'échec.
+ */
 export const updateLesson = async (req: Request, res: Response) => {
     try {
         const lessonsRepository = AppDataStore.getRepository(Lesson);
@@ -91,6 +112,13 @@ export const updateLesson = async (req: Request, res: Response) => {
     }
 };
 
+/**
+ * Supprime une leçon en fonction de son identifiant, supprimant également tous les articles associés.
+ *
+ * @param {Request} req - L'objet de requête Express.
+ * @param {Response} res - L'objet de réponse Express.
+ * @returns {Promise<Response>} Une promesse résolue avec la réponse indiquant la réussite de la suppression de la leçon ou un message d'erreur en cas d'échec.
+ */
 export const deleteLessonById = async (req: Request, res: Response) => {
     try {
         const itemsRepository = AppDataStore.getRepository(Item);
@@ -122,7 +150,13 @@ export const deleteLessonById = async (req: Request, res: Response) => {
     }
 };
 
-
+/**
+ * Récupère une leçon en fonction de son identifiant donné.
+ *
+ * @param {Request} req - L'objet de requête Express.
+ * @param {Response} res - L'objet de réponse Express.
+ * @returns {Promise<Response>} Une promesse résolue avec la réponse indiquant la réussite de la récupération de la leçon ou un message d'erreur en cas d'échec.
+ */
 export const getLessonByGivenId = async (req: Request, res: Response) => {
     try {
         const lessonsRepository = AppDataStore.getRepository(Lesson);

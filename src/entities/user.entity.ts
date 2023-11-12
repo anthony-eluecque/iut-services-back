@@ -37,7 +37,16 @@ export class User extends Model {
     }
 }
 
-export const validateUser = async (req : Request) => {
+
+/**
+ * Valide les données d'un utilisateur en fonction du modèle de l'utilisateur.
+ * Crée une instance de la classe User avec les données fournies dans la requête,
+ * puis utilise le validateur de classe pour vérifier la validité de l'instance.
+ *
+ * @param {Request} req - L'objet de requête Express contenant les données de l'utilisateur.
+ * @returns {Promise<boolean>} Une promesse résolue avec un booléen indiquant si les données sont valides.
+ */
+export const validateUser = async (req : Request): Promise<boolean> => {
     const { email, password, firstName, lastName } = req.body;
     const user = new User(email,password,firstName,lastName);
     const errors = await validate(user);

@@ -10,10 +10,16 @@ import { options } from './swagger';
 import swaggerJSDoc from "swagger-jsdoc";
 
 config()
+/**
+ * Classe représentant le serveur de l'application.
+ */
 export class Server {
     private app : Express;
     private port : any = 3000;
 
+    /**
+    * Initialise une nouvelle instance de la classe Server.
+    */
     constructor() {
         this.app = express();
         this.app.use(cookieParser());
@@ -29,6 +35,10 @@ export class Server {
         this.port = process.env.NODEJS_PORT || this.port;
     }
 
+    /**
+     * Initialise la base de données.
+     * @throws {Error} Si une erreur survient lors de l'initialisation de la base de données.
+     */
     public async initDb(){
         try {
             await initDbStore();
@@ -39,26 +49,41 @@ export class Server {
         }
     }
 
+    /**
+    * Démarre le serveur.
+    */
     public startServer = () => {
         this.onServerListen();
     }
     
+    /**
+      * Écoute les connexions sur le port spécifié.
+      */
     private onServerListen = () => {
         this.app.listen(this.port, () => {
             console.log(`Express is listening at http://localhost:${this.port}`);
             console.log(`For exploring the apis open: http://localhost:${this.port}/api-docs`)
         });
     }
-
+    /**
+     * Configure Swagger pour la documentation API.
+     */
     public setSwagger = () => {
         const swaggerSpec = swaggerJSDoc(options)
         this.app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerSpec));
     }
 
+    /**
+     * Récupère l'instance de l'application Express.
+     * @returns {Express} L'instance de l'application Express.
+     */
     public getApp = () => {
         return this.app
     }
 
+    /**
+     * Configure les routes de l'application.
+     */
     public setRoutes = () => {
         this.app.use(useRouter)
     }

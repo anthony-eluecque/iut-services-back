@@ -12,6 +12,13 @@ const options = { relations: ['items', 'teacher','items.lesson'] };
 
 export const getServices = async (req: Request, res: Response) => getAll(req, res, AppDataStore.getRepository(Service), options.relations)
     
+/**
+ * Récupère tous les services triés par ordre croissant des identifiants des cours associés.
+ *
+ * @param {Request} req - L'objet de requête Express.
+ * @param {Response} res - L'objet de réponse Express.
+ * @returns {Promise<Response>} Une promesse résolue avec la réponse indiquant la réussite de la récupération des services triés ou un message d'erreur en cas d'échec.
+ */
 export const getServicesAscending = async (req: Request, res: Response) => {
     try {
 
@@ -43,6 +50,13 @@ export const getServicesAscending = async (req: Request, res: Response) => {
     
     }
 
+/**
+ * Récupère un service en fonction de son identifiant avec les relations associées.
+ *
+ * @param {Request} req - L'objet de requête Express.
+ * @param {Response} res - L'objet de réponse Express.
+ * @returns {Promise<Response>} Une promesse résolue avec la réponse indiquant la réussite de la récupération du service ou un message d'erreur en cas d'échec.
+ */
 export const getServiceById = async (req: Request, res: Response) => {
     try {
         const relations = [...options.relations,'items', 'items.lesson','items.lessonTypes','items.lessonTypes.lessonType'];
@@ -56,6 +70,14 @@ export const getServiceById = async (req: Request, res: Response) => {
     }
 };
 
+
+/**
+ * Crée un nouveau service en fonction des données fournies dans la requête.
+ *
+ * @param {Request} req - L'objet de requête Express.
+ * @param {Response} res - L'objet de réponse Express.
+ * @returns {Promise<Response>} Une promesse résolue avec la réponse indiquant la réussite de la création du service ou un message d'erreur en cas d'échec.
+ */
 export const createService = async (req: Request, res: Response) => {
     try {
         const servicesRepository = AppDataStore.getRepository(Service);
@@ -88,6 +110,13 @@ export const createService = async (req: Request, res: Response) => {
     }
 };
 
+/**
+ * Met à jour un service existant en fonction des données fournies dans la requête.
+ *
+ * @param {Request} req - L'objet de requête Express.
+ * @param {Response} res - L'objet de réponse Express.
+ * @returns {Promise<Response>} Une promesse résolue avec la réponse indiquant la réussite de la mise à jour du service ou un message d'erreur en cas d'échec.
+ */
 export const updateService = async (req: Request, res: Response) => {
     try {
         const servicesRepository = AppDataStore.getRepository(Service);
@@ -101,6 +130,13 @@ export const updateService = async (req: Request, res: Response) => {
     }
 };
 
+/**
+ * Supprime un service en fonction de son identifiant.
+ *
+ * @param {Request} req - L'objet de requête Express.
+ * @param {Response} res - L'objet de réponse Express.
+ * @returns {Promise<Response>} Une promesse résolue avec la réponse indiquant la réussite de la suppression du service ou un message d'erreur en cas d'échec.
+ */
 export const deleteServiceById = async (req: Request, res: Response) => {
     try {
         const servicesRepository = AppDataStore.getRepository(Service);
@@ -114,6 +150,13 @@ export const deleteServiceById = async (req: Request, res: Response) => {
     }
 };
 
+/**
+ * Récupère un service pour un enseignant spécifié dans une année donnée.
+ *
+ * @param {Request} req - L'objet de requête Express.
+ * @param {Response} res - L'objet de réponse Express.
+ * @returns {Promise<Response>} Une promesse résolue avec la réponse indiquant la réussite de la récupération du service ou un message d'erreur en cas d'échec.
+ */
 export const getServiceForTeacherInYear = async (req: Request, res: Response) => {
     try {
         const servicesRepository = AppDataStore.getRepository(Service);

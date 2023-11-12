@@ -16,6 +16,13 @@ import { ILike } from 'typeorm';
 
 const { serverError } = messages.defaults
 
+/**
+ * Récupère la liste de tous les utilisateurs.
+ *
+ * @param {Request} req - L'objet de requête Express.
+ * @param {Response} res - L'objet de réponse Express.
+ * @returns {Promise<Response>} Une promesse résolue avec la réponse contenant la liste des utilisateurs.
+ */
 export const getUsers = async (req : Request, res : Response) => {
     try {
         const usersRepository = AppDataStore.getRepository(User);
@@ -27,6 +34,14 @@ export const getUsers = async (req : Request, res : Response) => {
     }
 };
 
+
+/**
+ * Récupère une page filtrée d'utilisateurs en fonction des paramètres de requête.
+ *
+ * @param {Request} req - L'objet de requête Express.
+ * @param {Response} res - L'objet de réponse Express.
+ * @returns {Promise<Response>} Une promesse résolue avec la réponse contenant la page d'utilisateurs filtrée.
+ */
 export const getUserFilterPage = async (req: Request, res: Response) => {
     try {
         const usersRepository = AppDataStore.getRepository(User);
@@ -62,6 +77,13 @@ export const getUserFilterPage = async (req: Request, res: Response) => {
     }
 }
 
+/**
+ * Récupère les détails d'un utilisateur en fonction de son identifiant.
+ *
+ * @param {Request} req - L'objet de requête Express.
+ * @param {Response} res - L'objet de réponse Express.
+ * @returns {Promise<Response>} Une promesse résolue avec la réponse contenant les détails de l'utilisateur.
+ */
 export const getUser = async (req : Request, res: Response) => {
     try {
         const usersRepository = AppDataStore.getRepository(User);
@@ -87,6 +109,13 @@ export const getUser = async (req : Request, res: Response) => {
     }
 }
 
+/**
+ * Crée un nouvel utilisateur en fonction des données fournies dans la requête.
+ *
+ * @param {Request} req - L'objet de requête Express contenant les données du nouvel utilisateur.
+ * @param {Response} res - L'objet de réponse Express.
+ * @returns {Promise<Response>} Une promesse résolue avec la réponse indiquant si l'utilisateur a été créé avec succès.
+ */
 export const createUser = async (req: Request, res: Response) => {
     try {
         const usersRepository = AppDataStore.getRepository(User);
@@ -119,6 +148,13 @@ export const createUser = async (req: Request, res: Response) => {
     }
 };
 
+/**
+ * Met à jour les informations d'un utilisateur en fonction de l'identifiant fourni.
+ *
+ * @param {Request} req - L'objet de requête Express contenant les données de mise à jour de l'utilisateur.
+ * @param {Response} res - L'objet de réponse Express.
+ * @returns {Promise<Response>} Une promesse résolue avec la réponse indiquant si l'utilisateur a été mis à jour avec succès.
+ */
 export const updateUser = async (req: Request, res: Response) => {
     try {
         const usersRepository = AppDataStore.getRepository(User);
@@ -137,11 +173,8 @@ export const updateUser = async (req: Request, res: Response) => {
         const oldUser = await usersRepository.findOne({where : { id : id}});
         if (!oldUser) return Res.send(res,404,"Not Found");
 
-        // Check if user try to edit another user
-
         const { firstName, lastName} = req.body;
 
-        // Validator
         const newUser = usersRepository.create({
             email : oldUser.email,
             firstName : encryptData(firstName).toString(),
@@ -152,7 +185,6 @@ export const updateUser = async (req: Request, res: Response) => {
         const isValidatedUser = await validate(newUser);
         if (isValidatedUser.length > 0) return Res.send(res,400,"User not validated");
 
-        // Update
         await usersRepository.update({
             firstName : oldUser.firstName,
             lastName : oldUser.lastName
@@ -168,6 +200,13 @@ export const updateUser = async (req: Request, res: Response) => {
     }
 }
 
+/**
+ * Supprime un utilisateur en fonction de l'identifiant fourni.
+ *
+ * @param {Request} req - L'objet de requête Express.
+ * @param {Response} res - L'objet de réponse Express.
+ * @returns {Promise<Response>} Une promesse résolue avec la réponse indiquant si l'utilisateur a été supprimé avec succès.
+ */
 export const deleteUser = async (req: Request, res: Response) => {
     try {
         const usersRepository = AppDataStore.getRepository(User);
@@ -185,6 +224,15 @@ export const deleteUser = async (req: Request, res: Response) => {
     }
 }
 
+//#region ACCOUNT
+
+/**
+ * Supprime le compte de l'utilisateur actuellement connecté.
+ *
+ * @param {Request} req - L'objet de requête Express.
+ * @param {Response} res - L'objet de réponse Express.
+ * @returns {Promise<Response>} Une promesse résolue avec la réponse indiquant si le compte a été supprimé avec succès.
+ */
 export const deleteAccount = async (req: Request, res: Response) => {
     try {
         const usersRepository = AppDataStore.getRepository(User);
@@ -200,8 +248,18 @@ export const deleteAccount = async (req: Request, res: Response) => {
         return Res.send(res,500,serverError)
     }
 }
-//#region  AUTH 
+//#endregion
 
+//#region AUTH
+
+
+/**
+ * Réinitialise le mot de passe de l'utilisateur en fonction du jeton fourni dans la requête.
+ *
+ * @param {Request} req - L'objet de requête Express contenant le nouveau mot de passe.
+ * @param {Response} res - L'objet de réponse Express.
+ * @returns {Promise<Response>} Une promesse résolue avec la réponse indiquant si le mot de passe a été réinitialisé avec succès.
+ */
 export const resetPassword =async (req: Request, res: Response) => {
     try {
         if (!req.body.password) return Res.send(res,400,"Incorrect inputs")
@@ -213,6 +271,13 @@ export const resetPassword =async (req: Request, res: Response) => {
     }
 } 
 
+/**
+ * Envoie un e-mail de réinitialisation de mot de passe à l'utilisateur en fonction de l'adresse e-mail fournie dans la requête.
+ *
+ * @param {Request} req - L'objet de requête Express contenant l'adresse e-mail de l'utilisateur.
+ * @param {Response} res - L'objet de réponse Express.
+ * @returns {Promise<Response>} Une promesse résolue avec la réponse indiquant si l'e-mail de réinitialisation a été envoyé avec succès.
+ */
 export const forgotPassword  = async(req: Request, res: Response) => {
     try {
         if (!req.body.email) return Res.send(res,400,"Incorrect inputs");
@@ -223,6 +288,13 @@ export const forgotPassword  = async(req: Request, res: Response) => {
     }
 } 
 
+/**
+ * Change le mot de passe de l'utilisateur en fonction du jeton et du nouveau mot de passe fournis dans la requête.
+ *
+ * @param {Request} req - L'objet de requête Express contenant le nouveau mot de passe et le jeton de réinitialisation.
+ * @param {Response} res - L'objet de réponse Express.
+ * @returns {Promise<Response>} Une promesse résolue avec la réponse indiquant si le mot de passe a été changé avec succès.
+ */
 export const changePassword = async(req: Request, res: Response) => {
     try {
         const { password, token } = req.body;
@@ -234,6 +306,13 @@ export const changePassword = async(req: Request, res: Response) => {
     }
 }
 
+/**
+ * Connecte un utilisateur en fonction de l'adresse e-mail et du mot de passe fournis dans la requête.
+ *
+ * @param {Request} req - L'objet de requête Express contenant l'adresse e-mail et le mot de passe de l'utilisateur.
+ * @param {Response} res - L'objet de réponse Express.
+ * @returns {Promise<Response>} Une promesse résolue avec la réponse contenant le jeton de connexion.
+ */
 export const login = async (req : Request , res : Response) => {
     try {
         const usersRepository = AppDataStore.getRepository(User);
@@ -258,6 +337,13 @@ export const login = async (req : Request , res : Response) => {
     }
 }
 
+/**
+ * Déconnecte l'utilisateur en supprimant le cookie de jeton.
+ *
+ * @param {Request} req - L'objet de requête Express.
+ * @param {Response} res - L'objet de réponse Express.
+ * @returns {Promise<Response>} Une promesse résolue avec la réponse indiquant que l'utilisateur a été déconnecté avec succès.
+ */
 export const logout = async (req : Request, res: Response) => {
     try {
         CookieHelper.clear(res,'token');
@@ -267,6 +353,13 @@ export const logout = async (req : Request, res: Response) => {
     }
 }
 
+/**
+ * Authentifie l'utilisateur en renvoyant ses informations décryptées.
+ *
+ * @param {Request} req - L'objet de requête Express.
+ * @param {Response} res - L'objet de réponse Express.
+ * @returns {Promise<Response>} Une promesse résolue avec la réponse contenant les informations authentifiées de l'utilisateur.
+ */
 export const authenticate = async (req: Request, res: Response) => {
     try {
         if (!res.locals.user) return Res.send(res, 401, "unAuth");
