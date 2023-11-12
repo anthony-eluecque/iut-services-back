@@ -15,3 +15,23 @@ export class Lesson extends Model {
     items: Item[];
 }
 
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     Lesson:
+ *       type: object
+ *       properties:
+ *         givenId:
+ *           type: string
+ *           description: Identifiant du cours.
+ *         name:
+ *           type: string
+ *           description: Nom du cours.
+ *       required:
+ *         - givenId
+ *         - name
+ *       example:
+ *         givenId: R5.08
+ *         name: Anglais
+ */

@@ -45,6 +45,8 @@ router.get('/', isAuth, getTeachers);
  *   post:
  *     summary: Crée un nouvel enseignant.
  *     tags: [Teachers]
+ *     security:
+ *       - bearerAuth: []
  *     requestBody:
  *       description: Corps de la requête pour créer un nouvel enseignant.
  *       required: true
@@ -81,6 +83,8 @@ router.post('/', isAuth, createTeacher);
  *   put:
  *     summary: Met à jour un enseignant existant.
  *     tags: [Teachers]
+ *     security:
+ *       - bearerAuth: []
  *     requestBody:
  *       description: Corps de la requête pour mettre à jour un enseignant existant.
  *       required: true
@@ -117,6 +121,8 @@ router.put('/', isAuth, updateTeacher);
  *   get:
  *     summary: Récupère la liste des enseignants filtrés.
  *     tags: [Teachers]
+ *     security:
+ *       - bearerAuth: []
  *     description: Récupère une liste des enseignants enregistrés filtrés par nom, prénom ou ID.
  *     parameters:
  *       - in: query
@@ -151,6 +157,8 @@ router.get('/filter/', isAuth, getFilteredTeachers);
  *   get:
  *     summary: Récupère un enseignant spécifique par son ID.
  *     tags: [Teachers]
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -174,6 +182,8 @@ router.get('/:id', isAuth, getTeacherById);
  *   delete:
  *     summary: Supprime un enseignant spécifique.
  *     tags: [Teachers]
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -197,6 +207,8 @@ router.delete('/:id', isAuth, deleteTeacherById);
  *   get:
  *     summary: Récupère un enseignant par un ID donné.
  *     tags: [Teachers]
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: givenId
