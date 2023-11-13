@@ -135,7 +135,7 @@ export const createItem = async (req: Request, res: Response) => {
         if (!isExistingService){
             // Le service n'existe pas
             service = servicesRepository.create({
-                year : 2023,
+                year : service.year,
                 teacher : teacher,
                 items : []
             });

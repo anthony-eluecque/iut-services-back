@@ -15,7 +15,6 @@ const getDirEntities = () => {
     const isTsNode = process.env.TS_NODE_DEV;
     // A CHANGER ICI POUR LA PROD
     const dirNameEntities = isTsNode ? rootFolder + '/entities/**.{js,ts}' : rootFolder + '/entities/**.ts';
-    console.log(dirNameEntities);
     return dirNameEntities;
 };
 
