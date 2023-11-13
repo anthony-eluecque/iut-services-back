@@ -34,6 +34,64 @@ router.use(express.urlencoded({ extended: false }));
  */
 router.get('/',isAuth,isAdmin,getItems);
 
+/**
+ * @swagger
+ * /items:
+ *   post:
+ *     summary: Crée un nouvel item.
+ *     tags: [Items]
+ *     description: Crée un nouvel item.
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - types
+ *               - lesson
+ *               - service
+ *             properties:
+ *               types:
+ *                 type: array
+ *                 items:
+ *                   type: object
+ *                   required:
+ *                     - name
+ *                     - amountHours
+ *                   properties:
+ *                     name:
+ *                       type: string
+ *                     amountHours:
+ *                       type: number
+ *               lesson:
+ *                 type: object
+ *                 required:
+ *                   - id
+ *                 properties:
+ *                   id:
+ *                     type: string
+ *                     format: uuid
+ *               service:
+ *                 type: object
+ *                 required:
+ *                   - id
+ *                 properties:
+ *                   id:
+ *                     type: string
+ *                     format: uuid
+ *     responses:
+ *       200:
+ *         description: Item créé avec succès.
+ *       401:
+ *         description: Non autorisé. L'utilisateur doit être authentifié
+ *       409:
+ *         description: Item déjà existant.
+ *       500:
+ *         description: Erreur interne du serveur.
+ */
 router.post('/',isAuth,createItem);
 
 /**
@@ -120,6 +178,67 @@ router.get('/:page',isAuth,getItemFilterPage);
  */
 router.delete('/:id',isAuth,deleteItemById);
 
+/**
+ * @swagger
+ * /items:
+ *   put:
+ *     summary: Met à jour un item.
+ *     tags: [Items]
+ *     description: Met à jour un item.
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - types
+ *               - lesson
+ *               - service
+ *             properties:
+ *               types:
+ *                 type: array
+ *                 items:
+ *                   type: object
+ *                   required:
+ *                     - name
+ *                     - amountHours
+ *                   properties:
+ *                     name:
+ *                       type: string
+ *                     amountHours:
+ *                       type: number
+ *               lesson:
+ *                 type: object
+ *                 required:
+ *                   - id
+ *                 properties:
+ *                   id:
+ *                     type: string
+ *                     format: uuid
+ *               service:
+ *                 type: object
+ *                 required:
+ *                   - id
+ *                 properties:
+ *                   id:
+ *                     type: string
+ *                     format: uuid
+ *           example:
+ *             types: [ { name: 'TP', amountHours: 9 }, { name: 'CM', amountHours: 12 } ]
+ *             id: '824ebe99-31f1-4efd-9185-f1a5eed80723'
+ *     responses:
+ *       200:
+ *         description: Item mis à jour avec succès.
+ *       401:
+ *         description: Non autorisé. L'utilisateur doit être authentifié
+ *       404:
+ *         description: Item non trouvé.
+ *       500:
+ *         description: Erreur interne du serveur.
+ */
 router.put('/',isAuth,updateItem);
 
 /**
@@ -151,6 +270,33 @@ router.put('/',isAuth,updateItem);
  */
 router.get('/item/:id',isAuth,getItemById);
 
+/**
+ * @swagger
+ * /items/item/types/{id}:
+ *   delete:
+ *     summary: Supprime un type de cours d'un item.
+ *     tags: [Items]
+ *     description: Supprime un type de cours d'un item.
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *           format: uuid
+ *         required: true
+ *         description: Id du type de cours à supprimer.
+ *     responses:
+ *       204:
+ *         description: Type de cours supprimé avec succès.
+ *       401:
+ *         description: Non autorisé. L'utilisateur doit être authentifié
+ *       404:
+ *         description: Type de cours non trouvé.
+ *       500:
+ *         description: Erreur interne du serveur.
+ */
 router.delete('/item/types/:id',isAuth,deleteTypeFromItem);
 
 export default router;
