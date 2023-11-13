@@ -93,7 +93,8 @@ export const createItem = async (req: Request, res: Response) => {
                 service: {
                     teacher: {
                         givenId: teacher.givenId
-                    }
+                    },
+                    year: service.year
                 },
                 lesson : {
                     givenId: lesson.givenId
@@ -129,7 +130,8 @@ export const createItem = async (req: Request, res: Response) => {
             where: {
                 teacher:{
                     givenId: teacher.givenId
-                }
+                },
+                year: service.year
             }
         });
         if (!isExistingService){
