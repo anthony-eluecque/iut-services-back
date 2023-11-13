@@ -1,4 +1,4 @@
-import { MigrationInterface, QueryRunner } from "typeorm"
+import { MigrationInterface, QueryRunner } from "typeorm";
 import { AppDataStore } from "../config";
 import { encryptData } from "../services/aes.service";
 import { hashPassword } from "../services/hash.service";

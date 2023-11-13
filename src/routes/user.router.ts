@@ -20,7 +20,7 @@ import { isAdmin } from "../middlewares/admin.middleware";
  * @swagger
  * tags:
  *   name: Users
- *   description: Operations sur les utilisateurs de l'application
+ *   description: Opérations sur les utilisateurs de l'application
  */
 const router = Router();
 
@@ -165,12 +165,22 @@ router.post('/login', login);
  */
 router.post('/logout', logout);
 
+router.post('/resetPassword', isAuth, resetPassword);
+
+router.post('/changePassword', changePassword);
+
+router.post('/forgotPassword', forgotPassword);
+
+router.post('/deleteAccount', isAuth, deleteAccount);
+
 /**
  * @swagger
  * /users/{id}:
  *   get:
  *     summary: Récupère les informations d'un utilisateur spécifique.
  *     tags: [Users]
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -187,11 +197,6 @@ router.post('/logout', logout);
  *       500:
  *         description: Erreur interne du serveur.
  */
-
-router.post('/resetPassword', isAuth, resetPassword);
-router.post('/changePassword', changePassword);
-router.post('/forgotPassword', forgotPassword);
-router.post('/deleteAccount', isAuth, deleteAccount);
 router.get('/:id',isAuth,getUser);
 
 /**
@@ -200,6 +205,8 @@ router.get('/:id',isAuth,getUser);
  *   put:
  *     summary: Met à jour les informations de l'utilisateur (nom & prénom seulement).
  *     tags: [Users]
+ *     security:
+ *       - bearerAuth: []
  *     requestBody:
  *       description: Objet de requête pour mettre à jour les informations de l'utilisateur.
  *       required: true
@@ -230,28 +237,30 @@ router.get('/:id',isAuth,getUser);
  *       500:
  *         description: Erreur interne du serveur.
  */
-router.put("/",isAuth, updateUser)
+router.put("/",isAuth, updateUser);
 
 /**
  * @swagger
- * /users/{page}:
+ * /users/filter/{page}:
  *  get:
- *      summary: Récupère la liste des utilisateurs avec pagination.
- *      tags: [Users]
- *      parameters:
- *        - in: path
- *          name: page
- *          required: true
- *          description: Numéro de la page à récupérer.
- *          schema:
- *              type: integer
- *      responses:
- *          200:
- *              description: Liste des utilisateurs récupérée avec succès.
- *          500:
- *              description: Erreur interne du serveur.
+ *    summary: Récupère la liste des utilisateurs filtrés avec pagination.
+ *    tags: [Users]
+ *    security:
+ *      - bearerAuth: []
+ *    parameters:
+ *      - in: path
+ *        name: page
+ *        required: true
+ *        description: Numéro de la page à récupérer.
+ *        schema:
+ *          type: integer
+ *    responses:
+ *      200:
+ *        description: Liste des utilisateurs récupérée avec succès.
+ *      500:
+ *        description: Erreur interne du serveur.
  */
-router.get('/filter/:page', isAuth, isAdmin, getUserFilterPage)
+router.get('/filter/:page', isAuth, isAdmin, getUserFilterPage);
 
 /**
  * @swagger
@@ -259,6 +268,8 @@ router.get('/filter/:page', isAuth, isAdmin, getUserFilterPage)
  *   delete:
  *     summary: Supprime un utilisateur spécifique.
  *     tags: [Users]
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id

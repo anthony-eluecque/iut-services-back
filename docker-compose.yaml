@@ -31,5 +31,20 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
+  nginx:
+    image: nginx:latest
+    container_name: iut_nginx
+    ports:
+      - "4000:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - nodejs-app
+    networks:
+      - my-network
+networks:
+  my-network:
+    driver: bridge
+
 volumes:
   postgres_data:
