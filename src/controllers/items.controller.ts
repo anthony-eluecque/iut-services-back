@@ -163,13 +163,14 @@ export const createItem = async (req: Request, res: Response) => {
  */
 export const updateItem = async (req: Request, res: Response) => {
     try {
+        console.log(req.body);
         const itemsRepository = AppDataStore.getRepository(Item);
         const lessonsTypesRepository = AppDataStore.getRepository(Lesson_type);
         const itemsLessonsJoin = AppDataStore.getRepository(CustomJoinItemsLessons);
 
-        const { id, types, lesson, service } = req.body;
+        const { id, types, esson, service } = req.body;
+        
         const names = types.map((type) => type.name) as Array<string>;
-
         const lessonsTypes = await lessonsTypesRepository.find({
             where: {name : In(names)}
         });
@@ -223,6 +224,7 @@ export const updateItem = async (req: Request, res: Response) => {
         return Res.send(res,200,updated,oldItem);
 
     } catch (error) {
+        console.error(error);
         return Res.send(res,500,messages.defaults.serverError,error);  
     }
 };
@@ -294,6 +296,8 @@ export const deleteTypeFromItem = async (req: Request, res: Response) => {
 
         const { id } = req.params;
 
+        const all = await itemsLessonsJoin.find({});
+        console.log(all);
         const type = await itemsLessonsJoin.findOne({
             where: {
                 id: id,
