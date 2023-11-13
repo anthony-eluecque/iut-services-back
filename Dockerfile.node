@@ -1,0 +1,15 @@
+FROM node:19
+
+# Copiez le fichier package.json et package-lock.json (ou yarn.lock)
+COPY ./package*.json ./
+
+# Installez les dépendances
+RUN npm cache clean --force
+RUN npm install
+
+# Exécutez la compilation TypeScript
+# RUN npm run build
+
+EXPOSE 4000
+
+CMD ["npm", "run","docker"]

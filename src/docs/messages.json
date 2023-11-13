@@ -1,0 +1,59 @@
+{
+    "items": {
+        "gotAll": "Successfully fetched items",
+        "gotOne": "Successfully fetched item",
+        "created": "Successfully created item",
+        "updated": "Successfully updated item",
+        "deleted": "Successfully deleted item",
+        "notFound": "Item not found"
+    },
+    "roles": {
+        "gotAll": "Successfully fetched roles",
+        "created": "Successfully created role",
+        "notFound": "Role not found"
+    },
+    "lessons": {
+        "gotAll": "Successfully fetched lessons",
+        "gotOne": "Successfully fetched lesson",
+        "created": "Successfully created lesson",
+        "updated": "Successfully updated lesson",
+        "deleted": "Successfully deleted lesson",
+        "notFound": "lesson not found"
+    },
+    "teachers": {
+        "gotAll": "Successfully fetched teachers",
+        "gotOne": "Successfully fetched teacher",
+        "created": "Successfully created teacher",
+        "updated": "Successfully updated teacher",
+        "deleted": "Successfully deleted teacher",
+        "notFound": "Teacher not found"
+    },
+    "services": {
+        "gotAll": "Successfully fetched services",
+        "gotOne": "Successfully fetched service",
+        "created": "Successfully created service",
+        "updated": "Successfully updated service",
+        "deleted": "Successfully deleted service",
+        "notFound": "Service not found"
+    },
+    "token": {
+        "created": "Successfully created token"
+    },
+    "defaults": {
+        "gotAll": "Successfully fetched",
+        "gotOne": "Successfully fetched",
+        "created": "Successfully created",
+        "updated": "Successfully updated",
+        "deleted": "Successfully deleted",
+        "auth": "Successfully authenticated",
+        "login": "Successfully logged in",
+        "logout": "Successfully logged out",
+
+        "wrongInput": "Invalid values provided",
+        "unAuth": "Unauthorized",
+        "notAllowed": "Action not allowed",
+        "noToken": "Invalid or expired token",
+
+        "serverError": "Internal Server Error"
+    }
+}
