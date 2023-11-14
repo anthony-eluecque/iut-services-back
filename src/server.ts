@@ -42,9 +42,9 @@ export class Server {
     public async initDb(){
         try {
             await initDbStore();
-            console.log("Database initialized successfully");
+            // console.log("Database initialized successfully");
           } catch (err) {
-            console.error(`Error initializing database: ${err.message}`);
+            // console.error(`Error initializing database: ${err.message}`);
             process.exit(1); // Arrêtez le processus en cas d'erreur grave
         }
     }

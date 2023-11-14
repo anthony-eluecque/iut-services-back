@@ -1,9 +1,21 @@
-# Créez un conteneur temporaire avec nano
-FROM alpine as nanobuilder
-RUN apk update && apk add nano
+# FROM alpine as nanobuilder
+# RUN apk update && apk add nano
 
-# Utilisez l'image PostgreSQL officielle
-FROM postgres:15.1-alpine
+# FROM postgres:15.1-alpine
 
-COPY --from=nanobuilder /usr/bin/nano /usr/bin/nano
-# COPY *.sql /docker-entrypoint-initdb.d/
+# COPY --from=nanobuilder /usr/bin/nano /usr/bin/nano
+# # COPY *.sql /docker-entrypoint-initdb.d/
+
+# Utilisez une image de base PostgreSQL
+FROM postgres:latest
+
+# Définissez les variables d'environnement
+ENV POSTGRES_DB=${POSTGRES_DB} \
+    POSTGRES_USER=${POSTGRES_USER} \
+    POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+
+# Exposez le port 5433
+EXPOSE 5433
+
+# Lors du démarrage du conteneur, exécutez ces commandes SQL
+COPY init.sql /docker-entrypoint-initdb.d/

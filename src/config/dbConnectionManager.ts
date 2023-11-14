@@ -12,9 +12,8 @@ config();
  * @returns {string} - Le chemin du répertoire des entités.
  */
 const getDirEntities = () => {
-    const isTsNode = process.env.TS_NODE_DEV;
-    // A CHANGER ICI POUR LA PROD
-    const dirNameEntities = isTsNode ? rootFolder + '/entities/**.{js,ts}' : rootFolder + '/entities/**.ts';
+    const isProd = process.env.NODE_ENV;
+    const dirNameEntities = isProd ? rootFolder + '/entities/**.{js,ts}' : rootFolder + '/entities/**.{js,ts}';
     return dirNameEntities;
 };
 
@@ -59,12 +58,15 @@ export let AppDataStore: DataSource = new DataSource(getDbSettings());
  */
 export const initDbStore = async () => {
     try {
+        console.log(getDirEntities())
         await AppDataStore.initialize();
         console.log(`Db initialized. Host: ${getDbSettings().host}, port: ${getDbSettings().port}`);
     } catch (err) {
+        console.log("TEST")
+        console.error(`${process.env.POSTGRES_USER, process.env.POSTGRES_DB, process.env.POSTGRES_PASSWORD, process.env.DB_PORT, process.env.POSTGRESS_PORT}`)
         console.error(`dbConnectionManager - error initializing db. Error: ${err.message}`);
     }
-};
+};  
 
 /**
  * Initialise une base de données en mémoire pour les tests unitaires.
