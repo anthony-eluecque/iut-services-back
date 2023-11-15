@@ -28,9 +28,7 @@ export class Server {
         this.app.use(bodyParser.json());
 
         this.app.use(cors({
-            origin : [
-              process.env.CORS_ORIGIN
-            ],
+            origin: '*',
             credentials : true
           }));
 
