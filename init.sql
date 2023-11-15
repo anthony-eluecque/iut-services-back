@@ -1,1 +1,0 @@
-CREATE USER iutadmin SUPERUSER LOGIN PASSWORD 'iutcalais';

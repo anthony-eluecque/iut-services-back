@@ -165,7 +165,6 @@ export const createItem = async (req: Request, res: Response) => {
  */
 export const updateItem = async (req: Request, res: Response) => {
     try {
-        console.log(req.body);
         const itemsRepository = AppDataStore.getRepository(Item);
         const lessonsTypesRepository = AppDataStore.getRepository(Lesson_type);
         const itemsLessonsJoin = AppDataStore.getRepository(CustomJoinItemsLessons);
@@ -299,7 +298,6 @@ export const deleteTypeFromItem = async (req: Request, res: Response) => {
         const { id } = req.params;
 
         const all = await itemsLessonsJoin.find({});
-        console.log(all);
         const type = await itemsLessonsJoin.findOne({
             where: {
                 id: id,

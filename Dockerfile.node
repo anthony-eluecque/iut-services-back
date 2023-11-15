@@ -1,15 +1,28 @@
-FROM node:19
+FROM node:18 as builder
 
-# Copiez le fichier package.json et package-lock.json (ou yarn.lock)
-COPY ./package*.json ./
+WORKDIR /usr/src/app
 
-# Installez les dépendances
-RUN npm cache clean --force
+COPY package*.json .
+
 RUN npm install
 
-# Exécutez la compilation TypeScript
-# RUN npm run build
+COPY . .
 
-EXPOSE 4000
+RUN npm run build
 
-CMD ["npm", "run","docker"]
+# Sending to production
+FROM node:18 as production
+
+ARG NODE_ENV=production
+ENV NODE_ENV=${NODE_ENV}
+
+WORKDIR /usr/src/app
+
+COPY package*.json .
+
+RUN npm install
+
+COPY --from=builder /usr/src/app/dist ./dist
+COPY --from=builder /usr/src/app/.env .env
+
+CMD ["npm", "start"]

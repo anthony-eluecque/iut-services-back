@@ -8,6 +8,8 @@ import { initDbStore } from './config';
 import swaggerUI from 'swagger-ui-express'; 
 import { options } from './swagger';
 import swaggerJSDoc from "swagger-jsdoc";
+import { CreateLessonTypeData1695809293534 } from './migrations/1695809293534-CreateLessonTypeData';
+import { AdminUser1697584169917 } from './migrations/1697584169917-adminUser';
 
 config();
 /**
@@ -42,9 +44,9 @@ export class Server {
     public async initDb(){
         try {
             await initDbStore();
-            console.log("Database initialized successfully");
+            await new CreateLessonTypeData1695809293534().up()
+            await new AdminUser1697584169917().up()
           } catch (err) {
-            console.error(`Error initializing database: ${err.message}`);
             process.exit(1); // Arrêtez le processus en cas d'erreur grave
         }
     }

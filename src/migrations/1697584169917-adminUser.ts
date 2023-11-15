@@ -6,7 +6,7 @@ import { User } from "../entities";
 
 export class AdminUser1697584169917 implements MigrationInterface {
 
-    public async up(queryRunner: QueryRunner): Promise<void> {
+    public async up(): Promise<void> {
         const usersRepository = AppDataStore.getRepository(User);
 
         const newUser = usersRepository.create({
