@@ -14,8 +14,8 @@ ENV POSTGRES_DB=${POSTGRES_DB} \
     POSTGRES_USER=${POSTGRES_USER} \
     POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
 
-# Exposez le port 5433
-EXPOSE 5433
+# Exposez le port 5432
+EXPOSE 5432
 
 # Lors du démarrage du conteneur, exécutez ces commandes SQL
 COPY init.sql /docker-entrypoint-initdb.d/

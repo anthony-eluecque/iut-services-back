@@ -25,4 +25,6 @@ RUN npm install
 COPY --from=builder /usr/src/app/dist ./dist
 COPY --from=builder /usr/src/app/.env .env
 
+EXPOSE 4000
+
 CMD ["npm", "start"]

@@ -63,7 +63,7 @@ export const initDbStore = async () => {
         console.log(`Db initialized. Host: ${getDbSettings().host}, port: ${getDbSettings().port}`);
     } catch (err) {
         console.log("TEST")
-        console.error(`${process.env.POSTGRES_USER, process.env.POSTGRES_DB, process.env.POSTGRES_PASSWORD, process.env.DB_PORT, process.env.POSTGRESS_PORT}`)
+        console.error(`${process.env.POSTGRES_USER, process.env.POSTGRES_DB, process.env.POSTGRES_PASSWORD, process.env.DB_PORT, process.env.POSTGRES_PORT}`)
         console.error(`dbConnectionManager - error initializing db. Error: ${err.message}`);
     }
 };  

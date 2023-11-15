@@ -2,27 +2,36 @@ version: '3'
 services:
   nodejs-app:
     restart: on-failure
+    container_name: ${NAME}_api
     build: 
       context: .
       target: production
       dockerfile: Dockerfile.node
     depends_on:
       - postgres
-    container_name: iut_back_nodejs
-    ports:
-      - "${NODEJS_PORT}:${NODEJS_PORT}"
-      
+    networks:
+      - lan
+
   postgres:
     image: postgres:latest
-    container_name: iut_database
+    container_name: ${NAME}_db
+    restart: unless-stopped
     build: 
       context: .
     env_file:
       - .env
-    ports:
-      - "5432:${POSTGRES_PORT}"
     volumes:
       - postgres_data:/var/lib/postgresql/data
-      
+    networks:
+      - lan
 volumes:
   postgres_data:
+
+
+networks:
+  web:
+    external: true
+  lan:
+    driver: bridge
+    external: false
+    name: lan_${NAME}   
