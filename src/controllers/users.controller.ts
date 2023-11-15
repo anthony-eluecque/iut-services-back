@@ -5,13 +5,15 @@ import Res from '../helpers/res.helper';
 import jwt, { JwtPayload } from 'jsonwebtoken';
 import { hashPassword } from '../services/hash.service';
 import CryptoJS from "crypto-js";
-import { changePasswordUser, forgotPasswordUser, generateConnectionToken, resetPasswordUser, verifyPassword } from '../services/auth.service';
+import { changePasswordUser, forgotPasswordUser, generateConnectionToken, resetPasswordUser, verifyPassword,  } from '../services/auth.service';
 import messages from '../docs/messages.json';
 import { validate } from "class-validator";
 import { decryptData, encryptData } from '../services/aes.service';
 import CookieHelper from '../helpers/cookie.helper';
 import { validationResult } from 'express-validator';
 import { ILike } from 'typeorm';
+import { generate } from  'generate-password'
+import Transporter from '../helpers/transporter.helper';
 
 const { serverError } = messages.defaults;
 
@@ -126,9 +128,14 @@ export const createUser = async (req: Request, res: Response) => {
         if (userFinded){
             return Res.send(res,409,'User already exist',userFinded);
         } 
+
         if (!password){
-            password = 'default';
+            password = generate({
+                length: 10,
+                numbers: true
+            });
         }
+
         const hashPwd = await hashPassword(password);
         const newUser = usersRepository.create({
             email : email,
@@ -141,6 +148,16 @@ export const createUser = async (req: Request, res: Response) => {
         if (!isValidatedUser) return Res.send(res,400,"User not validated");
 
         await usersRepository.insert(newUser);
+
+        const tokenPassword = await jwt.sign({id: newUser.id}, process.env.JWT_RESET_PASSWORD_SECRET, {expiresIn: '300s'});
+        Transporter.sendMail(req, res, {
+            email: email,
+            subject: 'Creation de votre compte IUT Service',
+            html: `<p>Bienvenue ${firstName} ${lastName} sur IUT Service !</p>
+            <p>Votre compte a bien été crée sur l'application IUT Service</p>
+            <p>Voici votre nouveau mot de passe : ${password}  , nous vous invitons a fortement le modifier pour mieux securisé votre compte</p>
+            <p>Pour changer votre mot de passe de IUT Services, cliquer <a href="${process.env.CORS_ORIGIN}/changePassword?token=${tokenPassword}">ICI</a>`
+        })
 
         return Res.send(res,200,'User has been created',newUser);
     } catch (error) {
