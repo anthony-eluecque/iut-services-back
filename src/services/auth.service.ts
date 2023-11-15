@@ -2,6 +2,7 @@ import { CookieOptions, Request, Response } from "express";
 import { User } from "../entities";
 import jwt, { JwtPayload } from 'jsonwebtoken';
 import CookieHelper from '../helpers/cookie.helper';
+import Transporter from '../helpers/transporter.helper';
 import Res from "../helpers/res.helper";
 import { compare } from "bcrypt";
 import nodemailer from 'nodemailer';
@@ -9,6 +10,7 @@ import { decryptData } from "./aes.service";
 import CryptoJS from "crypto-js";
 import { hashPassword } from "./hash.service";
 import { AppDataStore } from "../config";
+import { create } from "ts-node";
 
 /**
  * Génère un jeton de connexion pour un utilisateur et l'envoie dans un cookie.
@@ -34,8 +36,6 @@ export const generateConnectionToken = async (user: User, res: Response) => {
     return Res.send(res, 204, "");
 };
 
-
-
 /**
  * Envoie un e-mail de réinitialisation de mot de passe à l'utilisateur.
  *
@@ -51,8 +51,16 @@ export const forgotPasswordUser = async(req: Request, res: Response) => {
     if (!user) {
         return Res.send(res, 404, null, "L'utilisateur n'existe pas");
     }
+    const tokenPassword = await jwt.sign({id: user.id}, process.env.JWT_RESET_PASSWORD_SECRET, {expiresIn: '300s'});
+    const firstName = decryptData(user.firstName).toString(CryptoJS.enc.Utf8);
+    const lastName = decryptData(user.lastName).toString(CryptoJS.enc.Utf8);
 
-    await sendMailResetPassword(req, res, user);
+    Transporter.sendMail(req, res, {
+        email: user.email,
+        subject: 'Réinitialisation de votre mot de passe',
+        html: `<p>Bonjour ${firstName} ${lastName} !</p><p>Pour changer votre mot de passe de IUT Services, cliquer <a href="${process.env.CORS_ORIGIN}/changePassword?token=${tokenPassword}">ICI</a>`
+    })
+    // await sendMailResetPassword(req, res, user);
 };
 
 
@@ -82,8 +90,16 @@ export const resetPasswordUser = async(req: Request, res: Response) => {
         return Res.send(res, 404, null, "Le mot de passe n'est pas correct");
 
     }
+    const tokenPassword = await jwt.sign({id: user.id}, process.env.JWT_RESET_PASSWORD_SECRET, {expiresIn: '300s'});
+    const firstName = decryptData(user.firstName).toString(CryptoJS.enc.Utf8);
+    const lastName = decryptData(user.lastName).toString(CryptoJS.enc.Utf8);
 
-    await sendMailResetPassword(req, res, user);
+    Transporter.sendMail(req, res, {
+        email: user.email,
+        subject: 'Réinitialisation de votre mot de passe',
+        html: `<p>Bonjour ${firstName} ${lastName} !</p><p>Pour changer votre mot de passe de IUT Services, cliquer <a href="${process.env.CORS_ORIGIN}/changePassword?token=${tokenPassword}">ICI</a>`
+    })
+    // await sendMailResetPassword(req, res, user);
 };
 
 /**
