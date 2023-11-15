@@ -32,7 +32,6 @@ export const createLesson = async (req: Request, res: Response) => {
 
         if (!lesson) {
             lesson = new Lesson();
-            console.log(lesson);
             await lessonsRepository.merge(lesson, req.body).save();
             return Res.send(res, 200, created, lesson);
 

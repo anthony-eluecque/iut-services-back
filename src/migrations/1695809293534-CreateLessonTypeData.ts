@@ -4,7 +4,7 @@ import { AppDataStore } from "../config";
 
 export class CreateLessonTypeData1695809293534 implements MigrationInterface {
 
-    public async up(queryRunner: QueryRunner): Promise<void> {
+    public async up(): Promise<void> {
         const lessonTypeRepository = AppDataStore.getRepository(Lesson_type);
 
         // Ajoutez les enregistrements "TP", "TD", "CM"

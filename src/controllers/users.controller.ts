@@ -266,7 +266,6 @@ export const resetPassword =async (req: Request, res: Response) => {
 
         await resetPasswordUser(req, res);
     } catch (error) {
-        console.log(error);
         return Res.send(res,500,serverError);
     }
 }; 
