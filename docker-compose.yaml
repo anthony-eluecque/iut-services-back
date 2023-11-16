@@ -1,7 +1,7 @@
 version: '3'
 services:
   nodejs-app:
-    restart: on-failure
+    restart: always
     build: 
       context: .
       target: production
@@ -15,6 +15,7 @@ services:
   postgres:
     image: postgres:latest
     container_name: iut_database
+    restart: always
     build: 
       context: .
     env_file:
